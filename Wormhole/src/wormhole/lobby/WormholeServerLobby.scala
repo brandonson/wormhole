@@ -15,6 +15,7 @@ import wormhole.game.WormholeGameServer
 import scala.collection.JavaConversions._
 import wormhole.game.MapUtils
 import wormhole.game.Player
+import wormhole.WormholeServer
 object WormholeServerLobby{
 	val possibleColors = List(new Color(255,0,0), new Color(0,255,0), new Color(0,0,255), new Color(255,255,0), new Color(0,255,255), new Color(255,0,255),
 			new Color(150,60,215), new Color(255,150,0), new Color(240,200, 225), new Color(120,145,15))
@@ -53,7 +54,7 @@ class WormholeServerLobby {
 private class WormholeServerLobbyImpl(lobby:WormholeServerLobby) extends Actor{
 	
 	import WormholeServerLobby._
-	
+	import WormholeServer._
 	var connections:List[(ServerLobbyConnection,Thread, LobbyProto.PersonInfo)] = Nil
 	var availableColors:List[Int] = possibleColors map {_.getRGB()}
 	def receive = {
@@ -91,10 +92,11 @@ private class WormholeServerLobbyImpl(lobby:WormholeServerLobby) extends Actor{
 					new Player(idx, new Color(pInf.getColor()))
 			}
 			val zipped = connections map {_._1.data} zip players
-			val map = MapUtils.genRandomMap(20, 20, 20*20/10, 20, 50, players)
+			val map = MapUtils.genRandomMap(MapWidth, MapHeight, PlanetCount, MaxProduction+1, MaxDefense+1, players)
 			val server = new WormholeGameServer(map, zipped)
 			val conns = connections
 			connections foreach {_._1.start(server)}
+			availableColors = connections.map {_._3.getColor()} ++ availableColors
 			connections = Nil
 			new Thread(() => joinConnectionsAndStart(conns map {_._2}, server)).start()
 	}
