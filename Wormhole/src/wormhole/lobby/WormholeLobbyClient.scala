@@ -105,7 +105,6 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 				(button, colorInf.getColor())
 		}).toList
 		ownInfo = LobbyProto.PersonInfo.parseDelimitedFrom(in)
-		println("INFO:" + ownInfo)
 		readPersonSetInfo()
 		colors find {_._2==ownInfo.getColor()} foreach {_._1.setSelected(true)}
 		val name = JOptionPane.showInputDialog(null, "Enter name:", "Wormhole Client", JOptionPane.PLAIN_MESSAGE)

@@ -75,7 +75,8 @@ class BaseObject(startData:BaseObjectData, val map:WormholeMap, startSprite:(Bas
  * Author: Brandon
  */
 private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val main:BaseObject) extends Actor{
-	
+	val PercentageDiv = 50
+	val MinKill = 10
 	var units:Map[PlayerId, Int] = Map()
 	var owner:Option[PlayerId] = None
 	var listeners:List[BaseObjectListener] = Nil
@@ -132,52 +133,40 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 	
 	protected def resolveMultiplePlayers(){
 		val ownerVal = this.owner.get
-		//total non-owner ships to determine whether owner wins
-		val nonOwner = math.max(0, units.foldLeft(0) {(acc, tup) => if(tup._1 != ownerVal) acc + tup._2 else acc})
 		val ownerCount = units.getOrElse(ownerVal,0)
-		//if owner has more ships than all other players, leave only owner ships
-		if(nonOwner==0||nonOwner<=ownerCount){
-			val newOwnerCount = ownerCount-nonOwner
-			units = Map() + ((ownerVal, newOwnerCount))
-			listeners foreach {_.allUnitsChanged(main)}
-		}else{
-			//divide lost units among attackers
-			var remainingLost = ownerCount
-			//loop, as some players may not have enough units to lose the amount they should
-			while(remainingLost>0){
-				//determine total units lost for each non-owning player
-				val nonOwnerPlayers = units count (_._1 != ownerVal)
-				val baseRem = ownerCount/nonOwnerPlayers
-				val perPlayer = if(ownerCount % nonOwnerPlayers == 0) baseRem else baseRem + 1
-				//remove current owner from list of units - has been defeated
-				units = units filterNot(_._1 == ownerVal)
-				//remap units to new values
-				units = units map {
-					t =>
-						val (p, c) = t
-						remainingLost -= perPlayer
-						val remainingAttacker = c-perPlayer
-						if(remainingAttacker<0){
-							/* If there were not enough units to satisfy the perPlayer amount,
-							 * the 'remaining' amount, which is negative, is replaced. 
-							 * abs(remainingAttacker) would be the amount of units this player
-							 * was short
-							 */
-							remainingLost -= remainingAttacker
-						}
-						(p, math.max(0,c-perPlayer))
+		val withoutOwner = units filterNot {_._1==ownerVal}
+		//maps to list of tuples ((nonOwner, remainingForNonOwner), killedOfOwner)
+		val results = withoutOwner map {
+			tup =>
+				val (otherOwner, otherStart) = tup
+				val otherCount = otherStart-this.data.defense
+				if(otherCount<=0){
+					((otherOwner, 0), ownerCount)
+				}else if(ownerCount<=0){
+					((otherOwner, otherCount), 0)
+				}else{
+					val ownerHasMore = ownerCount>otherCount
+					val otherPOfOwner = (otherCount*100)/(ownerCount)
+					val ownerPOfOther = (ownerCount*100)/(otherCount)
+					val percentOfOwnerKilled = otherPOfOwner*100/PercentageDiv
+					val killed = math.max(MinKill, percentOfOwnerKilled*ownerCount/1000)
+					val percentOfOtherKilled = ownerPOfOther*100/PercentageDiv
+					val otherKilled = math.max(MinKill, percentOfOtherKilled*otherCount/1000)
+					((otherOwner, otherCount-otherKilled), killed)
 				}
-				//remove any players without units
-				units = units filter(_._2>0)
-				listeners foreach {_.allUnitsChanged(main)}
-				//new owner is player with the most units
-				owner = Some(units.fold((-1, 0)) {
-					(acc,t) =>
-						val (p, c) = t
-						if (c>acc._2) t else acc
-				}._1)
-				listeners foreach {_.ownerChanged(owner get, main)}
-			}
+		}
+		val otherResults = results map {_._1}
+		val ownerLoss = results.foldLeft(0){(acc, res) => acc + res._2}
+		val ownerRem = math.max(0,ownerCount-ownerLoss)
+		units = Map()
+		if(ownerRem>0){
+			units += ((ownerVal, ownerRem))
+		}
+		units ++= otherResults filterNot {_._2<=0}
+		listeners foreach {_.allUnitsChanged(this.main)}
+		if(units.size==1){
+			owner = Some(units.head._1)
+			listeners foreach {_.ownerChanged(owner.get, this.main)}
 		}
 	}
 	def unitArrival(amt:Int, owner:PlayerId){
