@@ -1,0 +1,33 @@
+package wormhole;
+
+option java_package = "wormhole.lobby.network";
+option java_outer_classname = "LobbyProto";
+
+enum MessageType{
+	NEW_PERSON = 0;
+	LOST_PERSON = 1;
+	PERSON_SET_INFO =2;
+	START = 3;
+	START_CONFIRM = 4;
+	CHANGE_INFO = 5;
+	DISCONNECT = 6;
+	COLOR_AVAILABLE = 7;
+	COLOR_TAKEN = 8;
+}
+
+message LobbyMessageType{
+	required MessageType type = 1;
+}
+message PersonSetInfo{
+	repeated PersonInfo info = 1;
+}
+message PossibleColorList{
+	repeated ColorData colors = 1;
+}
+message ColorData{
+	required int32 color = 1;
+}
+message PersonInfo{
+	required string name = 1;
+	required int32 color = 2;
+}

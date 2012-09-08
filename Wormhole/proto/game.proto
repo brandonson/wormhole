@@ -1,0 +1,64 @@
+package wormhole;
+
+option java_package = "wormhole.game.network";
+option java_outer_classname = "GameProto";
+
+enum MessageType{
+	MAP = 0;
+	ATTACK = 1;
+	UNIT_ARRIVAL = 2;
+	ALL_UNIT_CHANGE = 3;
+	OWNER_CHANGE = 4;
+	DISCONNECT = 5;
+	SEND_PLAYER_DATA = 6;
+	PLAYER_DATA = 7;
+}
+message IncomingMessageType{
+	required MessageType type = 1;
+}
+message Map{
+	required int32 width = 3;
+	required int32 height = 4;
+	repeated MapGridSpace space=1;
+	repeated Player player = 2;
+}
+
+message MapGridSpace{
+	required int32 x = 4;
+	required int32 y = 5;
+	required int32 productivity = 1;
+	required int32 defense = 2;
+	optional int32 owner_id = 6;
+	repeated UnitInfo unit_info = 7;
+}
+message UnitInfo{
+	required int32 owner = 1;
+	required int32 count = 2;
+}
+message Player{
+	required int32 id = 1;
+	required int32 color = 2;
+}
+
+message Attack{
+	required int32 fromX = 1;
+	required int32 fromY = 2;
+	required int32 toX = 3;
+	required int32 toY = 4;
+}
+
+message UnitArrival{
+	required int32 x = 1;
+	required int32 y = 2;
+	required UnitInfo arrived = 3;
+}
+message AllUnitChange{
+	required int32 x = 1;
+	required int32 y = 2;
+	repeated UnitInfo unit_info = 3;
+}
+message OwnerChange{
+	required int32 x = 1;
+	required int32 y = 2;
+	required int32 new_owner_id = 3;
+}
