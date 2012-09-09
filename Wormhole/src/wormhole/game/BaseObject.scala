@@ -9,10 +9,22 @@ import wormhole.graphics.Sprite
 import wormhole.game.network.GameProto
 import wormhole.ThreadsafeMessageWriter
 import wormhole.WormholeSystem
+import java.awt.Graphics2D
+import java.awt.Color
+
+object BaseObject{
+	def genBasicUnitSprite(map:WormholeMap)(group:UnitGroup) = new Sprite{
+		def render(g:Graphics2D, x:Int, y:Int){
+			g.setColor(map.player(group.owner) map {_.color} getOrElse Color.GRAY)
+			g.fillRect(x-5, y-5, 10, 10)
+		}
+	}
+}
+
 /**
  * Author: Brandon
  */
-class BaseObject(startData:BaseObjectData, val map:WormholeMap, startSprite:(BaseObject) => Sprite, clientConnection:ThreadsafeMessageWriter = null){
+class BaseObject(startData:BaseObjectData, val map:WormholeMap, startSprite:(BaseObject) => Sprite, clientConnection:ThreadsafeMessageWriter = null) extends Updateable{
 	
 	def this(x:Int, y:Int, prod:Int, defense:Int, map:WormholeMap, sprite:(BaseObject) => Sprite, clientConnection:ThreadsafeMessageWriter = null) = 
 		this(BaseObjectData(Location(x,y),prod,defense), map, sprite, clientConnection)
@@ -92,7 +104,7 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 					val send = if(owned%2==0) owned/2 else owned/2+1
 					if(send>0){
 						units += ((own, owned-send))
-						sendTo.unitArrival(send, own)
+						val group = new UnitGroup(own,send, BaseObject.genBasicUnitSprite(main.map) _, main, sendTo)
 						listeners foreach {_.unitsChanged(own, -send, this.main)}
 					}
 			}

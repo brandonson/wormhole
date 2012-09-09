@@ -17,13 +17,19 @@ class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
 	def addObject(obj:BaseObject){
 		ref ! obj
 	}
+	def addUnitGroup(group:UnitGroup){
+		ref ! group
+	}
 	def updateAll(){
 		ref ! 'Update
 	}
 	def objectAt(x:Int, y:Int) = {
 		fetch ((ref ? ('At, x,y)).mapTo[Option[BaseObject]])
 	}
-	def objects = fetch ((ref ? 'Objects).mapTo[List[BaseObject]])
+	def objectsFuture = (ref ? 'Objects).mapTo[List[BaseObject]]
+	def objects = fetch (objectsFuture)
+	def unitGroupsFuture = (ref ? 'Units).mapTo[List[UnitGroup]]
+	def unitGroups = fetch (unitGroupsFuture)
 }
  
 /**
@@ -31,14 +37,24 @@ class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
  * Author: Brandon
  */
 private class WormholeMapImpl extends Actor{
+	val MovesPerBaseUpdate = 5
 	
 	var objects:List[BaseObject] = Nil
-	
+	var unitGroups:List[UnitGroup] = Nil
+	var count = 0
 	def receive = {
 		case (obj:BaseObject) =>
 			objects ::= obj
+		case (group:UnitGroup) =>
+			unitGroups ::= group
 		case 'Update =>
-			objects foreach {_.update()}
+			count += 1
+			if(count==MovesPerBaseUpdate){
+				objects foreach {_.update()}
+				count = 0
+			}
+			unitGroups foreach {_.update()}
+			unitGroups = unitGroups filterNot {_.isComplete}
 		case ('At,x:Int,y:Int) =>
 			val zipped = objects zip (objects map {_.dataFuture})
 			val res = zipped find {
@@ -49,6 +65,7 @@ private class WormholeMapImpl extends Actor{
 			sender ! (res map {_._1})
 		case 'Objects =>
 			sender ! objects
-			
+		case 'Units =>
+			sender ! unitGroups
 	}
 }
