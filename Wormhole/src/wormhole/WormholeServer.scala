@@ -3,6 +3,7 @@ package wormhole
 import wormhole.lobby.WormholeServerLobby
 import java.net.ServerSocket
 import wormhole.lobby.LobbyFullException
+import wormhole.lobby.WormholeMainServer
 
 object WormholeServer {
 
@@ -13,16 +14,6 @@ object WormholeServer {
 	val MaxDefense = 0
 	
 	def main(args:Array[String]){
-		var lobby = new WormholeServerLobby()
-		val server = new ServerSocket(CONNECTION_PORT)
-		while(true){
-			val sock = server.accept()
-			try{
-				lobby.addConnection(new SocketInfoData(sock))
-			}catch{
-				case LobbyFullException =>
-					lobby = new WormholeServerLobby()
-			}
-		}
+		new WormholeMainServer(CONNECTION_PORT).run()
 	}
 }

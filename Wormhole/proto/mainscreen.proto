@@ -1,0 +1,31 @@
+package wormhole;
+
+option java_package = "wormhole.lobby.network";
+option java_outer_classname = "MainScreenProto";
+
+enum MessageType{
+	JOIN_LOBBY = 0;
+	CREATE_LOBBY = 1;
+	LOBBY_LIST = 2;
+	NEW_LOBBY = 3;
+	REMOVED_LOBBY = 4;
+	DISCONNECT = 6;
+}
+message MainMessageType{
+	required MessageType type = 1;
+}
+message LobbyIdMessage{
+	required int32 lobby_id = 1;
+}
+
+message CreateLobby{
+	required string name = 1;
+}
+
+message LobbyData{
+	required string name = 1;
+	required int32 id = 2;
+}
+message LobbyDataList{
+	repeated LobbyData lobby = 1;
+}

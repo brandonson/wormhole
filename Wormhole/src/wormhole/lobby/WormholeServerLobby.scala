@@ -26,15 +26,15 @@ object WormholeServerLobby{
 	}
 }
 
-class WormholeServerLobby {
+class WormholeServerLobby(val name:String, val id:Int, val mainServer:WormholeMainServer) {
 
 	val ref = WormholeSystem.actorOf(Props(new WormholeServerLobbyImpl(this)))
 	
-	def addConnection(data:SocketInfoData){
+	def addConnection(data:SocketInfoData) = {
 		val color = fetch((ref?'NewColor).mapTo[Option[Int]]).getOrElse(throw LobbyFullException)
 		val info = LobbyProto.PersonInfo.newBuilder().setName("unknown").setColor(color).build()
 		val conn = new ServerLobbyConnection(data, this, info)
-		ref ! ('NewConnection, conn,info)
+		fetch((ref ? ('NewConnection, conn,info)).mapTo[Boolean])
 	}
 	
 	def start(){ ref ! 'Start}
@@ -51,19 +51,23 @@ class WormholeServerLobby {
 	}
 }
 
-private class WormholeServerLobbyImpl(lobby:WormholeServerLobby) extends Actor{
+private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Actor{
 	
 	import WormholeServerLobby._
 	import WormholeServer._
 	var connections:List[(ServerLobbyConnection,Thread, LobbyProto.PersonInfo)] = Nil
 	var availableColors:List[Int] = possibleColors map {_.getRGB()}
+	var active = true;
 	def receive = {
 		case ('NewConnection, ref:ServerLobbyConnection, info:LobbyProto.PersonInfo) =>
-			val thread = new Thread(ref, "SLC-" + connections.size)
-			thread.start()
-			connections ::= (ref,thread,info)
-			availableColors -= info.getColor()
-			connections foreach {_._1.newPerson(info)}
+			if(active){
+				val thread = new Thread(ref, "SLC-" + connections.size)
+				thread.start()
+				connections ::= (ref,thread,info)
+				availableColors -= info.getColor()
+				connections foreach {_._1.newPerson(info)}
+				true
+			}else false
 		case 'NewColor =>
 			sender ! (availableColors.headOption)
 		case 'PersonSet =>
@@ -85,6 +89,10 @@ private class WormholeServerLobbyImpl(lobby:WormholeServerLobby) extends Actor{
 				availableColors ::= person.getColor()
 			}
 			connections = connections.filterNot(_._1 == conn)
+			if(connections.length==0){
+				active = false
+				lobby.mainServer.lobbyDropped(lobby.id)
+			}
 		case 'Start =>
 			val players = (connections.map {_._3}).zipWithIndex map {
 				tup =>
