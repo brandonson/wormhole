@@ -60,7 +60,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 	var active = true;
 	def receive = {
 		case ('NewConnection, ref:ServerLobbyConnection, info:LobbyProto.PersonInfo) =>
-			if(active){
+			val res = if(active){
 				val thread = new Thread(ref, "SLC-" + connections.size)
 				thread.start()
 				connections ::= (ref,thread,info)
@@ -68,6 +68,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 				connections foreach {_._1.newPerson(info)}
 				true
 			}else false
+			sender ! res
 		case 'NewColor =>
 			sender ! (availableColors.headOption)
 		case 'PersonSet =>

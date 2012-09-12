@@ -10,11 +10,12 @@ import wormhole.WormholeSystem
 import wormhole.actor._
 import akka.actor.Props
 import akka.pattern.ask
+import wormhole.lobby.network.MainScreenProto
 
 class WormholeMainServer(port:Int) extends Runnable{
 
 	private[this] var continue = true
-	private[this] val ref = WormholeSystem.actorOf(Props(classOf[WormholeMainServerImpl]))
+	private[this] val ref = WormholeSystem.actorOf(Props(new WormholeMainServerImpl(this)))
 	
 	def run{
 		val server = new ServerSocket(port)
@@ -31,6 +32,9 @@ class WormholeMainServer(port:Int) extends Runnable{
 	
 	def handleNewConnection(socket:Socket){
 		val socketInfo = new SocketInfoData(socket)
+		val ch = new WormholeClientHandler(socketInfo, this)
+		new Thread(ch, "ClientHandler").start()
+		ref ! ch
 	}
 	def disconnectConn(wch:WormholeClientHandler){
 		ref ! ('Disconnect, wch)
@@ -68,9 +72,17 @@ class WormholeMainServerImpl(val mserver:WormholeMainServer) extends Actor{
 			lobbyId += 1
 			val lobby = new WormholeServerLobby(lobbyName, lobbyId, mserver)
 			lobbies ::= lobby
+			val dataBuild = MainScreenProto.LobbyData.newBuilder()
+			dataBuild.setId(lobbyId)
+			dataBuild.setName(lobbyName)
+			dataBuild.build()
+			val data = dataBuild.build()
+			connections foreach {_.lobbyAdded(data)}
 			sender ! lobby
+			
 		case ('LobbyDropped, lobbyId:Int) =>
 			lobbies = lobbies filterNot {_.id == lobbyId}
+			connections foreach {_.lobbyRemoved(lobbyId)}
 		case 'LobbyList =>
 			sender ! lobbies
 		case ('LobbyForId, id:Int) =>

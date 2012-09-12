@@ -143,18 +143,17 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 						colors find {_._2 == to.getColor()} foreach {_._1.setEnabled(false)}
 					}
 				case START =>
-					frame.setVisible(false)
 					val msgOut = LobbyProto.LobbyMessageType.newBuilder().setType(START_CONFIRM).build()
 					out.write(msgOut)
 					new WormholeGameClient(data).start()
 					continue = false
 				case DISCONNECT =>
-					frame.setVisible(false)
 					out.close()
 					JOptionPane.showMessageDialog(null, "Server disconnected.", "Wormhole Lobby", JOptionPane.PLAIN_MESSAGE)
 					continue = false
 			}
 		}
+		frame.setVisible(false)
 	}
 	
 	def readPersonSetInfo(){

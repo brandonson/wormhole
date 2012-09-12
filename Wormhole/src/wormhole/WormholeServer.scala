@@ -14,6 +14,6 @@ object WormholeServer {
 	val MaxDefense = 0
 	
 	def main(args:Array[String]){
-		new WormholeMainServer(CONNECTION_PORT).run()
+		new Thread (new WormholeMainServer(CONNECTION_PORT)).run()
 	}
 }

@@ -6,6 +6,7 @@ import wormhole.lobby.network.MainScreenProto.MessageType._
 import javax.swing.DefaultListModel
 import scala.collection.JavaConversions._
 import javax.swing.JOptionPane
+import javax.swing.JFrame
 class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 
 	def in = socket.in
@@ -22,11 +23,20 @@ class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 	}
 	
 	def run(){
+		readLobbyList()
+		val frame = new JFrame("Wormhole")
+		val cmsp = new ClientMainScreenPane(this)
+		frame.setContentPane(cmsp)
+		frame.pack()
+		frame.setVisible(true)
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+		println(cmsp.scroll.getSize())
 		while(continue && !Thread.interrupted()){
 			val mType = MainScreenProto.MainMessageType.parseDelimitedFrom(in)
 			mType.getType() match{
 				case JOIN_LOBBY =>
 					new Thread(new WormholeLobbyClient(socket), "Lobby Client").start()
+					continue = false
 				case NEW_LOBBY =>
 					val lobbyMsg = MainScreenProto.LobbyData.parseDelimitedFrom(in)
 					model.addElement(lobbyMsg)
@@ -39,14 +49,18 @@ class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 							modelIdx = i
 						}
 					}
-					model.removeElementAt(modelIdx)
+					if(modelIdx != -1){
+						model.removeElementAt(modelIdx)
+					}
 				case LOBBY_LIST =>
 					model.removeAllElements()
 					readLobbyList()
 				case DISCONNECT =>
 					handleDisconnect()
+					continue = false
 			}
 		}
+		frame.setVisible(false)
 	}
 	
 	private[this] def handleDisconnect(){
