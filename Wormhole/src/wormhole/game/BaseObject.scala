@@ -105,6 +105,7 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 					if(send>0){
 						units += ((own, owned-send))
 						val group = new UnitGroup(own,send, BaseObject.genBasicUnitSprite(main.map) _, main, sendTo)
+						main.map.addUnitGroup(group)
 						listeners foreach {_.unitsChanged(own, -send, this.main)}
 					}
 			}

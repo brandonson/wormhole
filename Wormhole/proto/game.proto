@@ -12,6 +12,8 @@ enum MessageType{
 	DISCONNECT = 5;
 	SEND_PLAYER_DATA = 6;
 	PLAYER_DATA = 7;
+	NEW_UNIT_GROUP = 8;
+	UNIT_GROUP_POSITION = 9;
 }
 message IncomingMessageType{
 	required MessageType type = 1;
@@ -61,4 +63,15 @@ message OwnerChange{
 	required int32 x = 1;
 	required int32 y = 2;
 	required int32 new_owner_id = 3;
+}
+message NewUnitGroup{
+	required int32 id = 1;
+	required int32 x = 2;
+	required int32 y = 3;
+}
+message UnitGroupPosition{
+	required int32 id = 1;
+	optional int32 x = 2;
+	optional int32 y = 3;
+	optional bool complete = 4 [default = false];
 }
