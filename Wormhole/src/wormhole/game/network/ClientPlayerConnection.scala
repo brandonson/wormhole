@@ -9,6 +9,9 @@ import wormhole.game.Player
 import java.awt.Color
 import wormhole.ThreadsafeMessageWriter
 import wormhole.SocketInfoData
+import wormhole.game.UnitGroup
+import wormhole.game.BaseObject
+import wormhole.game.Location
 class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() => Unit) extends Runnable{
 
 	def in = socketData.in
@@ -69,6 +72,22 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 				case PLAYER_DATA =>
 					val playerData = GameProto.Player.parseDelimitedFrom(in)
 					this.pData = Some(new Player(playerData.getId(), new Color(playerData.getColor())))
+				case NEW_UNIT_GROUP =>
+					val ugData = GameProto.NewUnitGroup.parseDelimitedFrom(in)
+					val group = new UnitGroup(ugData.getId(), ugData.getOwner(), ugData.getCount(), BaseObject.genBasicUnitSprite(map), map, null, null)
+					group.setLocation(Location(ugData.getX(), ugData.getY()))
+					map.addUnitGroup(group)
+				case UNIT_GROUP_POSITION =>
+					val ugp = GameProto.UnitGroupPosition.parseDelimitedFrom(in)
+					if(ugp.getComplete()){
+						map.removeGroup(ugp.getId())
+					}else{
+						map.groupForId(ugp.getId()) foreach {
+							ug =>
+								val loc = Location(ugp.getX(), ugp.getY())
+								ug.setLocation(loc)
+						}						
+					}
 				case DISCONNECT =>
 					continue = false
 				case _ =>

@@ -13,7 +13,9 @@ object Wormhole {
 		val in = JOptionPane.showInputDialog(null, "Server:", "Wormhole Client", JOptionPane.PLAIN_MESSAGE)
 		if(in!=null){
 			try{
-				new Thread(new WormholeLobbyClient(new SocketInfoData(new Socket(in, CONNECTION_PORT)))).start()
+				val data = new SocketInfoData(new Socket(in, CONNECTION_PORT))
+				clientConnection = data.out
+				new Thread(new WormholeLobbyClient(data)).start()
 			}catch{
 				case _:IOException =>
 					JOptionPane.showMessageDialog(null, "Failed to connect.", "Wormhole Client", JOptionPane.PLAIN_MESSAGE)

@@ -18,6 +18,8 @@ public final class GameProto {
     DISCONNECT(5, 5),
     SEND_PLAYER_DATA(6, 6),
     PLAYER_DATA(7, 7),
+    NEW_UNIT_GROUP(8, 8),
+    UNIT_GROUP_POSITION(9, 9),
     ;
     
     public static final int MAP_VALUE = 0;
@@ -28,6 +30,8 @@ public final class GameProto {
     public static final int DISCONNECT_VALUE = 5;
     public static final int SEND_PLAYER_DATA_VALUE = 6;
     public static final int PLAYER_DATA_VALUE = 7;
+    public static final int NEW_UNIT_GROUP_VALUE = 8;
+    public static final int UNIT_GROUP_POSITION_VALUE = 9;
     
     
     public final int getNumber() { return value; }
@@ -42,6 +46,8 @@ public final class GameProto {
         case 5: return DISCONNECT;
         case 6: return SEND_PLAYER_DATA;
         case 7: return PLAYER_DATA;
+        case 8: return NEW_UNIT_GROUP;
+        case 9: return UNIT_GROUP_POSITION;
         default: return null;
       }
     }
@@ -72,7 +78,7 @@ public final class GameProto {
     }
     
     private static final MessageType[] VALUES = {
-      MAP, ATTACK, UNIT_ARRIVAL, ALL_UNIT_CHANGE, OWNER_CHANGE, DISCONNECT, SEND_PLAYER_DATA, PLAYER_DATA, 
+      MAP, ATTACK, UNIT_ARRIVAL, ALL_UNIT_CHANGE, OWNER_CHANGE, DISCONNECT, SEND_PLAYER_DATA, PLAYER_DATA, NEW_UNIT_GROUP, UNIT_GROUP_POSITION, 
     };
     
     public static MessageType valueOf(
@@ -5419,6 +5425,1129 @@ public final class GameProto {
     // @@protoc_insertion_point(class_scope:wormhole.OwnerChange)
   }
   
+  public interface NewUnitGroupOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required int32 id = 1;
+    boolean hasId();
+    int getId();
+    
+    // required int32 owner = 4;
+    boolean hasOwner();
+    int getOwner();
+    
+    // required int32 count = 5;
+    boolean hasCount();
+    int getCount();
+    
+    // required int32 x = 2;
+    boolean hasX();
+    int getX();
+    
+    // required int32 y = 3;
+    boolean hasY();
+    int getY();
+  }
+  public static final class NewUnitGroup extends
+      com.google.protobuf.GeneratedMessage
+      implements NewUnitGroupOrBuilder {
+    // Use NewUnitGroup.newBuilder() to construct.
+    private NewUnitGroup(Builder builder) {
+      super(builder);
+    }
+    private NewUnitGroup(boolean noInit) {}
+    
+    private static final NewUnitGroup defaultInstance;
+    public static NewUnitGroup getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public NewUnitGroup getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wormhole.game.network.GameProto.internal_static_wormhole_NewUnitGroup_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wormhole.game.network.GameProto.internal_static_wormhole_NewUnitGroup_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required int32 id = 1;
+    public static final int ID_FIELD_NUMBER = 1;
+    private int id_;
+    public boolean hasId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public int getId() {
+      return id_;
+    }
+    
+    // required int32 owner = 4;
+    public static final int OWNER_FIELD_NUMBER = 4;
+    private int owner_;
+    public boolean hasOwner() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public int getOwner() {
+      return owner_;
+    }
+    
+    // required int32 count = 5;
+    public static final int COUNT_FIELD_NUMBER = 5;
+    private int count_;
+    public boolean hasCount() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public int getCount() {
+      return count_;
+    }
+    
+    // required int32 x = 2;
+    public static final int X_FIELD_NUMBER = 2;
+    private int x_;
+    public boolean hasX() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public int getX() {
+      return x_;
+    }
+    
+    // required int32 y = 3;
+    public static final int Y_FIELD_NUMBER = 3;
+    private int y_;
+    public boolean hasY() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public int getY() {
+      return y_;
+    }
+    
+    private void initFields() {
+      id_ = 0;
+      owner_ = 0;
+      count_ = 0;
+      x_ = 0;
+      y_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasOwner()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCount()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasX()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasY()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, id_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(2, x_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(3, y_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(4, owner_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(5, count_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, id_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, x_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, y_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, owner_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, count_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.NewUnitGroup parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(wormhole.game.network.GameProto.NewUnitGroup prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements wormhole.game.network.GameProto.NewUnitGroupOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wormhole.game.network.GameProto.internal_static_wormhole_NewUnitGroup_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wormhole.game.network.GameProto.internal_static_wormhole_NewUnitGroup_fieldAccessorTable;
+      }
+      
+      // Construct using wormhole.game.network.GameProto.NewUnitGroup.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        id_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        owner_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        count_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        x_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        y_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wormhole.game.network.GameProto.NewUnitGroup.getDescriptor();
+      }
+      
+      public wormhole.game.network.GameProto.NewUnitGroup getDefaultInstanceForType() {
+        return wormhole.game.network.GameProto.NewUnitGroup.getDefaultInstance();
+      }
+      
+      public wormhole.game.network.GameProto.NewUnitGroup build() {
+        wormhole.game.network.GameProto.NewUnitGroup result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private wormhole.game.network.GameProto.NewUnitGroup buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        wormhole.game.network.GameProto.NewUnitGroup result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public wormhole.game.network.GameProto.NewUnitGroup buildPartial() {
+        wormhole.game.network.GameProto.NewUnitGroup result = new wormhole.game.network.GameProto.NewUnitGroup(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.id_ = id_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.owner_ = owner_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.count_ = count_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.x_ = x_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.y_ = y_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wormhole.game.network.GameProto.NewUnitGroup) {
+          return mergeFrom((wormhole.game.network.GameProto.NewUnitGroup)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(wormhole.game.network.GameProto.NewUnitGroup other) {
+        if (other == wormhole.game.network.GameProto.NewUnitGroup.getDefaultInstance()) return this;
+        if (other.hasId()) {
+          setId(other.getId());
+        }
+        if (other.hasOwner()) {
+          setOwner(other.getOwner());
+        }
+        if (other.hasCount()) {
+          setCount(other.getCount());
+        }
+        if (other.hasX()) {
+          setX(other.getX());
+        }
+        if (other.hasY()) {
+          setY(other.getY());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasId()) {
+          
+          return false;
+        }
+        if (!hasOwner()) {
+          
+          return false;
+        }
+        if (!hasCount()) {
+          
+          return false;
+        }
+        if (!hasX()) {
+          
+          return false;
+        }
+        if (!hasY()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              id_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000008;
+              x_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000010;
+              y_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000002;
+              owner_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000004;
+              count_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required int32 id = 1;
+      private int id_ ;
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public int getId() {
+        return id_;
+      }
+      public Builder setId(int value) {
+        bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        id_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required int32 owner = 4;
+      private int owner_ ;
+      public boolean hasOwner() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public int getOwner() {
+        return owner_;
+      }
+      public Builder setOwner(int value) {
+        bitField0_ |= 0x00000002;
+        owner_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearOwner() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        owner_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required int32 count = 5;
+      private int count_ ;
+      public boolean hasCount() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public int getCount() {
+        return count_;
+      }
+      public Builder setCount(int value) {
+        bitField0_ |= 0x00000004;
+        count_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearCount() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        count_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required int32 x = 2;
+      private int x_ ;
+      public boolean hasX() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public int getX() {
+        return x_;
+      }
+      public Builder setX(int value) {
+        bitField0_ |= 0x00000008;
+        x_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearX() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        x_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required int32 y = 3;
+      private int y_ ;
+      public boolean hasY() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public int getY() {
+        return y_;
+      }
+      public Builder setY(int value) {
+        bitField0_ |= 0x00000010;
+        y_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearY() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        y_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:wormhole.NewUnitGroup)
+    }
+    
+    static {
+      defaultInstance = new NewUnitGroup(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:wormhole.NewUnitGroup)
+  }
+  
+  public interface UnitGroupPositionOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required int32 id = 1;
+    boolean hasId();
+    int getId();
+    
+    // optional int32 x = 2;
+    boolean hasX();
+    int getX();
+    
+    // optional int32 y = 3;
+    boolean hasY();
+    int getY();
+    
+    // optional bool complete = 4 [default = false];
+    boolean hasComplete();
+    boolean getComplete();
+  }
+  public static final class UnitGroupPosition extends
+      com.google.protobuf.GeneratedMessage
+      implements UnitGroupPositionOrBuilder {
+    // Use UnitGroupPosition.newBuilder() to construct.
+    private UnitGroupPosition(Builder builder) {
+      super(builder);
+    }
+    private UnitGroupPosition(boolean noInit) {}
+    
+    private static final UnitGroupPosition defaultInstance;
+    public static UnitGroupPosition getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public UnitGroupPosition getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wormhole.game.network.GameProto.internal_static_wormhole_UnitGroupPosition_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wormhole.game.network.GameProto.internal_static_wormhole_UnitGroupPosition_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required int32 id = 1;
+    public static final int ID_FIELD_NUMBER = 1;
+    private int id_;
+    public boolean hasId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public int getId() {
+      return id_;
+    }
+    
+    // optional int32 x = 2;
+    public static final int X_FIELD_NUMBER = 2;
+    private int x_;
+    public boolean hasX() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public int getX() {
+      return x_;
+    }
+    
+    // optional int32 y = 3;
+    public static final int Y_FIELD_NUMBER = 3;
+    private int y_;
+    public boolean hasY() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public int getY() {
+      return y_;
+    }
+    
+    // optional bool complete = 4 [default = false];
+    public static final int COMPLETE_FIELD_NUMBER = 4;
+    private boolean complete_;
+    public boolean hasComplete() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public boolean getComplete() {
+      return complete_;
+    }
+    
+    private void initFields() {
+      id_ = 0;
+      x_ = 0;
+      y_ = 0;
+      complete_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, id_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, x_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, y_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, complete_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, id_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, x_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, y_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, complete_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.UnitGroupPosition parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(wormhole.game.network.GameProto.UnitGroupPosition prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements wormhole.game.network.GameProto.UnitGroupPositionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wormhole.game.network.GameProto.internal_static_wormhole_UnitGroupPosition_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wormhole.game.network.GameProto.internal_static_wormhole_UnitGroupPosition_fieldAccessorTable;
+      }
+      
+      // Construct using wormhole.game.network.GameProto.UnitGroupPosition.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        id_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        x_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        y_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        complete_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wormhole.game.network.GameProto.UnitGroupPosition.getDescriptor();
+      }
+      
+      public wormhole.game.network.GameProto.UnitGroupPosition getDefaultInstanceForType() {
+        return wormhole.game.network.GameProto.UnitGroupPosition.getDefaultInstance();
+      }
+      
+      public wormhole.game.network.GameProto.UnitGroupPosition build() {
+        wormhole.game.network.GameProto.UnitGroupPosition result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private wormhole.game.network.GameProto.UnitGroupPosition buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        wormhole.game.network.GameProto.UnitGroupPosition result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public wormhole.game.network.GameProto.UnitGroupPosition buildPartial() {
+        wormhole.game.network.GameProto.UnitGroupPosition result = new wormhole.game.network.GameProto.UnitGroupPosition(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.id_ = id_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.x_ = x_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.y_ = y_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.complete_ = complete_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wormhole.game.network.GameProto.UnitGroupPosition) {
+          return mergeFrom((wormhole.game.network.GameProto.UnitGroupPosition)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(wormhole.game.network.GameProto.UnitGroupPosition other) {
+        if (other == wormhole.game.network.GameProto.UnitGroupPosition.getDefaultInstance()) return this;
+        if (other.hasId()) {
+          setId(other.getId());
+        }
+        if (other.hasX()) {
+          setX(other.getX());
+        }
+        if (other.hasY()) {
+          setY(other.getY());
+        }
+        if (other.hasComplete()) {
+          setComplete(other.getComplete());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasId()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              id_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              x_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              y_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              complete_ = input.readBool();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required int32 id = 1;
+      private int id_ ;
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public int getId() {
+        return id_;
+      }
+      public Builder setId(int value) {
+        bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        id_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 x = 2;
+      private int x_ ;
+      public boolean hasX() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public int getX() {
+        return x_;
+      }
+      public Builder setX(int value) {
+        bitField0_ |= 0x00000002;
+        x_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearX() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        x_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 y = 3;
+      private int y_ ;
+      public boolean hasY() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public int getY() {
+        return y_;
+      }
+      public Builder setY(int value) {
+        bitField0_ |= 0x00000004;
+        y_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearY() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        y_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional bool complete = 4 [default = false];
+      private boolean complete_ ;
+      public boolean hasComplete() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public boolean getComplete() {
+        return complete_;
+      }
+      public Builder setComplete(boolean value) {
+        bitField0_ |= 0x00000008;
+        complete_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearComplete() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        complete_ = false;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:wormhole.UnitGroupPosition)
+    }
+    
+    static {
+      defaultInstance = new UnitGroupPosition(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:wormhole.UnitGroupPosition)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_wormhole_IncomingMessageType_descriptor;
   private static
@@ -5464,6 +6593,16 @@ public final class GameProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_wormhole_OwnerChange_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_wormhole_NewUnitGroup_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_wormhole_NewUnitGroup_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_wormhole_UnitGroupPosition_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_wormhole_UnitGroupPosition_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -5490,11 +6629,16 @@ public final class GameProto {
       "ange\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022%\n\tunit_info\030" +
       "\003 \003(\0132\022.wormhole.UnitInfo\"9\n\013OwnerChange" +
       "\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\024\n\014new_owner_id\030\003" +
-      " \002(\005*\222\001\n\013MessageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020" +
+      " \002(\005\"N\n\014NewUnitGroup\022\n\n\002id\030\001 \002(\005\022\r\n\005owne" +
+      "r\030\004 \002(\005\022\r\n\005count\030\005 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003" +
+      " \002(\005\"N\n\021UnitGroupPosition\022\n\n\002id\030\001 \002(\005\022\t\n",
+      "\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\022\027\n\010complete\030\004 \001(\010:\005f" +
+      "alse*\277\001\n\013MessageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020" +
       "\001\022\020\n\014UNIT_ARRIVAL\020\002\022\023\n\017ALL_UNIT_CHANGE\020\003" +
-      "\022\020\n\014OWNER_CHANGE\020\004\022\016\n\nDISCONNECT\020\005\022\024\n\020SE",
-      "ND_PLAYER_DATA\020\006\022\017\n\013PLAYER_DATA\020\007B\"\n\025wor" +
-      "mhole.game.networkB\tGameProto"
+      "\022\020\n\014OWNER_CHANGE\020\004\022\016\n\nDISCONNECT\020\005\022\024\n\020SE" +
+      "ND_PLAYER_DATA\020\006\022\017\n\013PLAYER_DATA\020\007\022\022\n\016NEW" +
+      "_UNIT_GROUP\020\010\022\027\n\023UNIT_GROUP_POSITION\020\tB\"" +
+      "\n\025wormhole.game.networkB\tGameProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -5573,6 +6717,22 @@ public final class GameProto {
               new java.lang.String[] { "X", "Y", "NewOwnerId", },
               wormhole.game.network.GameProto.OwnerChange.class,
               wormhole.game.network.GameProto.OwnerChange.Builder.class);
+          internal_static_wormhole_NewUnitGroup_descriptor =
+            getDescriptor().getMessageTypes().get(9);
+          internal_static_wormhole_NewUnitGroup_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_wormhole_NewUnitGroup_descriptor,
+              new java.lang.String[] { "Id", "Owner", "Count", "X", "Y", },
+              wormhole.game.network.GameProto.NewUnitGroup.class,
+              wormhole.game.network.GameProto.NewUnitGroup.Builder.class);
+          internal_static_wormhole_UnitGroupPosition_descriptor =
+            getDescriptor().getMessageTypes().get(10);
+          internal_static_wormhole_UnitGroupPosition_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_wormhole_UnitGroupPosition_descriptor,
+              new java.lang.String[] { "Id", "X", "Y", "Complete", },
+              wormhole.game.network.GameProto.UnitGroupPosition.class,
+              wormhole.game.network.GameProto.UnitGroupPosition.Builder.class);
           return null;
         }
       };

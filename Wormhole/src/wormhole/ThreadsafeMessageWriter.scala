@@ -15,7 +15,9 @@ class ThreadsafeMessageWriter(output:OutputStream, delimit:Boolean = true){
 		val msgList = messages.toList
 		ref ! msgList
 	}
-	
+	def write(messages:List[Message]){
+		ref ! messages
+	}
 	def close(){
 		ref ! 'Close
 	}

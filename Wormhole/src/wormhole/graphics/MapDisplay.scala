@@ -44,12 +44,20 @@ class MapDisplay(map:WormholeMap) extends JFrame {
 						g.fillRect(0+renderDisplace._1, 0+renderDisplace._2, 20, 20)
 				}
 				val futures = map.objects map {o =>(o.spriteFuture, o.dataFuture)}
+				val unitGroupFutures = map.unitGroups map {grp => (grp, grp.locationFuture)}
 				futures foreach {
 					tuple =>
 						val (spriteFuture, dataFuture) = tuple
 						val sprite = fetch(spriteFuture)
 						val location = fetch(dataFuture).location
-						sprite.render(g, location.x*GRID_SIDE+renderDisplace._1, location.y*GRID_SIDE+renderDisplace._2)}
+						sprite.render(g, location.x*GRID_SIDE+renderDisplace._1, location.y*GRID_SIDE+renderDisplace._2)
+				}
+				unitGroupFutures foreach {
+					future =>
+						val group = future._1
+						val loc = fetch(future._2)
+						group.sprite.render(g, loc.x + renderDisplace._1, loc.y + renderDisplace._2)
+				}
 			}while(buffer.contentsRestored())
 			buffer show
 		}while(buffer.contentsLost())
