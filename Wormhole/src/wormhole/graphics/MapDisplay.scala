@@ -56,7 +56,7 @@ class MapDisplay(map:WormholeMap) extends JFrame {
 					future =>
 						val group = future._1
 						val loc = fetch(future._2)
-						group.sprite.render(g, loc.x, loc.y)
+						group.sprite.render(g, loc.x + renderDisplace._1, loc.y + renderDisplace._2)
 				}
 			}while(buffer.contentsRestored())
 			buffer show

@@ -30,11 +30,18 @@ class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
 	def objectAt(x:Int, y:Int) = {
 		fetch ((ref ? ('At, x,y)).mapTo[Option[BaseObject]])
 	}
+	
+	def newGroupIdFuture() = (ref ? 'GroupId).mapTo[Int]
+	def newGroupId() = fetch(newGroupIdFuture())
 	def objectsFuture = (ref ? 'Objects).mapTo[List[BaseObject]]
 	def objects = fetch (objectsFuture)
 	def unitGroupsFuture = (ref ? 'Units).mapTo[List[UnitGroup]]
 	def unitGroups = fetch (unitGroupsFuture)
-	
+	def removeGroup(groupId:Int){
+		ref ! ('RemoveGroup, groupId)
+	}
+	def groupForIdFuture(groupId:Int) = (ref ? ('GroupForId, groupId)).mapTo[Option[UnitGroup]]
+	def groupForId(groupId:Int) = fetch(groupForIdFuture(groupId))
 	def sendToAll(msg:Message*){
 		if(server!=null){
 			server.connections.foreach {_.out.write(msg.toList)}
@@ -47,49 +54,40 @@ class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
  * Author: Brandon
  */
 private class WormholeMapImpl(main:WormholeMap) extends Actor{
-	val MovesPerBaseUpdate = 5
+	val MovesPerBaseUpdate = 15
 	var ugID = 0
 	var objects:List[BaseObject] = Nil
-	var unitGroups:List[(Int, UnitGroup)] = Nil
+	var unitGroups:List[UnitGroup] = Nil
 	var count = 0
 	def receive = {
 		case obj:BaseObject =>
 			objects ::= obj
-		case group:UnitGroup =>
-			val data = (ugID, group)
+		case 'GroupId =>
+			sender ! ugID
 			ugID += 1
-			unitGroups ::= data
+		case group:UnitGroup =>
+			unitGroups ::= group
 			val mType = GameProto.IncomingMessageType.newBuilder().setType(GameProto.MessageType.NEW_UNIT_GROUP).build()
 			val builder = GameProto.NewUnitGroup.newBuilder()
-			builder.setId(data._1)
+			builder.setId(group.id)
 			val loc = group.location
 			builder.setX(loc.x)
 			builder.setY(loc.y)
+			builder.setOwner(group.owner)
+			builder.setCount(group.count)
 			val msg = builder.build()
 			main.sendToAll(mType, msg)
+		case ('RemoveGroup, group:Int) =>
+			unitGroups = unitGroups filterNot {_.id == group}
+		case ('GroupForId, id:Int) =>
+			sender ! (unitGroups find {_.id==id})
 		case 'Update =>
 			count += 1
 			if(count==MovesPerBaseUpdate){
 				objects foreach {_.update()}
 				count = 0
 			}
-			unitGroups foreach {
-				tup =>
-					val (id, group) = tup
-					group.update()
-					val mType = GameProto.IncomingMessageType.newBuilder().setType(GameProto.MessageType.UNIT_GROUP_POSITION).build()
-					val builder = GameProto.UnitGroupPosition.newBuilder()
-					builder.setId(id)
-					if(group.isComplete){
-						builder.setComplete(true)
-					}else{
-						val loc = group.location
-						builder.setX(loc.x)
-						builder.setY(loc.y)
-					}
-					main.sendToAll(mType, builder.build())
-			}
-			unitGroups = unitGroups filterNot {_._2.isComplete}
+			unitGroups foreach {_.update}
 		case ('At,x:Int,y:Int) =>
 			val zipped = objects zip (objects map {_.dataFuture})
 			val res = zipped find {

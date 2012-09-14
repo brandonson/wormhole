@@ -5432,6 +5432,14 @@ public final class GameProto {
     boolean hasId();
     int getId();
     
+    // required int32 owner = 4;
+    boolean hasOwner();
+    int getOwner();
+    
+    // required int32 count = 5;
+    boolean hasCount();
+    int getCount();
+    
     // required int32 x = 2;
     boolean hasX();
     int getX();
@@ -5479,11 +5487,31 @@ public final class GameProto {
       return id_;
     }
     
+    // required int32 owner = 4;
+    public static final int OWNER_FIELD_NUMBER = 4;
+    private int owner_;
+    public boolean hasOwner() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public int getOwner() {
+      return owner_;
+    }
+    
+    // required int32 count = 5;
+    public static final int COUNT_FIELD_NUMBER = 5;
+    private int count_;
+    public boolean hasCount() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public int getCount() {
+      return count_;
+    }
+    
     // required int32 x = 2;
     public static final int X_FIELD_NUMBER = 2;
     private int x_;
     public boolean hasX() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     public int getX() {
       return x_;
@@ -5493,7 +5521,7 @@ public final class GameProto {
     public static final int Y_FIELD_NUMBER = 3;
     private int y_;
     public boolean hasY() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     public int getY() {
       return y_;
@@ -5501,6 +5529,8 @@ public final class GameProto {
     
     private void initFields() {
       id_ = 0;
+      owner_ = 0;
+      count_ = 0;
       x_ = 0;
       y_ = 0;
     }
@@ -5510,6 +5540,14 @@ public final class GameProto {
       if (isInitialized != -1) return isInitialized == 1;
       
       if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasOwner()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCount()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -5531,11 +5569,17 @@ public final class GameProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt32(1, id_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(2, x_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(3, y_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(4, owner_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(5, count_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -5550,13 +5594,21 @@ public final class GameProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, id_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, x_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, y_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, owner_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, count_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5684,10 +5736,14 @@ public final class GameProto {
         super.clear();
         id_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        x_ = 0;
+        owner_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        y_ = 0;
+        count_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        x_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        y_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -5733,9 +5789,17 @@ public final class GameProto {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.x_ = x_;
+        result.owner_ = owner_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
+        }
+        result.count_ = count_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.x_ = x_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
         }
         result.y_ = y_;
         result.bitField0_ = to_bitField0_;
@@ -5757,6 +5821,12 @@ public final class GameProto {
         if (other.hasId()) {
           setId(other.getId());
         }
+        if (other.hasOwner()) {
+          setOwner(other.getOwner());
+        }
+        if (other.hasCount()) {
+          setCount(other.getCount());
+        }
         if (other.hasX()) {
           setX(other.getX());
         }
@@ -5769,6 +5839,14 @@ public final class GameProto {
       
       public final boolean isInitialized() {
         if (!hasId()) {
+          
+          return false;
+        }
+        if (!hasOwner()) {
+          
+          return false;
+        }
+        if (!hasCount()) {
           
           return false;
         }
@@ -5812,13 +5890,23 @@ public final class GameProto {
               break;
             }
             case 16: {
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000008;
               x_ = input.readInt32();
               break;
             }
             case 24: {
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000010;
               y_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000002;
+              owner_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000004;
+              count_ = input.readInt32();
               break;
             }
           }
@@ -5848,22 +5936,64 @@ public final class GameProto {
         return this;
       }
       
+      // required int32 owner = 4;
+      private int owner_ ;
+      public boolean hasOwner() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public int getOwner() {
+        return owner_;
+      }
+      public Builder setOwner(int value) {
+        bitField0_ |= 0x00000002;
+        owner_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearOwner() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        owner_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required int32 count = 5;
+      private int count_ ;
+      public boolean hasCount() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public int getCount() {
+        return count_;
+      }
+      public Builder setCount(int value) {
+        bitField0_ |= 0x00000004;
+        count_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearCount() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        count_ = 0;
+        onChanged();
+        return this;
+      }
+      
       // required int32 x = 2;
       private int x_ ;
       public boolean hasX() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       public int getX() {
         return x_;
       }
       public Builder setX(int value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000008;
         x_ = value;
         onChanged();
         return this;
       }
       public Builder clearX() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000008);
         x_ = 0;
         onChanged();
         return this;
@@ -5872,19 +6002,19 @@ public final class GameProto {
       // required int32 y = 3;
       private int y_ ;
       public boolean hasY() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       public int getY() {
         return y_;
       }
       public Builder setY(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000010;
         y_ = value;
         onChanged();
         return this;
       }
       public Builder clearY() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000010);
         y_ = 0;
         onChanged();
         return this;
@@ -6499,16 +6629,16 @@ public final class GameProto {
       "ange\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022%\n\tunit_info\030" +
       "\003 \003(\0132\022.wormhole.UnitInfo\"9\n\013OwnerChange" +
       "\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\024\n\014new_owner_id\030\003" +
-      " \002(\005\"0\n\014NewUnitGroup\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 " +
-      "\002(\005\022\t\n\001y\030\003 \002(\005\"N\n\021UnitGroupPosition\022\n\n\002i" +
-      "d\030\001 \002(\005\022\t\n\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\022\027\n\010complet",
-      "e\030\004 \001(\010:\005false*\277\001\n\013MessageType\022\007\n\003MAP\020\000\022" +
-      "\n\n\006ATTACK\020\001\022\020\n\014UNIT_ARRIVAL\020\002\022\023\n\017ALL_UNI" +
-      "T_CHANGE\020\003\022\020\n\014OWNER_CHANGE\020\004\022\016\n\nDISCONNE" +
-      "CT\020\005\022\024\n\020SEND_PLAYER_DATA\020\006\022\017\n\013PLAYER_DAT" +
-      "A\020\007\022\022\n\016NEW_UNIT_GROUP\020\010\022\027\n\023UNIT_GROUP_PO" +
-      "SITION\020\tB\"\n\025wormhole.game.networkB\tGameP" +
-      "roto"
+      " \002(\005\"N\n\014NewUnitGroup\022\n\n\002id\030\001 \002(\005\022\r\n\005owne" +
+      "r\030\004 \002(\005\022\r\n\005count\030\005 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003" +
+      " \002(\005\"N\n\021UnitGroupPosition\022\n\n\002id\030\001 \002(\005\022\t\n",
+      "\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\022\027\n\010complete\030\004 \001(\010:\005f" +
+      "alse*\277\001\n\013MessageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020" +
+      "\001\022\020\n\014UNIT_ARRIVAL\020\002\022\023\n\017ALL_UNIT_CHANGE\020\003" +
+      "\022\020\n\014OWNER_CHANGE\020\004\022\016\n\nDISCONNECT\020\005\022\024\n\020SE" +
+      "ND_PLAYER_DATA\020\006\022\017\n\013PLAYER_DATA\020\007\022\022\n\016NEW" +
+      "_UNIT_GROUP\020\010\022\027\n\023UNIT_GROUP_POSITION\020\tB\"" +
+      "\n\025wormhole.game.networkB\tGameProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6592,7 +6722,7 @@ public final class GameProto {
           internal_static_wormhole_NewUnitGroup_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_NewUnitGroup_descriptor,
-              new java.lang.String[] { "Id", "X", "Y", },
+              new java.lang.String[] { "Id", "Owner", "Count", "X", "Y", },
               wormhole.game.network.GameProto.NewUnitGroup.class,
               wormhole.game.network.GameProto.NewUnitGroup.Builder.class);
           internal_static_wormhole_UnitGroupPosition_descriptor =

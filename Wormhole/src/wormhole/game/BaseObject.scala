@@ -104,7 +104,7 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 					val send = if(owned%2==0) owned/2 else owned/2+1
 					if(send>0){
 						units += ((own, owned-send))
-						val group = new UnitGroup(own,send, BaseObject.genBasicUnitSprite(main.map) _, main, sendTo)
+						val group = new UnitGroup(main.map.newGroupId(), own,send, BaseObject.genBasicUnitSprite(main.map) _, main.map, data.location, sendTo.data.location)
 						main.map.addUnitGroup(group)
 						listeners foreach {_.unitsChanged(own, -send, this.main)}
 					}

@@ -66,6 +66,8 @@ message OwnerChange{
 }
 message NewUnitGroup{
 	required int32 id = 1;
+	required int32 owner = 4;
+	required int32 count = 5;
 	required int32 x = 2;
 	required int32 y = 3;
 }
