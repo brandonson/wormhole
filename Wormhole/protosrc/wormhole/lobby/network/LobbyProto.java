@@ -19,6 +19,8 @@ public final class LobbyProto {
     DISCONNECT(6, 6),
     COLOR_AVAILABLE(7, 7),
     COLOR_TAKEN(8, 8),
+    RETURN_TO_MAIN(9, 9),
+    CONFIRM_RETURN_TO_MAIN(10, 10),
     ;
     
     public static final int NEW_PERSON_VALUE = 0;
@@ -30,6 +32,8 @@ public final class LobbyProto {
     public static final int DISCONNECT_VALUE = 6;
     public static final int COLOR_AVAILABLE_VALUE = 7;
     public static final int COLOR_TAKEN_VALUE = 8;
+    public static final int RETURN_TO_MAIN_VALUE = 9;
+    public static final int CONFIRM_RETURN_TO_MAIN_VALUE = 10;
     
     
     public final int getNumber() { return value; }
@@ -45,6 +49,8 @@ public final class LobbyProto {
         case 6: return DISCONNECT;
         case 7: return COLOR_AVAILABLE;
         case 8: return COLOR_TAKEN;
+        case 9: return RETURN_TO_MAIN;
+        case 10: return CONFIRM_RETURN_TO_MAIN;
         default: return null;
       }
     }
@@ -75,7 +81,7 @@ public final class LobbyProto {
     }
     
     private static final MessageType[] VALUES = {
-      NEW_PERSON, LOST_PERSON, PERSON_SET_INFO, START, START_CONFIRM, CHANGE_INFO, DISCONNECT, COLOR_AVAILABLE, COLOR_TAKEN, 
+      NEW_PERSON, LOST_PERSON, PERSON_SET_INFO, START, START_CONFIRM, CHANGE_INFO, DISCONNECT, COLOR_AVAILABLE, COLOR_TAKEN, RETURN_TO_MAIN, CONFIRM_RETURN_TO_MAIN, 
     };
     
     public static MessageType valueOf(
@@ -2413,12 +2419,13 @@ public final class LobbyProto {
       "le.PersonInfo\"8\n\021PossibleColorList\022#\n\006co" +
       "lors\030\001 \003(\0132\023.wormhole.ColorData\"\032\n\tColor" +
       "Data\022\r\n\005color\030\001 \002(\005\")\n\nPersonInfo\022\014\n\004nam" +
-      "e\030\001 \002(\t\022\r\n\005color\030\002 \002(\005*\250\001\n\013MessageType\022\016" +
+      "e\030\001 \002(\t\022\r\n\005color\030\002 \002(\005*\330\001\n\013MessageType\022\016" +
       "\n\nNEW_PERSON\020\000\022\017\n\013LOST_PERSON\020\001\022\023\n\017PERSO" +
       "N_SET_INFO\020\002\022\t\n\005START\020\003\022\021\n\rSTART_CONFIRM" +
       "\020\004\022\017\n\013CHANGE_INFO\020\005\022\016\n\nDISCONNECT\020\006\022\023\n\017C",
-      "OLOR_AVAILABLE\020\007\022\017\n\013COLOR_TAKEN\020\010B$\n\026wor" +
-      "mhole.lobby.networkB\nLobbyProto"
+      "OLOR_AVAILABLE\020\007\022\017\n\013COLOR_TAKEN\020\010\022\022\n\016RET" +
+      "URN_TO_MAIN\020\t\022\032\n\026CONFIRM_RETURN_TO_MAIN\020" +
+      "\nB$\n\026wormhole.lobby.networkB\nLobbyProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

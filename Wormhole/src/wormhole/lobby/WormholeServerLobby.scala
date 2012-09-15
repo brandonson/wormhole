@@ -77,7 +77,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 			val original = connections find {_._1==conn}
 			original foreach {
 				orig => 
-					connections -= orig;
+					connections -= orig
 					connections ::= (orig._1, orig._2, newInfo)
 					availableColors ::= orig._3.getColor()
 					availableColors -= newInfo.getColor()
@@ -85,11 +85,11 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 			}
 		case ('Lost, conn:ServerLobbyConnection) =>
 			val data = connections.find {_._1 == conn} map {_._3}
+			connections = connections.filterNot(_._1 == conn)
 			data foreach {person => 
 				connections foreach {_._1.lostPerson(person)}
 				availableColors ::= person.getColor()
 			}
-			connections = connections.filterNot(_._1 == conn)
 			if(connections.length==0){
 				active = false
 				lobby.mainServer.lobbyDropped(lobby.id)

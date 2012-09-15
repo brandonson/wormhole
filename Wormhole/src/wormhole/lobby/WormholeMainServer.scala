@@ -21,7 +21,7 @@ class WormholeMainServer(port:Int) extends Runnable{
 		val server = new ServerSocket(port)
 		while(!Thread.interrupted()&&continue){
 			try{
-				handleNewConnection(server.accept())
+				handleNewConnection(new SocketInfoData(server.accept()))
 			}catch{
 				case _:InterruptedIOException =>
 				case _:IOException =>
@@ -30,8 +30,7 @@ class WormholeMainServer(port:Int) extends Runnable{
 		}
 	}
 	
-	def handleNewConnection(socket:Socket){
-		val socketInfo = new SocketInfoData(socket)
+	def handleNewConnection(socketInfo:SocketInfoData){
 		val ch = new WormholeClientHandler(socketInfo, this)
 		new Thread(ch, "ClientHandler").start()
 		ref ! ch

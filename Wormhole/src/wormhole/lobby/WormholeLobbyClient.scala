@@ -38,6 +38,10 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	val playerDisplay = new JList(model)
 	val frame = new JFrame("Wormhole Lobby")
 	var ownInfo:LobbyProto.PersonInfo = null
+	var continue = true
+	
+	val startButton = new JButton("Start")
+	val leaveButton = new JButton("Leave")
 	def createFrame(){
 		val infoPanel = new JPanel()
 		playerDisplay.setCellRenderer(new PersonInfoRenderer)
@@ -63,15 +67,10 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 				}
 			}
 		})
-		val startButton = new JButton(new AbstractAction("Start"){
-			def actionPerformed(evt:ActionEvent){
-				val startMessage = LobbyProto.LobbyMessageType.newBuilder().setType(START).build()
-				out.write(startMessage)
-			}
-		})
-		val startWrap = new JPanel()
-		startWrap.setLayout(new BoxLayout(startWrap, BoxLayout.X_AXIS))
-		startWrap add startButton
+		val actionButtons = new JPanel()
+		actionButtons.setLayout(new BoxLayout(actionButtons, BoxLayout.X_AXIS))
+		actionButtons add startButton
+		actionButtons.add(leaveButton)
 		val namePanel = new JPanel()
 		namePanel.add(nameText)
 		namePanel.add(nameChangeButton)
@@ -80,12 +79,12 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 		main setLayout(new BoxLayout(main, BoxLayout.Y_AXIS))
 		main add infoPanel
 		main add namePanel
-		main add startWrap
+		main add actionButtons
 		
 		main setBackground BACK_COLOR
 		infoPanel.setBackground(BACK_COLOR)
 		namePanel setBackground(BACK_COLOR)
-		startWrap setBackground(BACK_COLOR)
+		actionButtons setBackground(BACK_COLOR)
 		playerDisplay setBackground(BACK_COLOR)
 		frame setContentPane(main)
 		frame pack()
@@ -96,6 +95,8 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	def run(){
 		val colorSet = LobbyProto.PossibleColorList.parseDelimitedFrom(in)
 		val group = new ButtonGroup()
+		startButton.addActionListener(this)
+		leaveButton.addActionListener(this)
 		colors = (colorSet.getColorsList() map {
 			colorInf =>
 				val button = new JRadioButton()
@@ -118,7 +119,6 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	}
 	
 	def basicLoop(){
-		var continue = true
 		while(continue){
 			
 			val lmt = LobbyProto.LobbyMessageType.parseDelimitedFrom(in).getType()
@@ -143,9 +143,20 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 						colors find {_._2 == to.getColor()} foreach {_._1.setEnabled(false)}
 					}
 				case START =>
+					disableActions()
 					val msgOut = LobbyProto.LobbyMessageType.newBuilder().setType(START_CONFIRM).build()
 					out.write(msgOut)
 					new WormholeGameClient(data).start()
+					continue = false
+				case RETURN_TO_MAIN =>
+					disableActions()
+					val conf = LobbyProto.LobbyMessageType.newBuilder().setType(CONFIRM_RETURN_TO_MAIN).build()
+					continue = false
+					out.write(conf)
+					new Thread(new WormholeMainClient(data)).start()
+				case CONFIRM_RETURN_TO_MAIN =>
+					frame.setVisible(false)
+					new Thread(new WormholeMainClient(data)).start()
 					continue = false
 				case DISCONNECT =>
 					out.close()
@@ -175,14 +186,28 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	}
 	
 	def actionPerformed(e:ActionEvent){
-		//handles only radio buttons
 		val button = e.getSource()
-		colors find {_._1==button} foreach {
-			tup =>
-				val color = tup._2
-				ownInfo = LobbyProto.PersonInfo.newBuilder(ownInfo).setColor(color).build()
-				val mType = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
-				out.write(mType, ownInfo)
+		if(button==startButton){
+			val sMessage = LobbyProto.LobbyMessageType.newBuilder().setType(START)
+			out.write(sMessage build)
+		}else if(button==leaveButton){
+			disableActions()
+			val leave = LobbyProto.LobbyMessageType.newBuilder().setType(RETURN_TO_MAIN)
+			out.write(leave build)
+		}else{
+			colors find {_._1==button} foreach {
+				tup =>
+					val color = tup._2
+					ownInfo = LobbyProto.PersonInfo.newBuilder(ownInfo).setColor(color).build()
+					val mType = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
+					out.write(mType, ownInfo)
+			}
 		}
+	}
+	
+	private[this] def disableActions(){
+		colors foreach {_._1.removeActionListener(this)}
+		startButton.removeActionListener(this)
+		leaveButton.removeActionListener(this)
 	}
 }

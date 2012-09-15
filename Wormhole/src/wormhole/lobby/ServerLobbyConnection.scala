@@ -45,6 +45,11 @@ class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLob
 					continue = false
 				case DISCONNECT =>
 					continue = false
+				case RETURN_TO_MAIN =>
+					continue = false
+					val msg = LobbyProto.LobbyMessageType.newBuilder().setType(CONFIRM_RETURN_TO_MAIN).build()
+					out.write(msg)
+					lobby.mainServer.handleNewConnection(data)
 			}
 		}
 	}
