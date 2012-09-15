@@ -6,13 +6,13 @@ import akka.actor.Props
 import akka.pattern.ask
 import wormhole.actor._
 import wormhole.WormholeSystem
-
 import com.google.protobuf.Message
 import wormhole.game.network.GameProto
 /**
  * Author: Brandon
  */
 class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
+	
 	val ref:ActorRef = WormholeSystem.actorOf(Props(new WormholeMapImpl(this)))
 	
 	var server:WormholeGameServer = null

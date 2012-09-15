@@ -5,6 +5,7 @@ import java.net.Socket
 import javax.swing.UIManager
 import javax.swing.JOptionPane
 import java.io.IOException
+import wormhole.lobby.WormholeMainClient
 
 object Wormhole {
 
@@ -15,7 +16,7 @@ object Wormhole {
 			try{
 				val data = new SocketInfoData(new Socket(in, CONNECTION_PORT))
 				clientConnection = data.out
-				new Thread(new WormholeLobbyClient(data)).start()
+				new Thread(new WormholeMainClient(data)).start()
 			}catch{
 				case _:IOException =>
 					JOptionPane.showMessageDialog(null, "Failed to connect.", "Wormhole Client", JOptionPane.PLAIN_MESSAGE)

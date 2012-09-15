@@ -8,10 +8,13 @@ import wormhole.game.network.ServerPlayerConnection
 import java.io.IOException
 import java.awt.Color
 import scala.collection.JavaConversions
+import wormhole.lobby.network.MainScreenProto
 class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLobby, ownData:LobbyProto.PersonInfo) extends Runnable{
 
 	def in = data.in
 	def out = data.out
+	
+	out write genJoinLobbyMessage	//inform client we are in a lobby
 	out write WormholeServerLobby.possibleColorMessage
 	out write ownData
 	out write genPersonSetMessage
@@ -43,10 +46,16 @@ class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLob
 					continue = false
 				case DISCONNECT =>
 					continue = false
+				case RETURN_TO_MAIN =>
+					continue = false
+					val msg = LobbyProto.LobbyMessageType.newBuilder().setType(CONFIRM_RETURN_TO_MAIN).build()
+					out.write(msg)
+					lobby.mainServer.handleNewConnection(data)
 			}
 		}
 	}
 	def genPersonSetMessage = LobbyProto.PersonSetInfo.newBuilder().addAllInfo(JavaConversions.asJavaIterable(lobby.personInfoSet)).build()
+	def genJoinLobbyMessage = MainScreenProto.MainMessageType.newBuilder().setType(MainScreenProto.MessageType.JOIN_LOBBY).build()
 	def start(game:WormholeGameServer){
 		waitingGame = game
 		val mType = LobbyProto.LobbyMessageType.newBuilder().setType(START).build()

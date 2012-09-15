@@ -13,6 +13,8 @@ enum MessageType{
 	DISCONNECT = 6;
 	COLOR_AVAILABLE = 7;
 	COLOR_TAKEN = 8;
+	RETURN_TO_MAIN = 9;
+	CONFIRM_RETURN_TO_MAIN = 10;
 }
 
 message LobbyMessageType{
