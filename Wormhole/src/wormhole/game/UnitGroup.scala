@@ -70,16 +70,6 @@ class UnitGroupImpl(val fromLocation:Location, val toLocation:Location, val main
 					err+=distX
 					currentY += stepY
 				}
-				val mType = GameProto.IncomingMessageType.newBuilder().setType(GameProto.MessageType.UNIT_GROUP_POSITION).build()
-				val builder = GameProto.UnitGroupPosition.newBuilder()
-				builder.setId(main.id)
-				if(complete){
-					builder.setComplete(true)
-				}else{
-					builder.setX(currentX)
-					builder.setY(currentY)
-				}
-				main.map.sendToAll(mType, builder.build())
 			}
 		}
 		def forLocation(loc:Location) = new LineComputation(loc, to)
