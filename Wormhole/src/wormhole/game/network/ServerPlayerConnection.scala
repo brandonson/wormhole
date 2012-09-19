@@ -16,13 +16,16 @@ import akka.actor.Actor
 import wormhole.WormholeSystem
 import akka.actor.Props
 import java.io.IOException
+import wormhole.game.WormholeMapListener
+import wormhole.game.UnitGroup
 
-class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketData:SocketInfoData) extends Runnable with BaseObjectListener{
+class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketData:SocketInfoData) extends Runnable with BaseObjectListener with WormholeMapListener{
 
 	private val ref = WormholeSystem.actorOf(Props(new ListenerImpl(this)))
 	def in = socketData.in
 	def out = socketData.out
 	def run(){
+		map.addMapListener(this)
 		map.objects foreach {obj => obj.addListener(this)}
 		val inProto = mapToProtocol(map)
 		out.write(inProto)
@@ -75,9 +78,17 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 	def allUnitsChanged(obj:BaseObject){
 		ref ! ('AllUnits, obj)
 	}
+	def newUnitGroup(map:WormholeMap, group:UnitGroup){
+		ref ! ('NewGroup, group)
+	}
+	def updateComplete(m:WormholeMap){
+		ref ! 'Update
+	}
 }
 
-private class ListenerImpl(conn:ServerPlayerConnection) extends Actor{
+private class ListenerImpl(val conn:ServerPlayerConnection) extends Actor{
+	
+	private[this] val groups = new ListBuffer[UnitGroup]
 	
 	def receive = {
 		case ('OwnerChanged,newOwner:PlayerId, changeObj:BaseObject) =>
@@ -86,6 +97,30 @@ private class ListenerImpl(conn:ServerPlayerConnection) extends Actor{
 			unitsChanged(player, amt, obj)
 		case ('AllUnits, obj:BaseObject) =>
 			allUnitsChanged(obj)
+		case ('NewGroup, group:UnitGroup) =>
+			groups += group
+			val mType = GameProto.IncomingMessageType.newBuilder().setType(NEW_UNIT_GROUP)
+			val msg = GameProto.NewUnitGroup.newBuilder()
+			msg.setCount(group.count).setId(group.id).setOwner(group.owner)
+			val loc = group.location
+			msg.setX(loc.x)
+			msg.setY(loc.y)
+			conn.out.write(mType.build(), msg.build())
+		case 'Update =>
+			val typeMsg = GameProto.IncomingMessageType.newBuilder().setType(UNIT_GROUP_POSITION).build()
+			groups foreach {
+				grp =>
+					val msg = GameProto.UnitGroupPosition.newBuilder()
+					msg.setId(grp.id)
+					if(grp.isComplete){
+						msg.setComplete(true)
+					}else{
+						val loc = grp.location
+						msg.setX(loc.x).setY(loc.y)
+					}
+					conn.out.write(typeMsg, msg.build())
+			}
+			groups filterNot {_.isComplete}
 	}
 	
 	def ownerChanged(newOwner:PlayerId, changeObj:BaseObject){
