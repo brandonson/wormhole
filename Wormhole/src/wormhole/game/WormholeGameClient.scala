@@ -28,12 +28,16 @@ class WormholeGameClient(val data:SocketInfoData) {
 		timer.scheduleAtFixedRate(new TimerTask{def run(){map.updateAll()}}, 1000, 1000)
 		var selected:Option[BaseObject] = None
  		var continue = true
+ 		InputManager.clear()
 		do{
 			display.render()
 			val pressed = InputManager.fetchPressed()
 			if(pressed.contains(KeyEvent.VK_ESCAPE) || !connection.isRunning){
 				continue = false;
-			}
+			}else if(pressed.contains(KeyEvent.VK_F1)){
+				continue = false
+				connection.leaveGame()
+			}else{
 			val clickLoc = InputManager.fetchClickLocation
 			InputManager.fetchMouseButton match{
 				case Some(MouseEvent.BUTTON3) =>
@@ -62,9 +66,9 @@ class WormholeGameClient(val data:SocketInfoData) {
 				case b =>
 			}
 			Thread.sleep(50)
+			}
 		}while(continue)
 		display.setVisible(false)
 		display.dispose()
-		System.exit(0)
 	}
 }

@@ -12,6 +12,7 @@ import wormhole.SocketInfoData
 import wormhole.game.UnitGroup
 import wormhole.game.BaseObject
 import wormhole.game.Location
+import wormhole.lobby.WormholeMainClient
 class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() => Unit) extends Runnable{
 
 	def in = socketData.in
@@ -90,6 +91,14 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 					}
 				case DISCONNECT =>
 					continue = false
+				case LEAVE_GAME =>
+					continue = false
+					val conf = GameProto.IncomingMessageType.newBuilder().setType(CONFIRM_LEAVE_GAME).build()
+					out.write(conf)
+					new Thread(new WormholeMainClient(socketData)).start()
+				case CONFIRM_LEAVE_GAME =>
+					continue = false
+					new Thread(new WormholeMainClient(socketData), "CPC MainClient").start()
 				case _ =>
 			}
 			}catch{
@@ -97,6 +106,10 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 					continue = false
 			}
 		}
+	}
+	def leaveGame(){
+		val msg = GameProto.IncomingMessageType.newBuilder().setType(LEAVE_GAME).build()
+		out.write(msg)
 	}
 	def disconnect(){
 		val msgType = GameProto.IncomingMessageType.newBuilder().setType(GameProto.MessageType.DISCONNECT).build()

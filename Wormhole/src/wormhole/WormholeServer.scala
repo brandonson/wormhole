@@ -7,6 +7,8 @@ import wormhole.lobby.WormholeMainServer
 
 object WormholeServer {
 
+	var mainServer:WormholeMainServer = null
+	
 	val MapWidth = 10
 	val MapHeight = 10
 	val PlanetCount = 20
@@ -14,6 +16,7 @@ object WormholeServer {
 	val MaxDefense = 0
 	
 	def main(args:Array[String]){
-		new Thread (new WormholeMainServer(CONNECTION_PORT)).run()
+		mainServer = new WormholeMainServer(CONNECTION_PORT)
+		new Thread (mainServer).run()
 	}
 }

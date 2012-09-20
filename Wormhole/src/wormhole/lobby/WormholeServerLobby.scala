@@ -94,6 +94,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 			if(connections.length==0){
 				active = false
 				lobby.mainServer.lobbyDropped(lobby.id)
+				context.stop(self)
 			}
 		case 'Start =>
 			val players = (connections.map {_._3}).zipWithIndex map {
@@ -108,7 +109,9 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 			connections foreach {_._1.start(server)}
 			availableColors = connections.map {_._3.getColor()} ++ availableColors
 			connections = Nil
-			new Thread(() => joinConnectionsAndStart(conns map {_._2}, server)).start()
+			joinConnectionsAndStart(conns map {_._2}, server)
+			lobby.mainServer.lobbyDropped(lobby.id)
+			context.stop(self)
 	}
 	
 	def joinConnectionsAndStart(list:List[Thread], server:WormholeGameServer){

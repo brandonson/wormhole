@@ -7,8 +7,10 @@ import akka.pattern.AskTimeoutException
 import scala.collection.JavaConversions._
 import java.io.IOException
 
-class WormholeClientHandler(val socket:SocketInfoData, val mainServer:WormholeMainServer) extends Runnable{
+class WormholeClientHandler(val socket:SocketInfoData) extends Runnable{
 
+	import wormhole.WormholeServer.mainServer
+	
 	def in = socket.in
 	def out = socket.out
 	

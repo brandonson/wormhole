@@ -14,6 +14,8 @@ enum MessageType{
 	PLAYER_DATA = 7;
 	NEW_UNIT_GROUP = 8;
 	UNIT_GROUP_POSITION = 9;
+	LEAVE_GAME = 10;
+	CONFIRM_LEAVE_GAME = 11;
 }
 message IncomingMessageType{
 	required MessageType type = 1;

@@ -7,6 +7,7 @@ import javax.swing.DefaultListModel
 import scala.collection.JavaConversions._
 import javax.swing.JOptionPane
 import javax.swing.JFrame
+import java.util.Arrays
 class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 
 	def in = socket.in
@@ -30,7 +31,6 @@ class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 		frame.pack()
 		frame.setVisible(true)
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-		println(cmsp.scroll.getSize())
 		while(continue && !Thread.interrupted()){
 			val mType = MainScreenProto.MainMessageType.parseDelimitedFrom(in)
 			mType.getType() match{

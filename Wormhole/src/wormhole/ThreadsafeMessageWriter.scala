@@ -8,12 +8,16 @@ import com.google.protobuf.Message
 import scala.collection.JavaConversions
 import akka.actor.Props
 import akka.actor.Actor
+import wormhole.game.network.GameProto
+import java.util.Arrays
 class ThreadsafeMessageWriter(output:OutputStream, delimit:Boolean = true){
 	val ref = WormholeSystem.actorOf(Props(new ThreadsafeMessageWriterImpl(output, delimit)))
 	
 	def write(messages:Message*){
+		println("WRITE=============================")
+		println(Thread.currentThread().getStackTrace() foreach {st => println(st.getMethodName() + ":" + st.getClassName() +":" + st.getLineNumber())})
 		val msgList = messages.toList
-		ref ! msgList
+		write(msgList)
 	}
 	def write(messages:List[Message]){
 		ref ! messages

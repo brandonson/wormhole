@@ -18,6 +18,8 @@ import akka.actor.Props
 import java.io.IOException
 import wormhole.game.WormholeMapListener
 import wormhole.game.UnitGroup
+import wormhole.lobby.WormholeClientHandler
+import wormhole.WormholeServer
 
 class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketData:SocketInfoData) extends Runnable with BaseObjectListener with WormholeMapListener{
 
@@ -37,14 +39,15 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 		}catch{
 			case _:IOException =>
 		}
+		map.removeMapListener(this)
 		map.objects foreach {_.removeListener(this)}
-		out.close()
 	}
 	
 	private def basicLoop(){
 		var continue = true
 		while(continue){
-			GameProto.IncomingMessageType.parseDelimitedFrom(in).getType() match{
+			val mType = GameProto.IncomingMessageType.parseDelimitedFrom(in).getType() 
+			mType match{
 				case ATTACK =>
 					val attackMsg = GameProto.Attack.parseDelimitedFrom(in)
 					val obj = map.objectAt(attackMsg.getFromX(), attackMsg.getFromY())
@@ -58,6 +61,8 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 					}
 				case DISCONNECT =>
 					continue = false
+					out.close()
+					socketData.socket.close()
 				case SEND_PLAYER_DATA =>
 					val data = GameProto.Player.newBuilder()
 					data.setId(player.id)
@@ -65,7 +70,12 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 					val built = data.build()
 					val msgType = GameProto.IncomingMessageType.newBuilder().setType(PLAYER_DATA).build()
 					out.write(msgType, built)
-				case _ =>
+				case LEAVE_GAME =>
+					ref ! 'Leave
+					continue = false
+				case CONFIRM_LEAVE_GAME =>
+					ref ! 'LeaveConfirm
+					continue = false
 			}
 		}
 	}
@@ -84,43 +94,73 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 	def updateComplete(m:WormholeMap){
 		ref ! 'Update
 	}
+	def leaveGame(){
+		ref ! 'TellLeave
+	}
 }
 
 private class ListenerImpl(val conn:ServerPlayerConnection) extends Actor{
 	
 	private[this] val groups = new ListBuffer[UnitGroup]
-	
+	private[this] var active = true
 	def receive = {
 		case ('OwnerChanged,newOwner:PlayerId, changeObj:BaseObject) =>
-			ownerChanged(newOwner, changeObj)
-		case ('UnitsChanged, player:PlayerId, amt:Int, obj:BaseObject) =>
-			unitsChanged(player, amt, obj)
-		case ('AllUnits, obj:BaseObject) =>
-			allUnitsChanged(obj)
-		case ('NewGroup, group:UnitGroup) =>
-			groups += group
-			val mType = GameProto.IncomingMessageType.newBuilder().setType(NEW_UNIT_GROUP)
-			val msg = GameProto.NewUnitGroup.newBuilder()
-			msg.setCount(group.count).setId(group.id).setOwner(group.owner)
-			val loc = group.location
-			msg.setX(loc.x)
-			msg.setY(loc.y)
-			conn.out.write(mType.build(), msg.build())
-		case 'Update =>
-			val typeMsg = GameProto.IncomingMessageType.newBuilder().setType(UNIT_GROUP_POSITION).build()
-			groups foreach {
-				grp =>
-					val msg = GameProto.UnitGroupPosition.newBuilder()
-					msg.setId(grp.id)
-					if(grp.isComplete){
-						msg.setComplete(true)
-					}else{
-						val loc = grp.location
-						msg.setX(loc.x).setY(loc.y)
-					}
-					conn.out.write(typeMsg, msg.build())
+			if(active) {
+				ownerChanged(newOwner, changeObj)
 			}
-			groups filterNot {_.isComplete}
+		case ('UnitsChanged, player:PlayerId, amt:Int, obj:BaseObject) =>
+			if(active){
+				unitsChanged(player, amt, obj)
+			}
+		case ('AllUnits, obj:BaseObject) =>
+			if(active){
+				allUnitsChanged(obj)
+			}
+		case ('NewGroup, group:UnitGroup) =>
+			if(active){
+				groups += group
+				val mType = GameProto.IncomingMessageType.newBuilder().setType(NEW_UNIT_GROUP)
+				val msg = GameProto.NewUnitGroup.newBuilder()
+				msg.setCount(group.count).setId(group.id).setOwner(group.owner)
+				val loc = group.location
+				msg.setX(loc.x)
+				msg.setY(loc.y)
+				conn.out.write(mType.build(), msg.build())
+			}
+		case 'Update =>
+			if(active){
+				val typeMsg = GameProto.IncomingMessageType.newBuilder().setType(UNIT_GROUP_POSITION).build()
+				groups foreach {
+					grp =>
+						val msg = GameProto.UnitGroupPosition.newBuilder()
+						msg.setId(grp.id)
+						if(grp.isComplete){
+							msg.setComplete(true)
+						}else{
+							val loc = grp.location
+							msg.setX(loc.x).setY(loc.y)
+						}
+						conn.out.write(typeMsg, msg.build())
+				}
+				groups filterNot {_.isComplete}
+			}
+		case 'Leave =>
+			if(active){
+				active = false
+				conn.map.removeMapListener(conn)
+				val conf = GameProto.IncomingMessageType.newBuilder().setType(CONFIRM_LEAVE_GAME).build()
+				conn.out.write(conf)
+				WormholeServer.mainServer.handleNewConnection(conn.socketData)
+			}
+		case 'LeaveConfirmed =>
+			WormholeServer.mainServer.handleNewConnection(conn.socketData)
+		case 'TellLeave =>
+			if(active){
+				active = false
+				conn.map.removeMapListener(conn)
+				val msg = GameProto.IncomingMessageType.newBuilder().setType(LEAVE_GAME).build()
+				conn.out.write(msg)
+			}
 	}
 	
 	def ownerChanged(newOwner:PlayerId, changeObj:BaseObject){

@@ -31,7 +31,7 @@ class WormholeMainServer(port:Int) extends Runnable{
 	}
 	
 	def handleNewConnection(socketInfo:SocketInfoData){
-		val ch = new WormholeClientHandler(socketInfo, this)
+		val ch = new WormholeClientHandler(socketInfo)
 		new Thread(ch, "ClientHandler").start()
 		ref ! ch
 	}

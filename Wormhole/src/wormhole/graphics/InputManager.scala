@@ -18,6 +18,19 @@ object InputManager extends KeyEventPostProcessor with MouseInputListener{
 	private var mouseButton:Option[Int] = None
 	private var mbClickLocation:Option[(Int,Int)] = None
 	
+	def clear(){
+		pressed = Nil
+	
+		down = Nil
+	
+		mousePos = (0,0)
+	
+		dragAmount = (0,0)
+		mbDown = None
+		mouseButton = None
+		mbClickLocation = None
+	}
+	
 	def postProcessKeyEvent(keyEvt:KeyEvent):Boolean = {
 		if(keyEvt.getID()==KeyEvent.KEY_PRESSED){
 			if(!pressed.contains(keyEvt.getKeyCode())){

@@ -20,6 +20,8 @@ public final class GameProto {
     PLAYER_DATA(7, 7),
     NEW_UNIT_GROUP(8, 8),
     UNIT_GROUP_POSITION(9, 9),
+    LEAVE_GAME(10, 10),
+    CONFIRM_LEAVE_GAME(11, 11),
     ;
     
     public static final int MAP_VALUE = 0;
@@ -32,6 +34,8 @@ public final class GameProto {
     public static final int PLAYER_DATA_VALUE = 7;
     public static final int NEW_UNIT_GROUP_VALUE = 8;
     public static final int UNIT_GROUP_POSITION_VALUE = 9;
+    public static final int LEAVE_GAME_VALUE = 10;
+    public static final int CONFIRM_LEAVE_GAME_VALUE = 11;
     
     
     public final int getNumber() { return value; }
@@ -48,6 +52,8 @@ public final class GameProto {
         case 7: return PLAYER_DATA;
         case 8: return NEW_UNIT_GROUP;
         case 9: return UNIT_GROUP_POSITION;
+        case 10: return LEAVE_GAME;
+        case 11: return CONFIRM_LEAVE_GAME;
         default: return null;
       }
     }
@@ -78,7 +84,7 @@ public final class GameProto {
     }
     
     private static final MessageType[] VALUES = {
-      MAP, ATTACK, UNIT_ARRIVAL, ALL_UNIT_CHANGE, OWNER_CHANGE, DISCONNECT, SEND_PLAYER_DATA, PLAYER_DATA, NEW_UNIT_GROUP, UNIT_GROUP_POSITION, 
+      MAP, ATTACK, UNIT_ARRIVAL, ALL_UNIT_CHANGE, OWNER_CHANGE, DISCONNECT, SEND_PLAYER_DATA, PLAYER_DATA, NEW_UNIT_GROUP, UNIT_GROUP_POSITION, LEAVE_GAME, CONFIRM_LEAVE_GAME, 
     };
     
     public static MessageType valueOf(
@@ -6633,11 +6639,12 @@ public final class GameProto {
       "r\030\004 \002(\005\022\r\n\005count\030\005 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003" +
       " \002(\005\"N\n\021UnitGroupPosition\022\n\n\002id\030\001 \002(\005\022\t\n",
       "\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\022\027\n\010complete\030\004 \001(\010:\005f" +
-      "alse*\277\001\n\013MessageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020" +
+      "alse*\347\001\n\013MessageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020" +
       "\001\022\020\n\014UNIT_ARRIVAL\020\002\022\023\n\017ALL_UNIT_CHANGE\020\003" +
       "\022\020\n\014OWNER_CHANGE\020\004\022\016\n\nDISCONNECT\020\005\022\024\n\020SE" +
       "ND_PLAYER_DATA\020\006\022\017\n\013PLAYER_DATA\020\007\022\022\n\016NEW" +
-      "_UNIT_GROUP\020\010\022\027\n\023UNIT_GROUP_POSITION\020\tB\"" +
+      "_UNIT_GROUP\020\010\022\027\n\023UNIT_GROUP_POSITION\020\t\022\016" +
+      "\n\nLEAVE_GAME\020\n\022\026\n\022CONFIRM_LEAVE_GAME\020\013B\"" +
       "\n\025wormhole.game.networkB\tGameProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
