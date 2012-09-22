@@ -9,19 +9,37 @@ import akka.actor.Props
 import akka.pattern.ask
 import wormhole.game.network.GameProto
 
+/**
+ * Represents a group of units moving to a base.  
+ */
 class UnitGroup(val id:Int, val owner:PlayerId, val count:Int, spriteGen:(UnitGroup) => Sprite, val map:WormholeMap, from:Location, to:Location) extends Updateable{
 	val sprite = if (spriteGen != null) spriteGen(this) else null
 	
+	/**
+	 * Backend actor which handles updates.
+	 */
 	private val ref = WormholeSystem.actorOf(Props(new UnitGroupImpl(from, to, this)))
 	
+	/**
+	 * Update this group, moving it to the next point on its route
+	 */
 	def update(){
 		ref ! 'Update
 	}
-	
+
 	def locationFuture = (ref ? 'Location).mapTo[Location]
+	/**
+	 * Gets the current location of this group
+	 */
 	def location = fetch (locationFuture)
 	def isCompleteFuture = (ref ? 'Complete).mapTo[Boolean]
+	/**
+	 * Checks whether this group has reached its destination
+	 */
 	def isComplete = fetch(isCompleteFuture)
+	/**
+	 * Sets the location of this group.
+	 */
 	def setLocation(loc:Location) = ref ! ('NewLoc, loc)
 
 }

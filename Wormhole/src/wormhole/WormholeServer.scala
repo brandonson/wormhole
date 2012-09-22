@@ -5,8 +5,15 @@ import java.net.ServerSocket
 import wormhole.lobby.LobbyFullException
 import wormhole.lobby.WormholeMainServer
 
+/**
+ * Main class for servers. Also stores constants.  Note that many constants are used in map generation, and
+ * will be removed when the lobby allows game customization.
+ */
 object WormholeServer {
 
+	/**
+	 * The server instance.
+	 */
 	var mainServer:WormholeMainServer = null
 	
 	val MapWidth = 10
