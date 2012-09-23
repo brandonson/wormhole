@@ -7,6 +7,9 @@ import akka.pattern.AskTimeoutException
 import scala.collection.JavaConversions._
 import java.io.IOException
 
+/**
+ * Server-side handler for clients at the main screen.
+ */
 class WormholeClientHandler(val socket:SocketInfoData) extends Runnable{
 
 	import wormhole.WormholeServer.mainServer
@@ -19,6 +22,9 @@ class WormholeClientHandler(val socket:SocketInfoData) extends Runnable{
 	}
 	private[this] var continue = true
 	
+	/**
+	 * Sends the list of lobbies to the client.
+	 */
 	def writeLobbyList(){
 		val list = mainServer.lobbyList
 		val ldata = list map {
@@ -46,17 +52,20 @@ class WormholeClientHandler(val socket:SocketInfoData) extends Runnable{
 							continue = false
 						}
 					case JOIN_LOBBY =>
+						//join the given lobby if possible
 						val joinMsg = MainScreenProto.LobbyIdMessage.parseDelimitedFrom(in)
 						val forId = mainServer.lobbyForId(joinMsg.getLobbyId())
 						val joined = forId map {
 							lobby =>
 								try{
+									//lobby notifies user, we don't have to
 									lobby.addConnection(socket)
 								}catch{
 									case LobbyFullException =>
 										false
 								}
 						}
+						//if we joined the lobby, stop, otherwise do nothing
 						if(joined getOrElse false){
 							continue = false
 						}

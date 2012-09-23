@@ -13,6 +13,10 @@ import wormhole.game.UnitGroup
 import wormhole.game.BaseObject
 import wormhole.game.Location
 import wormhole.lobby.WormholeMainClient
+
+/**
+ * Client-side connection for in game.  Handles forwarding messages to bases and unit groups.
+ */
 class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() => Unit) extends Runnable{
 
 	def in = socketData.in
@@ -22,6 +26,9 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 	
 	def map = gameMap
 	
+	/**
+	 * The Player representing this client.
+	 */
 	private var pData:Option[Player] = None
 	
 	def playerData = pData
@@ -29,11 +36,18 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 	private var running = false
 	
 	def isRunning = running
+	
 	def run(){
 		running = true
+		
+		//read map and initialize
 		val gameMapProto = GameProto.Map.parseDelimitedFrom(in)
 		gameMap = protocolToMap(gameMapProto, out)
+		
+		//tell callback map is ready
 		mapReadyCallback()
+		
+		//get player, then do the game loop
 		val player = GameProto.Player.parseDelimitedFrom(in)
 		this.pData = Some(new Player(player.getId(), new Color(player.getColor())))
 		basicLoop()
@@ -81,8 +95,10 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 				case UNIT_GROUP_POSITION =>
 					val ugp = GameProto.UnitGroupPosition.parseDelimitedFrom(in)
 					if(ugp.getComplete()){
+						//if the group has finished moving remove it
 						map.removeGroup(ugp.getId())
 					}else{
+						//otherwise update
 						map.groupForId(ugp.getId()) foreach {
 							ug =>
 								val loc = Location(ugp.getX(), ugp.getY())

@@ -8,6 +8,10 @@ import scala.collection.JavaConversions._
 import javax.swing.JOptionPane
 import javax.swing.JFrame
 import java.util.Arrays
+
+/**
+ * Client class for the main screen.
+ */
 class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 
 	def in = socket.in
@@ -17,6 +21,9 @@ class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 	
 	private[this] var continue = true;
 	
+	/**
+	 * Read list of lobbies on the server.
+	 */
 	private[this] def readLobbyList(){
 		val listMsg = MainScreenProto.LobbyDataList.parseDelimitedFrom(in)
 		val list = listMsg.getLobbyList()

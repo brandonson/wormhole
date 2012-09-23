@@ -9,11 +9,16 @@ import java.io.IOException
 import java.awt.Color
 import scala.collection.JavaConversions
 import wormhole.lobby.network.MainScreenProto
+/**
+ * Server-side handler for single client connections to a game lobby.
+ */
 class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLobby, ownData:LobbyProto.PersonInfo) extends Runnable{
 
 	def in = data.in
 	def out = data.out
 	
+	//TODO move notification that the user is in a lobby to WormholeClientHandler
+	//could have concurrency issues
 	out write genJoinLobbyMessage	//inform client we are in a lobby
 	out write WormholeServerLobby.possibleColorMessage
 	out write ownData

@@ -21,24 +21,39 @@ import wormhole.game.UnitGroup
 import wormhole.lobby.WormholeClientHandler
 import wormhole.WormholeServer
 
+/**
+ * Connection handler on the server for individual clients in game.  Handles updating the client with changes to bases and
+ * unit groups.
+ */
 class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketData:SocketInfoData) extends Runnable with BaseObjectListener with WormholeMapListener{
 
+	/**
+	 * Backend actor.
+	 */
 	private val ref = WormholeSystem.actorOf(Props(new ListenerImpl(this)))
 	def in = socketData.in
 	def out = socketData.out
 	def run(){
+		//register as a listener to receive updates
 		map.addMapListener(this)
 		map.objects foreach {obj => obj.addListener(this)}
+
+		//send map to client
 		val inProto = mapToProtocol(map)
 		out.write(inProto)
+		
+		//tell client which player they are
 		val pdata = GameProto.Player.newBuilder()
 		pdata.setId(player.id).setColor(player.color.getRGB)
 		out.write(pdata.build())
+		
+		//do loop
 		try{
 			basicLoop()
 		}catch{
 			case _:IOException =>
 		}
+		//unregister as a listener.
 		map.removeMapListener(this)
 		map.objects foreach {_.removeListener(this)}
 	}
@@ -53,6 +68,7 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 					val obj = map.objectAt(attackMsg.getFromX(), attackMsg.getFromY())
 					val isOwned = obj exists {_.owner exists {_ == player.id}}
 					if(isOwned){
+						//if the client owns the base, order an attack
 						val attackTo = map.objectAt(attackMsg.getToX(), attackMsg.getToY())
 						attackTo foreach {
 							attack =>

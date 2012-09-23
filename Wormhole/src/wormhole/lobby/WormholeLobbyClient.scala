@@ -27,6 +27,9 @@ import javax.swing.JTextField
 import javax.swing.JScrollPane
 import java.net.InetAddress
 import java.net.UnknownHostException
+/**
+ * Client for game lobbies.
+ */
 class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionListener{
 	
 	private val BACK_COLOR = new Color(0,0,30)
@@ -42,6 +45,10 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	
 	val startButton = new JButton("Start")
 	val leaveButton = new JButton("Leave")
+	
+	/**
+	 * Create the display for the lobby.
+	 */
 	def createFrame(){
 		val infoPanel = new JPanel()
 		playerDisplay.setCellRenderer(new PersonInfoRenderer)
@@ -92,7 +99,7 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 	}
 	
-	def run(){
+	def setupColors(){
 		val colorSet = LobbyProto.PossibleColorList.parseDelimitedFrom(in)
 		val group = new ButtonGroup()
 		startButton.addActionListener(this)
@@ -105,15 +112,29 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 				group.add(button)
 				(button, colorInf.getColor())
 		}).toList
+	}
+	def setupOwnInfo(){
 		ownInfo = LobbyProto.PersonInfo.parseDelimitedFrom(in)
 		readPersonSetInfo()
 		colors find {_._2==ownInfo.getColor()} foreach {_._1.setSelected(true)}
+	}
+	def getNameFromUser(){
 		val name = JOptionPane.showInputDialog(null, "Enter name:", "Wormhole Client", JOptionPane.PLAIN_MESSAGE)
 		if(name != null&& !name.isEmpty()){
 			ownInfo = LobbyProto.PersonInfo.newBuilder(ownInfo).setName(name).build()
 			val mType = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
 			out.write(mType, ownInfo)
 		}
+	}
+	def run(){
+		//read initialization data from server
+		setupColors()
+		setupOwnInfo()
+		
+		//get a username from the user, send it to server
+		getNameFromUser()
+		
+		//create frame to display and do loop
 		createFrame()
 		basicLoop()
 	}
@@ -167,6 +188,9 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 		frame.setVisible(false)
 	}
 	
+	/**
+	 * Read list of people in lobby.
+	 */
 	def readPersonSetInfo(){
 		model.removeAllElements()
 		val buffer:ListBuffer[LobbyProto.PersonInfo] = new ListBuffer[LobbyProto.PersonInfo]()
@@ -204,7 +228,9 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 			}
 		}
 	}
-	
+	/**
+	 * Disable all actions. Called when the lobby is left.
+	 */
 	private[this] def disableActions(){
 		colors foreach {_._1.removeActionListener(this)}
 		startButton.removeActionListener(this)

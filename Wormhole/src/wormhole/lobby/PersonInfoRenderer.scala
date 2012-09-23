@@ -11,6 +11,9 @@ object PersonInfoRenderer{
 	val DISPLAY_FONT = new Font("Arial", Font.PLAIN, 15)
 }
 
+/**
+ * Renderer for users in a lobby.
+ */
 class PersonInfoRenderer extends JLabel with ListCellRenderer[LobbyProto.PersonInfo]{
 	
 	def getListCellRendererComponent(list:JList[_<:LobbyProto.PersonInfo], obj:LobbyProto.PersonInfo, idx:Int, focus:Boolean, sel:Boolean) = {

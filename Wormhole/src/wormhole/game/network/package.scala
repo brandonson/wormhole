@@ -11,11 +11,16 @@ import wormhole.graphics.PlanetSprite
 import wormhole.ThreadsafeMessageWriter
 package object network {
 	
+	/**
+	 * Converts a wormhole map into a protocol version to be sent to a client.  Does not include UnitGroups, as
+	 * maps are only sent at the beginning of a game, when no units are on the map.
+	 */
 	def mapToProtocol(convert:WormholeMap):GameProto.Map = {
 		val mapBuild = GameProto.Map.newBuilder()
+		//convert width and height
 		mapBuild.setWidth(convert.width)
 		mapBuild.setHeight(convert.height)
-		val playerList = convert.players
+		//convert BaseObjects
 		convert.objects foreach {
 			obj =>
 				val dataFuture = obj.dataFuture
@@ -32,6 +37,8 @@ package object network {
 				objBuild.addAllUnitInfo(unitMapToProtocol(obj.units))
 				mapBuild.addSpace(objBuild.build())
 		}
+		//converts players
+		val playerList = convert.players
 		playerList foreach {
 			player =>
 				val builder = GameProto.Player.newBuilder()
@@ -42,6 +49,9 @@ package object network {
 		mapBuild.build()
 	}
 
+	/**
+	 * Converts the units from a BaseObject into a message to be sent to a client.
+	 */
 	def unitMapToProtocol(units:Map[PlayerId, Int]):ListBuffer[GameProto.UnitInfo] = {
 		val lb = new ListBuffer[GameProto.UnitInfo]() 
 		lb ++= units.map {
@@ -54,6 +64,9 @@ package object network {
 		lb
 	}
 	
+	/**
+	 * Converts a message representing a map back into a map.
+	 */
 	def protocolToMap(convert:GameProto.Map, conn:ThreadsafeMessageWriter = null):WormholeMap = {
 		val w = convert.getWidth()
 		val h = convert.getHeight()
@@ -64,6 +77,7 @@ package object network {
 		val gameMap = new WormholeMap(w,h,players)
 		convert.getSpaceList() foreach {
 			space =>
+				//create object
 				val x = space getX()
 				val y = space getY()
 				val prod = space getProductivity()
@@ -72,6 +86,7 @@ package object network {
 				if(space.hasOwnerId()){
 					players find {_.id == space.getOwnerId()} map {_.id} foreach {o => planet.setOwner(o)}
 				}
+				//set base units
 				val unitMap = unitInfoListProtoToBaseList(space.getUnitInfoList(), players)
 				planet.setAllUnits(unitMap)
 				gameMap.addObject(planet)
@@ -79,6 +94,10 @@ package object network {
 		gameMap
 	}
 	
+	/**
+	 * Converts a message representing units from a BaseObject back into the format used
+	 * by BaseObject.
+	 */
 	def unitInfoListProtoToBaseList(list:Iterable[GameProto.UnitInfo], playerList:List[Player]):Map[PlayerId,Int] = {
 		var map = Map[PlayerId, Int]()
 		list foreach{

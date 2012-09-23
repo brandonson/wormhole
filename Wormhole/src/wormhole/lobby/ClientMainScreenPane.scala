@@ -8,20 +8,34 @@ import javax.swing.event.ListSelectionListener
 import javax.swing.event.ListSelectionEvent
 import java.awt.Dimension
 
+/**
+ * Display for clients at the main screen.
+ */
 class ClientMainScreenPane(val conn:WormholeMainClient) extends JPanel{
 
+	/**
+	 * The list of lobbies on the server
+	 */
 	val lobbyList = new JList(conn.model)
 	val scroll = new JScrollPane(lobbyList)
 	scroll.setMinimumSize(new Dimension(200,400))
 	scroll.setPreferredSize(scroll.getMinimumSize())
 	scroll.setMaximumSize(new Dimension(500,1000))
+	
+	//set up renderer for the lobbies
 	lobbyList.setCellRenderer(ListRenderer)
+	
+	//Set up selection so that the text display changes to
+	//The name of the selected room.
 	lobbyList.addListSelectionListener(new ListSelectionListener{
 		def valueChanged(e:ListSelectionEvent){
 			roomName.setText(lobbyList.getSelectedValue().getName())
 		}
 	})
+	//only one lobby can be selected at a time
 	lobbyList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
+	
+	//set up display
 	
 	val roomName = new JTextField(30)
 	val buttonPanel = new JPanel()

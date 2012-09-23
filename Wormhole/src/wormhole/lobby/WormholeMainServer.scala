@@ -12,6 +12,10 @@ import akka.actor.Props
 import akka.pattern.ask
 import wormhole.lobby.network.MainScreenProto
 
+/**
+ * Main server class for Wormhole Server.  Handles accepting connections,
+ * then hands them off to a WormholeClientHandler.
+ */
 class WormholeMainServer(port:Int) extends Runnable{
 
 	private[this] var continue = true

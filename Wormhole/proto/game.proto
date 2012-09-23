@@ -3,6 +3,7 @@ package wormhole;
 option java_package = "wormhole.game.network";
 option java_outer_classname = "GameProto";
 
+//Indicates the kind of message being sent/received.
 enum MessageType{
 	MAP = 0;
 	ATTACK = 1;
@@ -20,6 +21,7 @@ enum MessageType{
 message IncomingMessageType{
 	required MessageType type = 1;
 }
+//Stores data on a WormholeMap.
 message Map{
 	required int32 width = 3;
 	required int32 height = 4;
@@ -27,6 +29,10 @@ message Map{
 	repeated Player player = 2;
 }
 
+//Represents a space on the map with something present
+//A Map message does not contain a MapGridSpace message
+//for each position in the grid.  Instead, messages are
+//only sent for each space containing something.
 message MapGridSpace{
 	required int32 x = 4;
 	required int32 y = 5;

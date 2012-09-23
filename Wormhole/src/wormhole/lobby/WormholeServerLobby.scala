@@ -65,13 +65,14 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 				val thread = new Thread(ref, "SLC-" + connections.size)
 				thread.start()
 				connections ::= (ref,thread,info)
-				availableColors -= info.getColor()
 				connections foreach {_._1.newPerson(info)}
 				true
 			}else false
 			sender ! res
 		case 'NewColor =>
-			sender ! (availableColors.headOption)
+			val color = availableColors.headOption
+			availableColors = availableColors.tail
+			sender ! color
 		case 'PersonSet =>
 			sender ! (connections map {_._3})
 		case ('InfoChange, conn:ServerLobbyConnection, newInfo:LobbyProto.PersonInfo) =>

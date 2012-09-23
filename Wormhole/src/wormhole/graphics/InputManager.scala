@@ -4,7 +4,14 @@ import java.awt.KeyEventPostProcessor
 import java.awt.KeyboardFocusManager
 import java.awt.event.MouseEvent
 import javax.swing.event.MouseInputListener
-
+/**
+ * Handles input data.  The various fetch methods perform resets to data, and should all
+ * be called in one loop of input handling.
+ */
+/*
+ * TODO represent data as a single object.  Currently, the fetch methods
+ * reset only the data they fetch.  Instead, data should be grabbed all at once.
+ */
 object InputManager extends KeyEventPostProcessor with MouseInputListener{
 
 	private var pressed:List[Int] = Nil
