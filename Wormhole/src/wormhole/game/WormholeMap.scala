@@ -110,6 +110,10 @@ private class WormholeMapImpl(main:WormholeMap) extends Actor{
 			}
 			unitGroups foreach {_.update}
 			listeners foreach {_.updateComplete(main)}
+			winner foreach {win => 
+				listeners foreach {_.playerVictory(main, win)}
+				context.stop(self)
+			}
 		case ('At,x:Int,y:Int) =>
 			//zip to their data
 			val zipped = objects zip (objects map {_.dataFuture})
@@ -124,5 +128,10 @@ private class WormholeMapImpl(main:WormholeMap) extends Actor{
 			sender ! (objects toList)
 		case 'Units =>
 			sender ! (unitGroups toList)
+	}
+	def winner:Option[PlayerId] = {
+		val controlledBases = objects.filterNot(_.owner == None)
+		val check = controlledBases.head.owner
+		if (controlledBases forall {_.owner == check}) check else None
 	}
 }

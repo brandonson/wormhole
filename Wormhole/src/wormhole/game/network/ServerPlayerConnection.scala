@@ -110,6 +110,11 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 	def updateComplete(m:WormholeMap){
 		ref ! 'Update
 	}
+	
+	def playerVictory(map:WormholeMap, winner:PlayerId){
+		ref ! ('Victory, winner)
+	}
+	
 	def leaveGame(){
 		ref ! 'TellLeave
 	}
@@ -159,6 +164,14 @@ private class ListenerImpl(val conn:ServerPlayerConnection) extends Actor{
 						conn.out.write(typeMsg, msg.build())
 				}
 				groups filterNot {_.isComplete}
+			}
+		case ('Victory, winner:PlayerId) =>
+			if(active){
+				active = false
+				val msgType = GameProto.IncomingMessageType.newBuilder().setType(PLAYER_VICTORY).build()
+				val victoryBuilder = GameProto.Victory.newBuilder()
+				victoryBuilder.setWinnerId(winner)
+				conn.out.write(msgType, victoryBuilder.build())
 			}
 		case 'Leave =>
 			if(active){

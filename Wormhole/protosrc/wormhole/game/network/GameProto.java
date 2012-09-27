@@ -22,6 +22,7 @@ public final class GameProto {
     UNIT_GROUP_POSITION(9, 9),
     LEAVE_GAME(10, 10),
     CONFIRM_LEAVE_GAME(11, 11),
+    PLAYER_VICTORY(12, 12),
     ;
     
     public static final int MAP_VALUE = 0;
@@ -36,6 +37,7 @@ public final class GameProto {
     public static final int UNIT_GROUP_POSITION_VALUE = 9;
     public static final int LEAVE_GAME_VALUE = 10;
     public static final int CONFIRM_LEAVE_GAME_VALUE = 11;
+    public static final int PLAYER_VICTORY_VALUE = 12;
     
     
     public final int getNumber() { return value; }
@@ -54,6 +56,7 @@ public final class GameProto {
         case 9: return UNIT_GROUP_POSITION;
         case 10: return LEAVE_GAME;
         case 11: return CONFIRM_LEAVE_GAME;
+        case 12: return PLAYER_VICTORY;
         default: return null;
       }
     }
@@ -84,7 +87,7 @@ public final class GameProto {
     }
     
     private static final MessageType[] VALUES = {
-      MAP, ATTACK, UNIT_ARRIVAL, ALL_UNIT_CHANGE, OWNER_CHANGE, DISCONNECT, SEND_PLAYER_DATA, PLAYER_DATA, NEW_UNIT_GROUP, UNIT_GROUP_POSITION, LEAVE_GAME, CONFIRM_LEAVE_GAME, 
+      MAP, ATTACK, UNIT_ARRIVAL, ALL_UNIT_CHANGE, OWNER_CHANGE, DISCONNECT, SEND_PLAYER_DATA, PLAYER_DATA, NEW_UNIT_GROUP, UNIT_GROUP_POSITION, LEAVE_GAME, CONFIRM_LEAVE_GAME, PLAYER_VICTORY, 
     };
     
     public static MessageType valueOf(
@@ -3146,6 +3149,352 @@ public final class GameProto {
     }
     
     // @@protoc_insertion_point(class_scope:wormhole.Player)
+  }
+  
+  public interface VictoryOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required int32 winner_id = 1;
+    boolean hasWinnerId();
+    int getWinnerId();
+  }
+  public static final class Victory extends
+      com.google.protobuf.GeneratedMessage
+      implements VictoryOrBuilder {
+    // Use Victory.newBuilder() to construct.
+    private Victory(Builder builder) {
+      super(builder);
+    }
+    private Victory(boolean noInit) {}
+    
+    private static final Victory defaultInstance;
+    public static Victory getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public Victory getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wormhole.game.network.GameProto.internal_static_wormhole_Victory_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wormhole.game.network.GameProto.internal_static_wormhole_Victory_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required int32 winner_id = 1;
+    public static final int WINNER_ID_FIELD_NUMBER = 1;
+    private int winnerId_;
+    public boolean hasWinnerId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public int getWinnerId() {
+      return winnerId_;
+    }
+    
+    private void initFields() {
+      winnerId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasWinnerId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, winnerId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, winnerId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static wormhole.game.network.GameProto.Victory parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.Victory parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.Victory parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.Victory parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.Victory parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.Victory parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static wormhole.game.network.GameProto.Victory parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static wormhole.game.network.GameProto.Victory parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static wormhole.game.network.GameProto.Victory parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static wormhole.game.network.GameProto.Victory parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(wormhole.game.network.GameProto.Victory prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements wormhole.game.network.GameProto.VictoryOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wormhole.game.network.GameProto.internal_static_wormhole_Victory_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wormhole.game.network.GameProto.internal_static_wormhole_Victory_fieldAccessorTable;
+      }
+      
+      // Construct using wormhole.game.network.GameProto.Victory.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        winnerId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wormhole.game.network.GameProto.Victory.getDescriptor();
+      }
+      
+      public wormhole.game.network.GameProto.Victory getDefaultInstanceForType() {
+        return wormhole.game.network.GameProto.Victory.getDefaultInstance();
+      }
+      
+      public wormhole.game.network.GameProto.Victory build() {
+        wormhole.game.network.GameProto.Victory result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private wormhole.game.network.GameProto.Victory buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        wormhole.game.network.GameProto.Victory result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public wormhole.game.network.GameProto.Victory buildPartial() {
+        wormhole.game.network.GameProto.Victory result = new wormhole.game.network.GameProto.Victory(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.winnerId_ = winnerId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wormhole.game.network.GameProto.Victory) {
+          return mergeFrom((wormhole.game.network.GameProto.Victory)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(wormhole.game.network.GameProto.Victory other) {
+        if (other == wormhole.game.network.GameProto.Victory.getDefaultInstance()) return this;
+        if (other.hasWinnerId()) {
+          setWinnerId(other.getWinnerId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasWinnerId()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              winnerId_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required int32 winner_id = 1;
+      private int winnerId_ ;
+      public boolean hasWinnerId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public int getWinnerId() {
+        return winnerId_;
+      }
+      public Builder setWinnerId(int value) {
+        bitField0_ |= 0x00000001;
+        winnerId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearWinnerId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        winnerId_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:wormhole.Victory)
+    }
+    
+    static {
+      defaultInstance = new Victory(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:wormhole.Victory)
   }
   
   public interface AttackOrBuilder
@@ -6580,6 +6929,11 @@ public final class GameProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_wormhole_Player_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_wormhole_Victory_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_wormhole_Victory_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_wormhole_Attack_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -6628,24 +6982,26 @@ public final class GameProto {
       "_id\030\006 \001(\005\022%\n\tunit_info\030\007 \003(\0132\022.wormhole." +
       "UnitInfo\"(\n\010UnitInfo\022\r\n\005owner\030\001 \002(\005\022\r\n\005c" +
       "ount\030\002 \002(\005\"#\n\006Player\022\n\n\002id\030\001 \002(\005\022\r\n\005colo",
-      "r\030\002 \002(\005\"@\n\006Attack\022\r\n\005fromX\030\001 \002(\005\022\r\n\005from" +
-      "Y\030\002 \002(\005\022\013\n\003toX\030\003 \002(\005\022\013\n\003toY\030\004 \002(\005\"H\n\013Uni" +
-      "tArrival\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022#\n\007arrive" +
-      "d\030\003 \002(\0132\022.wormhole.UnitInfo\"L\n\rAllUnitCh" +
-      "ange\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022%\n\tunit_info\030" +
-      "\003 \003(\0132\022.wormhole.UnitInfo\"9\n\013OwnerChange" +
-      "\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\024\n\014new_owner_id\030\003" +
-      " \002(\005\"N\n\014NewUnitGroup\022\n\n\002id\030\001 \002(\005\022\r\n\005owne" +
-      "r\030\004 \002(\005\022\r\n\005count\030\005 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003" +
-      " \002(\005\"N\n\021UnitGroupPosition\022\n\n\002id\030\001 \002(\005\022\t\n",
-      "\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\022\027\n\010complete\030\004 \001(\010:\005f" +
-      "alse*\347\001\n\013MessageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020" +
-      "\001\022\020\n\014UNIT_ARRIVAL\020\002\022\023\n\017ALL_UNIT_CHANGE\020\003" +
-      "\022\020\n\014OWNER_CHANGE\020\004\022\016\n\nDISCONNECT\020\005\022\024\n\020SE" +
-      "ND_PLAYER_DATA\020\006\022\017\n\013PLAYER_DATA\020\007\022\022\n\016NEW" +
-      "_UNIT_GROUP\020\010\022\027\n\023UNIT_GROUP_POSITION\020\t\022\016" +
-      "\n\nLEAVE_GAME\020\n\022\026\n\022CONFIRM_LEAVE_GAME\020\013B\"" +
-      "\n\025wormhole.game.networkB\tGameProto"
+      "r\030\002 \002(\005\"\034\n\007Victory\022\021\n\twinner_id\030\001 \002(\005\"@\n" +
+      "\006Attack\022\r\n\005fromX\030\001 \002(\005\022\r\n\005fromY\030\002 \002(\005\022\013\n" +
+      "\003toX\030\003 \002(\005\022\013\n\003toY\030\004 \002(\005\"H\n\013UnitArrival\022\t" +
+      "\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022#\n\007arrived\030\003 \002(\0132\022." +
+      "wormhole.UnitInfo\"L\n\rAllUnitChange\022\t\n\001x\030" +
+      "\001 \002(\005\022\t\n\001y\030\002 \002(\005\022%\n\tunit_info\030\003 \003(\0132\022.wo" +
+      "rmhole.UnitInfo\"9\n\013OwnerChange\022\t\n\001x\030\001 \002(" +
+      "\005\022\t\n\001y\030\002 \002(\005\022\024\n\014new_owner_id\030\003 \002(\005\"N\n\014Ne" +
+      "wUnitGroup\022\n\n\002id\030\001 \002(\005\022\r\n\005owner\030\004 \002(\005\022\r\n" +
+      "\005count\030\005 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\"N\n\021Un",
+      "itGroupPosition\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \001(\005\022\t" +
+      "\n\001y\030\003 \001(\005\022\027\n\010complete\030\004 \001(\010:\005false*\373\001\n\013M" +
+      "essageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020\001\022\020\n\014UNIT_" +
+      "ARRIVAL\020\002\022\023\n\017ALL_UNIT_CHANGE\020\003\022\020\n\014OWNER_" +
+      "CHANGE\020\004\022\016\n\nDISCONNECT\020\005\022\024\n\020SEND_PLAYER_" +
+      "DATA\020\006\022\017\n\013PLAYER_DATA\020\007\022\022\n\016NEW_UNIT_GROU" +
+      "P\020\010\022\027\n\023UNIT_GROUP_POSITION\020\t\022\016\n\nLEAVE_GA" +
+      "ME\020\n\022\026\n\022CONFIRM_LEAVE_GAME\020\013\022\022\n\016PLAYER_V" +
+      "ICTORY\020\014B\"\n\025wormhole.game.networkB\tGameP" +
+      "roto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6692,8 +7048,16 @@ public final class GameProto {
               new java.lang.String[] { "Id", "Color", },
               wormhole.game.network.GameProto.Player.class,
               wormhole.game.network.GameProto.Player.Builder.class);
-          internal_static_wormhole_Attack_descriptor =
+          internal_static_wormhole_Victory_descriptor =
             getDescriptor().getMessageTypes().get(5);
+          internal_static_wormhole_Victory_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_wormhole_Victory_descriptor,
+              new java.lang.String[] { "WinnerId", },
+              wormhole.game.network.GameProto.Victory.class,
+              wormhole.game.network.GameProto.Victory.Builder.class);
+          internal_static_wormhole_Attack_descriptor =
+            getDescriptor().getMessageTypes().get(6);
           internal_static_wormhole_Attack_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_Attack_descriptor,
@@ -6701,7 +7065,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.Attack.class,
               wormhole.game.network.GameProto.Attack.Builder.class);
           internal_static_wormhole_UnitArrival_descriptor =
-            getDescriptor().getMessageTypes().get(6);
+            getDescriptor().getMessageTypes().get(7);
           internal_static_wormhole_UnitArrival_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_UnitArrival_descriptor,
@@ -6709,7 +7073,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.UnitArrival.class,
               wormhole.game.network.GameProto.UnitArrival.Builder.class);
           internal_static_wormhole_AllUnitChange_descriptor =
-            getDescriptor().getMessageTypes().get(7);
+            getDescriptor().getMessageTypes().get(8);
           internal_static_wormhole_AllUnitChange_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_AllUnitChange_descriptor,
@@ -6717,7 +7081,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.AllUnitChange.class,
               wormhole.game.network.GameProto.AllUnitChange.Builder.class);
           internal_static_wormhole_OwnerChange_descriptor =
-            getDescriptor().getMessageTypes().get(8);
+            getDescriptor().getMessageTypes().get(9);
           internal_static_wormhole_OwnerChange_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_OwnerChange_descriptor,
@@ -6725,7 +7089,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.OwnerChange.class,
               wormhole.game.network.GameProto.OwnerChange.Builder.class);
           internal_static_wormhole_NewUnitGroup_descriptor =
-            getDescriptor().getMessageTypes().get(9);
+            getDescriptor().getMessageTypes().get(10);
           internal_static_wormhole_NewUnitGroup_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_NewUnitGroup_descriptor,
@@ -6733,7 +7097,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.NewUnitGroup.class,
               wormhole.game.network.GameProto.NewUnitGroup.Builder.class);
           internal_static_wormhole_UnitGroupPosition_descriptor =
-            getDescriptor().getMessageTypes().get(10);
+            getDescriptor().getMessageTypes().get(11);
           internal_static_wormhole_UnitGroupPosition_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_UnitGroupPosition_descriptor,

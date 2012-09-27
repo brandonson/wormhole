@@ -25,8 +25,6 @@ class ThreadsafeMessageWriter(output:OutputStream){
 	 * Writes messages atomically.  Takes a variable number of messages.
 	 */
 	def write(messages:Message*){
-		println("WRITE=============================")
-		println(Thread.currentThread().getStackTrace() foreach {st => println(st.getMethodName() + ":" + st.getClassName() +":" + st.getLineNumber())})
 		val msgList = messages.toList
 		write(msgList)
 	}

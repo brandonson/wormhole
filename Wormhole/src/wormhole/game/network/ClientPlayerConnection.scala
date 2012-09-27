@@ -13,6 +13,7 @@ import wormhole.game.UnitGroup
 import wormhole.game.BaseObject
 import wormhole.game.Location
 import wormhole.lobby.WormholeMainClient
+import javax.swing.JOptionPane
 
 /**
  * Client-side connection for in game.  Handles forwarding messages to bases and unit groups.
@@ -115,10 +116,16 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 				case CONFIRM_LEAVE_GAME =>
 					continue = false
 					new Thread(new WormholeMainClient(socketData), "CPC MainClient").start()
+				case PLAYER_VICTORY =>
+					val winner = GameProto.Victory.parseDelimitedFrom(in).getWinnerId()
+					//TODO improve victory/defeat display
+					JOptionPane.showMessageDialog(null, if(playerData exists {_.id==winner}) "Victory" else "Defeat")
+					leaveGame()
 				case _ =>
 			}
 			}catch{
 				case e:IOException =>
+					//TODO log exception
 					continue = false
 			}
 		}
