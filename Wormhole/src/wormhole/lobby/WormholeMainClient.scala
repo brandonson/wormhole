@@ -45,6 +45,7 @@ class WormholeMainClient(val socket:SocketInfoData) extends Runnable{
 					new Thread(new WormholeLobbyClient(socket), "Lobby Client").start()
 					continue = false
 				case NEW_LOBBY =>
+					println("joinlobby")
 					val lobbyMsg = MainScreenProto.LobbyData.parseDelimitedFrom(in)
 					model.addElement(lobbyMsg)
 				case REMOVED_LOBBY =>

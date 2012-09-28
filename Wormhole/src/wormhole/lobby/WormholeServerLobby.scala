@@ -16,6 +16,7 @@ import scala.collection.JavaConversions._
 import wormhole.game.MapUtils
 import wormhole.game.Player
 import wormhole.WormholeServer
+import com.wormhole.network.PlayerProto
 object WormholeServerLobby{
 	val possibleColors = List(new Color(255,0,0), new Color(0,255,0), new Color(0,0,255), new Color(255,255,0), new Color(0,255,255), new Color(255,0,255),
 			new Color(150,60,215), new Color(255,150,0), new Color(240,200, 225), new Color(120,145,15))
@@ -31,22 +32,19 @@ class WormholeServerLobby(val name:String, val id:Int, val mainServer:WormholeMa
 	val ref = WormholeSystem.actorOf(Props(new WormholeServerLobbyImpl(this)))
 	
 	def addConnection(data:SocketInfoData) = {
-		val color = fetch((ref?'NewColor).mapTo[Option[Int]]).getOrElse(throw LobbyFullException)
-		val info = LobbyProto.PersonInfo.newBuilder().setName("unknown").setColor(color).build()
-		val conn = new ServerLobbyConnection(data, this, info)
-		fetch((ref ? ('NewConnection, conn,info)).mapTo[Boolean])
+		fetch((ref ? ('NewConnection, data)).mapTo[Boolean])
 	}
 	
 	def start(){ ref ! 'Start}
 	
-	def personInfoSet:List[LobbyProto.PersonInfo] = fetch(personInfoSetFuture)
-	def personInfoSetFuture = (ref ? 'PersonSet).mapTo[List[LobbyProto.PersonInfo]]
+	def personInfoSet:List[PlayerProto.Player] = fetch(personInfoSetFuture)
+	def personInfoSetFuture = (ref ? 'PersonSet).mapTo[List[PlayerProto.Player]]
 	
 	def lostPlayer(conn:ServerLobbyConnection){
 		ref ! ('Lost, conn)
 	}
 	
-	def dataChanged(conn:ServerLobbyConnection, newInfo:LobbyProto.PersonInfo){
+	def dataChanged(conn:ServerLobbyConnection, newInfo:PlayerProto.Player){
 		ref ! ('InfoChange, conn, newInfo)
 	}
 }
@@ -55,34 +53,50 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 	
 	import WormholeServerLobby._
 	import WormholeServer._
-	var connections:List[(ServerLobbyConnection,Thread, LobbyProto.PersonInfo)] = Nil
+	var connections:List[(ServerLobbyConnection,Thread, PlayerProto.Player)] = Nil
 	var availableColors:List[Int] = possibleColors map {_.getRGB()}
 	var active = true;
+	var idGen = 0
+	
+	private[this] def newColor() = {
+		val opt = availableColors.headOption
+		availableColors = availableColors.tail
+		opt
+	}
+	
+	private[this] def nextId():Int = {
+		idGen += 1
+		idGen
+	}
 	
 	def receive = {
-		case ('NewConnection, ref:ServerLobbyConnection, info:LobbyProto.PersonInfo) =>
-			val res = if(active){
-				val thread = new Thread(ref, "SLC-" + connections.size)
-				thread.start()
-				connections ::= (ref,thread,info)
-				connections foreach {_._1.newPerson(info)}
-				true
-			}else false
-			sender ! res
-		case 'NewColor =>
-			val color = availableColors.headOption
-			availableColors = availableColors.tail
-			sender ! color
+		case ('NewConnection, data:SocketInfoData) =>
+			if(active){
+				val result = newColor map {
+					color =>
+					val id = nextId
+					val info = PlayerProto.Player.newBuilder().setName("unknown").setId(id).setColor(color).build()
+					val conn = new ServerLobbyConnection(data, lobby, info)
+					val thread = new Thread(conn, "SLC-" + connections.size)
+					thread.start()
+					connections foreach {_._1.newPerson(info)}
+					connections ::= (conn,thread,info)
+				}
+				val resBool:Boolean = result.isDefined
+				sender ! resBool
+			}else{
+				sender ! false
+			}
 		case 'PersonSet =>
 			sender ! (connections map {_._3})
-		case ('InfoChange, conn:ServerLobbyConnection, newInfo:LobbyProto.PersonInfo) =>
+		case ('InfoChange, conn:ServerLobbyConnection, newInfo:PlayerProto.Player) =>
 			val original = connections find {_._1==conn}
 			original foreach {
 				orig =>
-					connections -= orig
+					connections = connections filterNot {_==orig}
 					connections ::= (orig._1, orig._2, newInfo)
 					availableColors ::= orig._3.getColor()
-					availableColors -= newInfo.getColor()
+					availableColors = availableColors filterNot {_==newInfo.getColor()}
 					connections foreach {_._1.infoChanged(orig._3, newInfo)}
 			}
 		case ('Lost, conn:ServerLobbyConnection) =>
@@ -101,7 +115,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 			val players = (connections.map {_._3}).zipWithIndex map {
 				tup =>
 					val (pInf, idx) = tup
-					new Player(idx, new Color(pInf.getColor()))
+					new Player(pInf.getName(), idx, new Color(pInf.getColor()))
 			}
 			val zipped = connections map {_._1.data} zip players
 			val map = MapUtils.genRandomMap(MapWidth, MapHeight, PlanetCount, MaxProduction+1, MaxDefense+1, players)

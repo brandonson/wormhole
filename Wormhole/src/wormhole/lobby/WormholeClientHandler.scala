@@ -75,6 +75,8 @@ class WormholeClientHandler(val socket:SocketInfoData) extends Runnable{
 				}
 			}catch{
 				case e:IOException =>
+					//TODO log exception
+					e.printStackTrace()
 					continue = false
 			}
 		}

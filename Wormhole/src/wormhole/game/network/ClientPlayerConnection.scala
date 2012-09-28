@@ -14,6 +14,7 @@ import wormhole.game.BaseObject
 import wormhole.game.Location
 import wormhole.lobby.WormholeMainClient
 import javax.swing.JOptionPane
+import com.wormhole.network.PlayerProto
 
 /**
  * Client-side connection for in game.  Handles forwarding messages to bases and unit groups.
@@ -49,8 +50,8 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 		mapReadyCallback()
 		
 		//get player, then do the game loop
-		val player = GameProto.Player.parseDelimitedFrom(in)
-		this.pData = Some(new Player(player.getId(), new Color(player.getColor())))
+		val player = PlayerProto.Player.parseDelimitedFrom(in)
+		this.pData = Some(new Player(player.getName(), player.getId(), new Color(player.getColor())))
 		basicLoop()
 		running = false
 	}
@@ -86,8 +87,8 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 							obj.setAllUnits(unitMap)
 					}
 				case PLAYER_DATA =>
-					val playerData = GameProto.Player.parseDelimitedFrom(in)
-					this.pData = Some(new Player(playerData.getId(), new Color(playerData.getColor())))
+					val playerData = PlayerProto.Player.parseDelimitedFrom(in)
+					this.pData = Some(new Player(playerData.getName(), playerData.getId(), new Color(playerData.getColor())))
 				case NEW_UNIT_GROUP =>
 					val ugData = GameProto.NewUnitGroup.parseDelimitedFrom(in)
 					val group = new UnitGroup(ugData.getId(), ugData.getOwner(), ugData.getCount(), BaseObject.genBasicUnitSprite(map), map, null, null)
@@ -120,7 +121,6 @@ class ClientPlayerConnection(val socketData:SocketInfoData, mapReadyCallback:() 
 					val winner = GameProto.Victory.parseDelimitedFrom(in).getWinnerId()
 					//TODO improve victory/defeat display
 					JOptionPane.showMessageDialog(null, if(playerData exists {_.id==winner}) "Victory" else "Defeat")
-					leaveGame()
 				case _ =>
 			}
 			}catch{

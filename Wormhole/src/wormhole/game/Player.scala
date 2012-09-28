@@ -4,4 +4,4 @@ import java.awt.Color
 /**
  * Stores data on a player.
  */
-case class Player(id:PlayerId, color:Color)
+case class Player(name:String, id:PlayerId, color:Color)

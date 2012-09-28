@@ -20,6 +20,7 @@ import wormhole.game.WormholeMapListener
 import wormhole.game.UnitGroup
 import wormhole.lobby.WormholeClientHandler
 import wormhole.WormholeServer
+import com.wormhole.network.PlayerProto
 
 /**
  * Connection handler on the server for individual clients in game.  Handles updating the client with changes to bases and
@@ -31,22 +32,13 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 	 * Backend actor.
 	 */
 	private val ref = WormholeSystem.actorOf(Props(new ListenerImpl(this)))
+	
 	def in = socketData.in
 	def out = socketData.out
 	def run(){
 		//register as a listener to receive updates
 		map.addMapListener(this)
 		map.objects foreach {obj => obj.addListener(this)}
-
-		//send map to client
-		val inProto = mapToProtocol(map)
-		out.write(inProto)
-		
-		//tell client which player they are
-		val pdata = GameProto.Player.newBuilder()
-		pdata.setId(player.id).setColor(player.color.getRGB)
-		out.write(pdata.build())
-		
 		//do loop
 		try{
 			basicLoop()
@@ -54,8 +46,11 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 			case _:IOException =>
 		}
 		//unregister as a listener.
-		map.removeMapListener(this)
-		map.objects foreach {_.removeListener(this)}
+		//only if not due to game end (termination of map actor)
+		if(!map.ref.isTerminated){
+			map.removeMapListener(this)
+			map.objects foreach {_.removeListener(this)}
+		}
 	}
 	
 	private def basicLoop(){
@@ -80,7 +75,7 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 					out.close()
 					socketData.socket.close()
 				case SEND_PLAYER_DATA =>
-					val data = GameProto.Player.newBuilder()
+					val data = PlayerProto.Player.newBuilder()
 					data.setId(player.id)
 					data.setColor(player.color.getRGB())
 					val built = data.build()
@@ -122,9 +117,13 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 
 private class ListenerImpl(val conn:ServerPlayerConnection) extends Actor{
 	
+	self ! 'DoInit //send map info
+	
 	private[this] val groups = new ListBuffer[UnitGroup]
 	private[this] var active = true
 	def receive = {
+		case 'DoInit =>
+			sendInitInfo()
 		case ('OwnerChanged,newOwner:PlayerId, changeObj:BaseObject) =>
 			if(active) {
 				ownerChanged(newOwner, changeObj)
@@ -167,7 +166,6 @@ private class ListenerImpl(val conn:ServerPlayerConnection) extends Actor{
 			}
 		case ('Victory, winner:PlayerId) =>
 			if(active){
-				active = false
 				val msgType = GameProto.IncomingMessageType.newBuilder().setType(PLAYER_VICTORY).build()
 				val victoryBuilder = GameProto.Victory.newBuilder()
 				victoryBuilder.setWinnerId(winner)
@@ -190,6 +188,18 @@ private class ListenerImpl(val conn:ServerPlayerConnection) extends Actor{
 				val msg = GameProto.IncomingMessageType.newBuilder().setType(LEAVE_GAME).build()
 				conn.out.write(msg)
 			}
+	}
+	
+	def sendInitInfo(){
+		//send map to client
+		val inProto = mapToProtocol(conn.map)
+		conn.out.write(inProto)
+		
+		//tell client which player they are
+		val pdata = PlayerProto.Player.newBuilder()
+		pdata.setId(conn.player.id).setName(conn.player.name).setColor(conn.player.color.getRGB)
+		conn.out.write(pdata.build())
+		
 	}
 	
 	def ownerChanged(newOwner:PlayerId, changeObj:BaseObject){

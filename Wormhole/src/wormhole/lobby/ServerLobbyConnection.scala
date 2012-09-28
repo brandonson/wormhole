@@ -9,23 +9,25 @@ import java.io.IOException
 import java.awt.Color
 import scala.collection.JavaConversions
 import wormhole.lobby.network.MainScreenProto
+import com.wormhole.network.PlayerProto
 /**
  * Server-side handler for single client connections to a game lobby.
  */
-class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLobby, ownData:LobbyProto.PersonInfo) extends Runnable{
+class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLobby, ownData:PlayerProto.Player) extends Runnable{
 
 	def in = data.in
 	def out = data.out
 	
-	//TODO move notification that the user is in a lobby to WormholeClientHandler
-	//could have concurrency issues
-	out write genJoinLobbyMessage	//inform client we are in a lobby
-	out write WormholeServerLobby.possibleColorMessage
-	out write ownData
-	out write genPersonSetMessage
+
 	private var waitingGame:WormholeGameServer = null
 	
 	def run(){
+		//TODO move notification that the user is in a lobby to WormholeClientHandler
+		//could have concurrency issues
+		out write genJoinLobbyMessage	//inform client we are in a lobby
+		out write WormholeServerLobby.possibleColorMessage
+		out write ownData
+		out write genPersonSetMessage
 		try{
 			basicLoop()
 		}catch{
@@ -43,7 +45,7 @@ class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLob
 					val count = genPersonSetMessage
 					out.write(mType, count)
 				case CHANGE_INFO =>
-					val change = LobbyProto.PersonInfo.parseDelimitedFrom(in)
+					val change = PlayerProto.Player.parseDelimitedFrom(in)
 					lobby.dataChanged(this, change)
 				case START =>
 					lobby.start()
@@ -66,15 +68,15 @@ class ServerLobbyConnection(val data:SocketInfoData, val lobby:WormholeServerLob
 		val mType = LobbyProto.LobbyMessageType.newBuilder().setType(START).build()
 		out.write(mType)
 	}
-	def lostPerson(info:LobbyProto.PersonInfo){
+	def lostPerson(info:PlayerProto.Player){
 		val msg = LobbyProto.LobbyMessageType.newBuilder().setType(LOST_PERSON).build()
 		out write (msg, info)
 	}
-	def newPerson(info:LobbyProto.PersonInfo){
+	def newPerson(info:PlayerProto.Player){
 		val msg = LobbyProto.LobbyMessageType.newBuilder().setType(NEW_PERSON).build()
 		out write (msg, info)
 	}
-	def infoChanged(old:LobbyProto.PersonInfo, newInf:LobbyProto.PersonInfo){
+	def infoChanged(old:PlayerProto.Player, newInf:PlayerProto.Player){
 		val msg = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
 		out write(msg, old, newInf)
 	}

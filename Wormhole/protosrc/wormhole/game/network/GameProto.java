@@ -487,13 +487,13 @@ public final class GameProto {
         int index);
     
     // repeated .wormhole.Player player = 2;
-    java.util.List<wormhole.game.network.GameProto.Player> 
+    java.util.List<com.wormhole.network.PlayerProto.Player> 
         getPlayerList();
-    wormhole.game.network.GameProto.Player getPlayer(int index);
+    com.wormhole.network.PlayerProto.Player getPlayer(int index);
     int getPlayerCount();
-    java.util.List<? extends wormhole.game.network.GameProto.PlayerOrBuilder> 
+    java.util.List<? extends com.wormhole.network.PlayerProto.PlayerOrBuilder> 
         getPlayerOrBuilderList();
-    wormhole.game.network.GameProto.PlayerOrBuilder getPlayerOrBuilder(
+    com.wormhole.network.PlayerProto.PlayerOrBuilder getPlayerOrBuilder(
         int index);
   }
   public static final class Map extends
@@ -568,21 +568,21 @@ public final class GameProto {
     
     // repeated .wormhole.Player player = 2;
     public static final int PLAYER_FIELD_NUMBER = 2;
-    private java.util.List<wormhole.game.network.GameProto.Player> player_;
-    public java.util.List<wormhole.game.network.GameProto.Player> getPlayerList() {
+    private java.util.List<com.wormhole.network.PlayerProto.Player> player_;
+    public java.util.List<com.wormhole.network.PlayerProto.Player> getPlayerList() {
       return player_;
     }
-    public java.util.List<? extends wormhole.game.network.GameProto.PlayerOrBuilder> 
+    public java.util.List<? extends com.wormhole.network.PlayerProto.PlayerOrBuilder> 
         getPlayerOrBuilderList() {
       return player_;
     }
     public int getPlayerCount() {
       return player_.size();
     }
-    public wormhole.game.network.GameProto.Player getPlayer(int index) {
+    public com.wormhole.network.PlayerProto.Player getPlayer(int index) {
       return player_.get(index);
     }
-    public wormhole.game.network.GameProto.PlayerOrBuilder getPlayerOrBuilder(
+    public com.wormhole.network.PlayerProto.PlayerOrBuilder getPlayerOrBuilder(
         int index) {
       return player_.get(index);
     }
@@ -1000,7 +1000,7 @@ public final class GameProto {
               break;
             }
             case 18: {
-              wormhole.game.network.GameProto.Player.Builder subBuilder = wormhole.game.network.GameProto.Player.newBuilder();
+              com.wormhole.network.PlayerProto.Player.Builder subBuilder = com.wormhole.network.PlayerProto.Player.newBuilder();
               input.readMessage(subBuilder, extensionRegistry);
               addPlayer(subBuilder.buildPartial());
               break;
@@ -1250,19 +1250,19 @@ public final class GameProto {
       }
       
       // repeated .wormhole.Player player = 2;
-      private java.util.List<wormhole.game.network.GameProto.Player> player_ =
+      private java.util.List<com.wormhole.network.PlayerProto.Player> player_ =
         java.util.Collections.emptyList();
       private void ensurePlayerIsMutable() {
         if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-          player_ = new java.util.ArrayList<wormhole.game.network.GameProto.Player>(player_);
+          player_ = new java.util.ArrayList<com.wormhole.network.PlayerProto.Player>(player_);
           bitField0_ |= 0x00000008;
          }
       }
       
       private com.google.protobuf.RepeatedFieldBuilder<
-          wormhole.game.network.GameProto.Player, wormhole.game.network.GameProto.Player.Builder, wormhole.game.network.GameProto.PlayerOrBuilder> playerBuilder_;
+          com.wormhole.network.PlayerProto.Player, com.wormhole.network.PlayerProto.Player.Builder, com.wormhole.network.PlayerProto.PlayerOrBuilder> playerBuilder_;
       
-      public java.util.List<wormhole.game.network.GameProto.Player> getPlayerList() {
+      public java.util.List<com.wormhole.network.PlayerProto.Player> getPlayerList() {
         if (playerBuilder_ == null) {
           return java.util.Collections.unmodifiableList(player_);
         } else {
@@ -1276,7 +1276,7 @@ public final class GameProto {
           return playerBuilder_.getCount();
         }
       }
-      public wormhole.game.network.GameProto.Player getPlayer(int index) {
+      public com.wormhole.network.PlayerProto.Player getPlayer(int index) {
         if (playerBuilder_ == null) {
           return player_.get(index);
         } else {
@@ -1284,7 +1284,7 @@ public final class GameProto {
         }
       }
       public Builder setPlayer(
-          int index, wormhole.game.network.GameProto.Player value) {
+          int index, com.wormhole.network.PlayerProto.Player value) {
         if (playerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1298,7 +1298,7 @@ public final class GameProto {
         return this;
       }
       public Builder setPlayer(
-          int index, wormhole.game.network.GameProto.Player.Builder builderForValue) {
+          int index, com.wormhole.network.PlayerProto.Player.Builder builderForValue) {
         if (playerBuilder_ == null) {
           ensurePlayerIsMutable();
           player_.set(index, builderForValue.build());
@@ -1308,7 +1308,7 @@ public final class GameProto {
         }
         return this;
       }
-      public Builder addPlayer(wormhole.game.network.GameProto.Player value) {
+      public Builder addPlayer(com.wormhole.network.PlayerProto.Player value) {
         if (playerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1322,7 +1322,7 @@ public final class GameProto {
         return this;
       }
       public Builder addPlayer(
-          int index, wormhole.game.network.GameProto.Player value) {
+          int index, com.wormhole.network.PlayerProto.Player value) {
         if (playerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1336,7 +1336,7 @@ public final class GameProto {
         return this;
       }
       public Builder addPlayer(
-          wormhole.game.network.GameProto.Player.Builder builderForValue) {
+          com.wormhole.network.PlayerProto.Player.Builder builderForValue) {
         if (playerBuilder_ == null) {
           ensurePlayerIsMutable();
           player_.add(builderForValue.build());
@@ -1347,7 +1347,7 @@ public final class GameProto {
         return this;
       }
       public Builder addPlayer(
-          int index, wormhole.game.network.GameProto.Player.Builder builderForValue) {
+          int index, com.wormhole.network.PlayerProto.Player.Builder builderForValue) {
         if (playerBuilder_ == null) {
           ensurePlayerIsMutable();
           player_.add(index, builderForValue.build());
@@ -1358,7 +1358,7 @@ public final class GameProto {
         return this;
       }
       public Builder addAllPlayer(
-          java.lang.Iterable<? extends wormhole.game.network.GameProto.Player> values) {
+          java.lang.Iterable<? extends com.wormhole.network.PlayerProto.Player> values) {
         if (playerBuilder_ == null) {
           ensurePlayerIsMutable();
           super.addAll(values, player_);
@@ -1388,18 +1388,18 @@ public final class GameProto {
         }
         return this;
       }
-      public wormhole.game.network.GameProto.Player.Builder getPlayerBuilder(
+      public com.wormhole.network.PlayerProto.Player.Builder getPlayerBuilder(
           int index) {
         return getPlayerFieldBuilder().getBuilder(index);
       }
-      public wormhole.game.network.GameProto.PlayerOrBuilder getPlayerOrBuilder(
+      public com.wormhole.network.PlayerProto.PlayerOrBuilder getPlayerOrBuilder(
           int index) {
         if (playerBuilder_ == null) {
           return player_.get(index);  } else {
           return playerBuilder_.getMessageOrBuilder(index);
         }
       }
-      public java.util.List<? extends wormhole.game.network.GameProto.PlayerOrBuilder> 
+      public java.util.List<? extends com.wormhole.network.PlayerProto.PlayerOrBuilder> 
            getPlayerOrBuilderList() {
         if (playerBuilder_ != null) {
           return playerBuilder_.getMessageOrBuilderList();
@@ -1407,25 +1407,25 @@ public final class GameProto {
           return java.util.Collections.unmodifiableList(player_);
         }
       }
-      public wormhole.game.network.GameProto.Player.Builder addPlayerBuilder() {
+      public com.wormhole.network.PlayerProto.Player.Builder addPlayerBuilder() {
         return getPlayerFieldBuilder().addBuilder(
-            wormhole.game.network.GameProto.Player.getDefaultInstance());
+            com.wormhole.network.PlayerProto.Player.getDefaultInstance());
       }
-      public wormhole.game.network.GameProto.Player.Builder addPlayerBuilder(
+      public com.wormhole.network.PlayerProto.Player.Builder addPlayerBuilder(
           int index) {
         return getPlayerFieldBuilder().addBuilder(
-            index, wormhole.game.network.GameProto.Player.getDefaultInstance());
+            index, com.wormhole.network.PlayerProto.Player.getDefaultInstance());
       }
-      public java.util.List<wormhole.game.network.GameProto.Player.Builder> 
+      public java.util.List<com.wormhole.network.PlayerProto.Player.Builder> 
            getPlayerBuilderList() {
         return getPlayerFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          wormhole.game.network.GameProto.Player, wormhole.game.network.GameProto.Player.Builder, wormhole.game.network.GameProto.PlayerOrBuilder> 
+          com.wormhole.network.PlayerProto.Player, com.wormhole.network.PlayerProto.Player.Builder, com.wormhole.network.PlayerProto.PlayerOrBuilder> 
           getPlayerFieldBuilder() {
         if (playerBuilder_ == null) {
           playerBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              wormhole.game.network.GameProto.Player, wormhole.game.network.GameProto.Player.Builder, wormhole.game.network.GameProto.PlayerOrBuilder>(
+              com.wormhole.network.PlayerProto.Player, com.wormhole.network.PlayerProto.Player.Builder, com.wormhole.network.PlayerProto.PlayerOrBuilder>(
                   player_,
                   ((bitField0_ & 0x00000008) == 0x00000008),
                   getParentForChildren(),
@@ -2738,417 +2738,6 @@ public final class GameProto {
     }
     
     // @@protoc_insertion_point(class_scope:wormhole.UnitInfo)
-  }
-  
-  public interface PlayerOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // required int32 id = 1;
-    boolean hasId();
-    int getId();
-    
-    // required int32 color = 2;
-    boolean hasColor();
-    int getColor();
-  }
-  public static final class Player extends
-      com.google.protobuf.GeneratedMessage
-      implements PlayerOrBuilder {
-    // Use Player.newBuilder() to construct.
-    private Player(Builder builder) {
-      super(builder);
-    }
-    private Player(boolean noInit) {}
-    
-    private static final Player defaultInstance;
-    public static Player getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public Player getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return wormhole.game.network.GameProto.internal_static_wormhole_Player_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return wormhole.game.network.GameProto.internal_static_wormhole_Player_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // required int32 id = 1;
-    public static final int ID_FIELD_NUMBER = 1;
-    private int id_;
-    public boolean hasId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public int getId() {
-      return id_;
-    }
-    
-    // required int32 color = 2;
-    public static final int COLOR_FIELD_NUMBER = 2;
-    private int color_;
-    public boolean hasColor() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public int getColor() {
-      return color_;
-    }
-    
-    private void initFields() {
-      id_ = 0;
-      color_ = 0;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      if (!hasId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasColor()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, id_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, color_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, id_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, color_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static wormhole.game.network.GameProto.Player parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static wormhole.game.network.GameProto.Player parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static wormhole.game.network.GameProto.Player parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static wormhole.game.network.GameProto.Player parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static wormhole.game.network.GameProto.Player parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static wormhole.game.network.GameProto.Player parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static wormhole.game.network.GameProto.Player parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static wormhole.game.network.GameProto.Player parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static wormhole.game.network.GameProto.Player parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static wormhole.game.network.GameProto.Player parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(wormhole.game.network.GameProto.Player prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements wormhole.game.network.GameProto.PlayerOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return wormhole.game.network.GameProto.internal_static_wormhole_Player_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return wormhole.game.network.GameProto.internal_static_wormhole_Player_fieldAccessorTable;
-      }
-      
-      // Construct using wormhole.game.network.GameProto.Player.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        id_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        color_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return wormhole.game.network.GameProto.Player.getDescriptor();
-      }
-      
-      public wormhole.game.network.GameProto.Player getDefaultInstanceForType() {
-        return wormhole.game.network.GameProto.Player.getDefaultInstance();
-      }
-      
-      public wormhole.game.network.GameProto.Player build() {
-        wormhole.game.network.GameProto.Player result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private wormhole.game.network.GameProto.Player buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        wormhole.game.network.GameProto.Player result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public wormhole.game.network.GameProto.Player buildPartial() {
-        wormhole.game.network.GameProto.Player result = new wormhole.game.network.GameProto.Player(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.id_ = id_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.color_ = color_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof wormhole.game.network.GameProto.Player) {
-          return mergeFrom((wormhole.game.network.GameProto.Player)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(wormhole.game.network.GameProto.Player other) {
-        if (other == wormhole.game.network.GameProto.Player.getDefaultInstance()) return this;
-        if (other.hasId()) {
-          setId(other.getId());
-        }
-        if (other.hasColor()) {
-          setColor(other.getColor());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        if (!hasId()) {
-          
-          return false;
-        }
-        if (!hasColor()) {
-          
-          return false;
-        }
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              id_ = input.readInt32();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              color_ = input.readInt32();
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // required int32 id = 1;
-      private int id_ ;
-      public boolean hasId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public int getId() {
-        return id_;
-      }
-      public Builder setId(int value) {
-        bitField0_ |= 0x00000001;
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        id_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // required int32 color = 2;
-      private int color_ ;
-      public boolean hasColor() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public int getColor() {
-        return color_;
-      }
-      public Builder setColor(int value) {
-        bitField0_ |= 0x00000002;
-        color_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearColor() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        color_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:wormhole.Player)
-    }
-    
-    static {
-      defaultInstance = new Player(true);
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:wormhole.Player)
   }
   
   public interface VictoryOrBuilder
@@ -6924,11 +6513,6 @@ public final class GameProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_wormhole_UnitInfo_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_wormhole_Player_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_wormhole_Player_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_wormhole_Victory_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -6972,36 +6556,35 @@ public final class GameProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\ngame.proto\022\010wormhole\":\n\023IncomingMessag" +
-      "eType\022#\n\004type\030\001 \002(\0162\025.wormhole.MessageTy" +
-      "pe\"m\n\003Map\022\r\n\005width\030\003 \002(\005\022\016\n\006height\030\004 \002(\005" +
-      "\022%\n\005space\030\001 \003(\0132\026.wormhole.MapGridSpace\022" +
-      " \n\006player\030\002 \003(\0132\020.wormhole.Player\"\204\001\n\014Ma" +
-      "pGridSpace\022\t\n\001x\030\004 \002(\005\022\t\n\001y\030\005 \002(\005\022\024\n\014prod" +
-      "uctivity\030\001 \002(\005\022\017\n\007defense\030\002 \002(\005\022\020\n\010owner" +
-      "_id\030\006 \001(\005\022%\n\tunit_info\030\007 \003(\0132\022.wormhole." +
-      "UnitInfo\"(\n\010UnitInfo\022\r\n\005owner\030\001 \002(\005\022\r\n\005c" +
-      "ount\030\002 \002(\005\"#\n\006Player\022\n\n\002id\030\001 \002(\005\022\r\n\005colo",
-      "r\030\002 \002(\005\"\034\n\007Victory\022\021\n\twinner_id\030\001 \002(\005\"@\n" +
-      "\006Attack\022\r\n\005fromX\030\001 \002(\005\022\r\n\005fromY\030\002 \002(\005\022\013\n" +
-      "\003toX\030\003 \002(\005\022\013\n\003toY\030\004 \002(\005\"H\n\013UnitArrival\022\t" +
-      "\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022#\n\007arrived\030\003 \002(\0132\022." +
-      "wormhole.UnitInfo\"L\n\rAllUnitChange\022\t\n\001x\030" +
-      "\001 \002(\005\022\t\n\001y\030\002 \002(\005\022%\n\tunit_info\030\003 \003(\0132\022.wo" +
-      "rmhole.UnitInfo\"9\n\013OwnerChange\022\t\n\001x\030\001 \002(" +
-      "\005\022\t\n\001y\030\002 \002(\005\022\024\n\014new_owner_id\030\003 \002(\005\"N\n\014Ne" +
-      "wUnitGroup\022\n\n\002id\030\001 \002(\005\022\r\n\005owner\030\004 \002(\005\022\r\n" +
-      "\005count\030\005 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\"N\n\021Un",
-      "itGroupPosition\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \001(\005\022\t" +
-      "\n\001y\030\003 \001(\005\022\027\n\010complete\030\004 \001(\010:\005false*\373\001\n\013M" +
-      "essageType\022\007\n\003MAP\020\000\022\n\n\006ATTACK\020\001\022\020\n\014UNIT_" +
-      "ARRIVAL\020\002\022\023\n\017ALL_UNIT_CHANGE\020\003\022\020\n\014OWNER_" +
-      "CHANGE\020\004\022\016\n\nDISCONNECT\020\005\022\024\n\020SEND_PLAYER_" +
-      "DATA\020\006\022\017\n\013PLAYER_DATA\020\007\022\022\n\016NEW_UNIT_GROU" +
-      "P\020\010\022\027\n\023UNIT_GROUP_POSITION\020\t\022\016\n\nLEAVE_GA" +
-      "ME\020\n\022\026\n\022CONFIRM_LEAVE_GAME\020\013\022\022\n\016PLAYER_V" +
-      "ICTORY\020\014B\"\n\025wormhole.game.networkB\tGameP" +
-      "roto"
+      "\n\ngame.proto\022\010wormhole\032\014player.proto\":\n\023" +
+      "IncomingMessageType\022#\n\004type\030\001 \002(\0162\025.worm" +
+      "hole.MessageType\"m\n\003Map\022\r\n\005width\030\003 \002(\005\022\016" +
+      "\n\006height\030\004 \002(\005\022%\n\005space\030\001 \003(\0132\026.wormhole" +
+      ".MapGridSpace\022 \n\006player\030\002 \003(\0132\020.wormhole" +
+      ".Player\"\204\001\n\014MapGridSpace\022\t\n\001x\030\004 \002(\005\022\t\n\001y" +
+      "\030\005 \002(\005\022\024\n\014productivity\030\001 \002(\005\022\017\n\007defense\030" +
+      "\002 \002(\005\022\020\n\010owner_id\030\006 \001(\005\022%\n\tunit_info\030\007 \003" +
+      "(\0132\022.wormhole.UnitInfo\"(\n\010UnitInfo\022\r\n\005ow" +
+      "ner\030\001 \002(\005\022\r\n\005count\030\002 \002(\005\"\034\n\007Victory\022\021\n\tw",
+      "inner_id\030\001 \002(\005\"@\n\006Attack\022\r\n\005fromX\030\001 \002(\005\022" +
+      "\r\n\005fromY\030\002 \002(\005\022\013\n\003toX\030\003 \002(\005\022\013\n\003toY\030\004 \002(\005" +
+      "\"H\n\013UnitArrival\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022#\n" +
+      "\007arrived\030\003 \002(\0132\022.wormhole.UnitInfo\"L\n\rAl" +
+      "lUnitChange\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022%\n\tuni" +
+      "t_info\030\003 \003(\0132\022.wormhole.UnitInfo\"9\n\013Owne" +
+      "rChange\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\024\n\014new_own" +
+      "er_id\030\003 \002(\005\"N\n\014NewUnitGroup\022\n\n\002id\030\001 \002(\005\022" +
+      "\r\n\005owner\030\004 \002(\005\022\r\n\005count\030\005 \002(\005\022\t\n\001x\030\002 \002(\005" +
+      "\022\t\n\001y\030\003 \002(\005\"N\n\021UnitGroupPosition\022\n\n\002id\030\001",
+      " \002(\005\022\t\n\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\022\027\n\010complete\030\004" +
+      " \001(\010:\005false*\373\001\n\013MessageType\022\007\n\003MAP\020\000\022\n\n\006" +
+      "ATTACK\020\001\022\020\n\014UNIT_ARRIVAL\020\002\022\023\n\017ALL_UNIT_C" +
+      "HANGE\020\003\022\020\n\014OWNER_CHANGE\020\004\022\016\n\nDISCONNECT\020" +
+      "\005\022\024\n\020SEND_PLAYER_DATA\020\006\022\017\n\013PLAYER_DATA\020\007" +
+      "\022\022\n\016NEW_UNIT_GROUP\020\010\022\027\n\023UNIT_GROUP_POSIT" +
+      "ION\020\t\022\016\n\nLEAVE_GAME\020\n\022\026\n\022CONFIRM_LEAVE_G" +
+      "AME\020\013\022\022\n\016PLAYER_VICTORY\020\014B\"\n\025wormhole.ga" +
+      "me.networkB\tGameProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -7040,16 +6623,8 @@ public final class GameProto {
               new java.lang.String[] { "Owner", "Count", },
               wormhole.game.network.GameProto.UnitInfo.class,
               wormhole.game.network.GameProto.UnitInfo.Builder.class);
-          internal_static_wormhole_Player_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_wormhole_Player_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_wormhole_Player_descriptor,
-              new java.lang.String[] { "Id", "Color", },
-              wormhole.game.network.GameProto.Player.class,
-              wormhole.game.network.GameProto.Player.Builder.class);
           internal_static_wormhole_Victory_descriptor =
-            getDescriptor().getMessageTypes().get(5);
+            getDescriptor().getMessageTypes().get(4);
           internal_static_wormhole_Victory_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_Victory_descriptor,
@@ -7057,7 +6632,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.Victory.class,
               wormhole.game.network.GameProto.Victory.Builder.class);
           internal_static_wormhole_Attack_descriptor =
-            getDescriptor().getMessageTypes().get(6);
+            getDescriptor().getMessageTypes().get(5);
           internal_static_wormhole_Attack_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_Attack_descriptor,
@@ -7065,7 +6640,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.Attack.class,
               wormhole.game.network.GameProto.Attack.Builder.class);
           internal_static_wormhole_UnitArrival_descriptor =
-            getDescriptor().getMessageTypes().get(7);
+            getDescriptor().getMessageTypes().get(6);
           internal_static_wormhole_UnitArrival_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_UnitArrival_descriptor,
@@ -7073,7 +6648,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.UnitArrival.class,
               wormhole.game.network.GameProto.UnitArrival.Builder.class);
           internal_static_wormhole_AllUnitChange_descriptor =
-            getDescriptor().getMessageTypes().get(8);
+            getDescriptor().getMessageTypes().get(7);
           internal_static_wormhole_AllUnitChange_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_AllUnitChange_descriptor,
@@ -7081,7 +6656,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.AllUnitChange.class,
               wormhole.game.network.GameProto.AllUnitChange.Builder.class);
           internal_static_wormhole_OwnerChange_descriptor =
-            getDescriptor().getMessageTypes().get(9);
+            getDescriptor().getMessageTypes().get(8);
           internal_static_wormhole_OwnerChange_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_OwnerChange_descriptor,
@@ -7089,7 +6664,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.OwnerChange.class,
               wormhole.game.network.GameProto.OwnerChange.Builder.class);
           internal_static_wormhole_NewUnitGroup_descriptor =
-            getDescriptor().getMessageTypes().get(10);
+            getDescriptor().getMessageTypes().get(9);
           internal_static_wormhole_NewUnitGroup_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_NewUnitGroup_descriptor,
@@ -7097,7 +6672,7 @@ public final class GameProto {
               wormhole.game.network.GameProto.NewUnitGroup.class,
               wormhole.game.network.GameProto.NewUnitGroup.Builder.class);
           internal_static_wormhole_UnitGroupPosition_descriptor =
-            getDescriptor().getMessageTypes().get(11);
+            getDescriptor().getMessageTypes().get(10);
           internal_static_wormhole_UnitGroupPosition_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wormhole_UnitGroupPosition_descriptor,
@@ -7110,6 +6685,7 @@ public final class GameProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.wormhole.network.PlayerProto.getDescriptor(),
         }, assigner);
   }
   

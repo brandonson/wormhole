@@ -3,6 +3,8 @@ package wormhole;
 option java_package = "wormhole.game.network";
 option java_outer_classname = "GameProto";
 
+import "player.proto";
+
 //Indicates the kind of message being sent/received.
 enum MessageType{
 	MAP = 0;
@@ -45,10 +47,6 @@ message MapGridSpace{
 message UnitInfo{
 	required int32 owner = 1;
 	required int32 count = 2;
-}
-message Player{
-	required int32 id = 1;
-	required int32 color = 2;
 }
 message Victory{
 	required int32 winner_id = 1;

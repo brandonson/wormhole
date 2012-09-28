@@ -462,14 +462,14 @@ public final class LobbyProto {
   public interface PersonSetInfoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // repeated .wormhole.PersonInfo info = 1;
-    java.util.List<wormhole.lobby.network.LobbyProto.PersonInfo> 
+    // repeated .wormhole.Player info = 1;
+    java.util.List<com.wormhole.network.PlayerProto.Player> 
         getInfoList();
-    wormhole.lobby.network.LobbyProto.PersonInfo getInfo(int index);
+    com.wormhole.network.PlayerProto.Player getInfo(int index);
     int getInfoCount();
-    java.util.List<? extends wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder> 
+    java.util.List<? extends com.wormhole.network.PlayerProto.PlayerOrBuilder> 
         getInfoOrBuilderList();
-    wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder getInfoOrBuilder(
+    com.wormhole.network.PlayerProto.PlayerOrBuilder getInfoOrBuilder(
         int index);
   }
   public static final class PersonSetInfo extends
@@ -500,23 +500,23 @@ public final class LobbyProto {
       return wormhole.lobby.network.LobbyProto.internal_static_wormhole_PersonSetInfo_fieldAccessorTable;
     }
     
-    // repeated .wormhole.PersonInfo info = 1;
+    // repeated .wormhole.Player info = 1;
     public static final int INFO_FIELD_NUMBER = 1;
-    private java.util.List<wormhole.lobby.network.LobbyProto.PersonInfo> info_;
-    public java.util.List<wormhole.lobby.network.LobbyProto.PersonInfo> getInfoList() {
+    private java.util.List<com.wormhole.network.PlayerProto.Player> info_;
+    public java.util.List<com.wormhole.network.PlayerProto.Player> getInfoList() {
       return info_;
     }
-    public java.util.List<? extends wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder> 
+    public java.util.List<? extends com.wormhole.network.PlayerProto.PlayerOrBuilder> 
         getInfoOrBuilderList() {
       return info_;
     }
     public int getInfoCount() {
       return info_.size();
     }
-    public wormhole.lobby.network.LobbyProto.PersonInfo getInfo(int index) {
+    public com.wormhole.network.PlayerProto.Player getInfo(int index) {
       return info_.get(index);
     }
-    public wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder getInfoOrBuilder(
+    public com.wormhole.network.PlayerProto.PlayerOrBuilder getInfoOrBuilder(
         int index) {
       return info_.get(index);
     }
@@ -814,7 +814,7 @@ public final class LobbyProto {
               break;
             }
             case 10: {
-              wormhole.lobby.network.LobbyProto.PersonInfo.Builder subBuilder = wormhole.lobby.network.LobbyProto.PersonInfo.newBuilder();
+              com.wormhole.network.PlayerProto.Player.Builder subBuilder = com.wormhole.network.PlayerProto.Player.newBuilder();
               input.readMessage(subBuilder, extensionRegistry);
               addInfo(subBuilder.buildPartial());
               break;
@@ -825,20 +825,20 @@ public final class LobbyProto {
       
       private int bitField0_;
       
-      // repeated .wormhole.PersonInfo info = 1;
-      private java.util.List<wormhole.lobby.network.LobbyProto.PersonInfo> info_ =
+      // repeated .wormhole.Player info = 1;
+      private java.util.List<com.wormhole.network.PlayerProto.Player> info_ =
         java.util.Collections.emptyList();
       private void ensureInfoIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          info_ = new java.util.ArrayList<wormhole.lobby.network.LobbyProto.PersonInfo>(info_);
+          info_ = new java.util.ArrayList<com.wormhole.network.PlayerProto.Player>(info_);
           bitField0_ |= 0x00000001;
          }
       }
       
       private com.google.protobuf.RepeatedFieldBuilder<
-          wormhole.lobby.network.LobbyProto.PersonInfo, wormhole.lobby.network.LobbyProto.PersonInfo.Builder, wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder> infoBuilder_;
+          com.wormhole.network.PlayerProto.Player, com.wormhole.network.PlayerProto.Player.Builder, com.wormhole.network.PlayerProto.PlayerOrBuilder> infoBuilder_;
       
-      public java.util.List<wormhole.lobby.network.LobbyProto.PersonInfo> getInfoList() {
+      public java.util.List<com.wormhole.network.PlayerProto.Player> getInfoList() {
         if (infoBuilder_ == null) {
           return java.util.Collections.unmodifiableList(info_);
         } else {
@@ -852,7 +852,7 @@ public final class LobbyProto {
           return infoBuilder_.getCount();
         }
       }
-      public wormhole.lobby.network.LobbyProto.PersonInfo getInfo(int index) {
+      public com.wormhole.network.PlayerProto.Player getInfo(int index) {
         if (infoBuilder_ == null) {
           return info_.get(index);
         } else {
@@ -860,7 +860,7 @@ public final class LobbyProto {
         }
       }
       public Builder setInfo(
-          int index, wormhole.lobby.network.LobbyProto.PersonInfo value) {
+          int index, com.wormhole.network.PlayerProto.Player value) {
         if (infoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -874,7 +874,7 @@ public final class LobbyProto {
         return this;
       }
       public Builder setInfo(
-          int index, wormhole.lobby.network.LobbyProto.PersonInfo.Builder builderForValue) {
+          int index, com.wormhole.network.PlayerProto.Player.Builder builderForValue) {
         if (infoBuilder_ == null) {
           ensureInfoIsMutable();
           info_.set(index, builderForValue.build());
@@ -884,7 +884,7 @@ public final class LobbyProto {
         }
         return this;
       }
-      public Builder addInfo(wormhole.lobby.network.LobbyProto.PersonInfo value) {
+      public Builder addInfo(com.wormhole.network.PlayerProto.Player value) {
         if (infoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -898,7 +898,7 @@ public final class LobbyProto {
         return this;
       }
       public Builder addInfo(
-          int index, wormhole.lobby.network.LobbyProto.PersonInfo value) {
+          int index, com.wormhole.network.PlayerProto.Player value) {
         if (infoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -912,7 +912,7 @@ public final class LobbyProto {
         return this;
       }
       public Builder addInfo(
-          wormhole.lobby.network.LobbyProto.PersonInfo.Builder builderForValue) {
+          com.wormhole.network.PlayerProto.Player.Builder builderForValue) {
         if (infoBuilder_ == null) {
           ensureInfoIsMutable();
           info_.add(builderForValue.build());
@@ -923,7 +923,7 @@ public final class LobbyProto {
         return this;
       }
       public Builder addInfo(
-          int index, wormhole.lobby.network.LobbyProto.PersonInfo.Builder builderForValue) {
+          int index, com.wormhole.network.PlayerProto.Player.Builder builderForValue) {
         if (infoBuilder_ == null) {
           ensureInfoIsMutable();
           info_.add(index, builderForValue.build());
@@ -934,7 +934,7 @@ public final class LobbyProto {
         return this;
       }
       public Builder addAllInfo(
-          java.lang.Iterable<? extends wormhole.lobby.network.LobbyProto.PersonInfo> values) {
+          java.lang.Iterable<? extends com.wormhole.network.PlayerProto.Player> values) {
         if (infoBuilder_ == null) {
           ensureInfoIsMutable();
           super.addAll(values, info_);
@@ -964,18 +964,18 @@ public final class LobbyProto {
         }
         return this;
       }
-      public wormhole.lobby.network.LobbyProto.PersonInfo.Builder getInfoBuilder(
+      public com.wormhole.network.PlayerProto.Player.Builder getInfoBuilder(
           int index) {
         return getInfoFieldBuilder().getBuilder(index);
       }
-      public wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder getInfoOrBuilder(
+      public com.wormhole.network.PlayerProto.PlayerOrBuilder getInfoOrBuilder(
           int index) {
         if (infoBuilder_ == null) {
           return info_.get(index);  } else {
           return infoBuilder_.getMessageOrBuilder(index);
         }
       }
-      public java.util.List<? extends wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder> 
+      public java.util.List<? extends com.wormhole.network.PlayerProto.PlayerOrBuilder> 
            getInfoOrBuilderList() {
         if (infoBuilder_ != null) {
           return infoBuilder_.getMessageOrBuilderList();
@@ -983,25 +983,25 @@ public final class LobbyProto {
           return java.util.Collections.unmodifiableList(info_);
         }
       }
-      public wormhole.lobby.network.LobbyProto.PersonInfo.Builder addInfoBuilder() {
+      public com.wormhole.network.PlayerProto.Player.Builder addInfoBuilder() {
         return getInfoFieldBuilder().addBuilder(
-            wormhole.lobby.network.LobbyProto.PersonInfo.getDefaultInstance());
+            com.wormhole.network.PlayerProto.Player.getDefaultInstance());
       }
-      public wormhole.lobby.network.LobbyProto.PersonInfo.Builder addInfoBuilder(
+      public com.wormhole.network.PlayerProto.Player.Builder addInfoBuilder(
           int index) {
         return getInfoFieldBuilder().addBuilder(
-            index, wormhole.lobby.network.LobbyProto.PersonInfo.getDefaultInstance());
+            index, com.wormhole.network.PlayerProto.Player.getDefaultInstance());
       }
-      public java.util.List<wormhole.lobby.network.LobbyProto.PersonInfo.Builder> 
+      public java.util.List<com.wormhole.network.PlayerProto.Player.Builder> 
            getInfoBuilderList() {
         return getInfoFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          wormhole.lobby.network.LobbyProto.PersonInfo, wormhole.lobby.network.LobbyProto.PersonInfo.Builder, wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder> 
+          com.wormhole.network.PlayerProto.Player, com.wormhole.network.PlayerProto.Player.Builder, com.wormhole.network.PlayerProto.PlayerOrBuilder> 
           getInfoFieldBuilder() {
         if (infoBuilder_ == null) {
           infoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              wormhole.lobby.network.LobbyProto.PersonInfo, wormhole.lobby.network.LobbyProto.PersonInfo.Builder, wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder>(
+              com.wormhole.network.PlayerProto.Player, com.wormhole.network.PlayerProto.Player.Builder, com.wormhole.network.PlayerProto.PlayerOrBuilder>(
                   info_,
                   ((bitField0_ & 0x00000001) == 0x00000001),
                   getParentForChildren(),
@@ -1931,454 +1931,6 @@ public final class LobbyProto {
     // @@protoc_insertion_point(class_scope:wormhole.ColorData)
   }
   
-  public interface PersonInfoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // required string name = 1;
-    boolean hasName();
-    String getName();
-    
-    // required int32 color = 2;
-    boolean hasColor();
-    int getColor();
-  }
-  public static final class PersonInfo extends
-      com.google.protobuf.GeneratedMessage
-      implements PersonInfoOrBuilder {
-    // Use PersonInfo.newBuilder() to construct.
-    private PersonInfo(Builder builder) {
-      super(builder);
-    }
-    private PersonInfo(boolean noInit) {}
-    
-    private static final PersonInfo defaultInstance;
-    public static PersonInfo getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public PersonInfo getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return wormhole.lobby.network.LobbyProto.internal_static_wormhole_PersonInfo_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return wormhole.lobby.network.LobbyProto.internal_static_wormhole_PersonInfo_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // required string name = 1;
-    public static final int NAME_FIELD_NUMBER = 1;
-    private java.lang.Object name_;
-    public boolean hasName() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public String getName() {
-      java.lang.Object ref = name_;
-      if (ref instanceof String) {
-        return (String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
-        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          name_ = s;
-        }
-        return s;
-      }
-    }
-    private com.google.protobuf.ByteString getNameBytes() {
-      java.lang.Object ref = name_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        name_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    
-    // required int32 color = 2;
-    public static final int COLOR_FIELD_NUMBER = 2;
-    private int color_;
-    public boolean hasColor() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public int getColor() {
-      return color_;
-    }
-    
-    private void initFields() {
-      name_ = "";
-      color_ = 0;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      if (!hasName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasColor()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getNameBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, color_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getNameBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, color_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static wormhole.lobby.network.LobbyProto.PersonInfo parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(wormhole.lobby.network.LobbyProto.PersonInfo prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements wormhole.lobby.network.LobbyProto.PersonInfoOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return wormhole.lobby.network.LobbyProto.internal_static_wormhole_PersonInfo_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return wormhole.lobby.network.LobbyProto.internal_static_wormhole_PersonInfo_fieldAccessorTable;
-      }
-      
-      // Construct using wormhole.lobby.network.LobbyProto.PersonInfo.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        name_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        color_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return wormhole.lobby.network.LobbyProto.PersonInfo.getDescriptor();
-      }
-      
-      public wormhole.lobby.network.LobbyProto.PersonInfo getDefaultInstanceForType() {
-        return wormhole.lobby.network.LobbyProto.PersonInfo.getDefaultInstance();
-      }
-      
-      public wormhole.lobby.network.LobbyProto.PersonInfo build() {
-        wormhole.lobby.network.LobbyProto.PersonInfo result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private wormhole.lobby.network.LobbyProto.PersonInfo buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        wormhole.lobby.network.LobbyProto.PersonInfo result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public wormhole.lobby.network.LobbyProto.PersonInfo buildPartial() {
-        wormhole.lobby.network.LobbyProto.PersonInfo result = new wormhole.lobby.network.LobbyProto.PersonInfo(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.name_ = name_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.color_ = color_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof wormhole.lobby.network.LobbyProto.PersonInfo) {
-          return mergeFrom((wormhole.lobby.network.LobbyProto.PersonInfo)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(wormhole.lobby.network.LobbyProto.PersonInfo other) {
-        if (other == wormhole.lobby.network.LobbyProto.PersonInfo.getDefaultInstance()) return this;
-        if (other.hasName()) {
-          setName(other.getName());
-        }
-        if (other.hasColor()) {
-          setColor(other.getColor());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        if (!hasName()) {
-          
-          return false;
-        }
-        if (!hasColor()) {
-          
-          return false;
-        }
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 10: {
-              bitField0_ |= 0x00000001;
-              name_ = input.readBytes();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              color_ = input.readInt32();
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // required string name = 1;
-      private java.lang.Object name_ = "";
-      public boolean hasName() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          name_ = s;
-          return s;
-        } else {
-          return (String) ref;
-        }
-      }
-      public Builder setName(String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        name_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        name_ = getDefaultInstance().getName();
-        onChanged();
-        return this;
-      }
-      void setName(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000001;
-        name_ = value;
-        onChanged();
-      }
-      
-      // required int32 color = 2;
-      private int color_ ;
-      public boolean hasColor() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public int getColor() {
-        return color_;
-      }
-      public Builder setColor(int value) {
-        bitField0_ |= 0x00000002;
-        color_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearColor() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        color_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:wormhole.PersonInfo)
-    }
-    
-    static {
-      defaultInstance = new PersonInfo(true);
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:wormhole.PersonInfo)
-  }
-  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_wormhole_LobbyMessageType_descriptor;
   private static
@@ -2399,11 +1951,6 @@ public final class LobbyProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_wormhole_ColorData_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_wormhole_PersonInfo_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_wormhole_PersonInfo_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2413,19 +1960,19 @@ public final class LobbyProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013lobby.proto\022\010wormhole\"7\n\020LobbyMessageT" +
-      "ype\022#\n\004type\030\001 \002(\0162\025.wormhole.MessageType" +
-      "\"3\n\rPersonSetInfo\022\"\n\004info\030\001 \003(\0132\024.wormho" +
-      "le.PersonInfo\"8\n\021PossibleColorList\022#\n\006co" +
-      "lors\030\001 \003(\0132\023.wormhole.ColorData\"\032\n\tColor" +
-      "Data\022\r\n\005color\030\001 \002(\005\")\n\nPersonInfo\022\014\n\004nam" +
-      "e\030\001 \002(\t\022\r\n\005color\030\002 \002(\005*\330\001\n\013MessageType\022\016" +
-      "\n\nNEW_PERSON\020\000\022\017\n\013LOST_PERSON\020\001\022\023\n\017PERSO" +
-      "N_SET_INFO\020\002\022\t\n\005START\020\003\022\021\n\rSTART_CONFIRM" +
-      "\020\004\022\017\n\013CHANGE_INFO\020\005\022\016\n\nDISCONNECT\020\006\022\023\n\017C",
-      "OLOR_AVAILABLE\020\007\022\017\n\013COLOR_TAKEN\020\010\022\022\n\016RET" +
-      "URN_TO_MAIN\020\t\022\032\n\026CONFIRM_RETURN_TO_MAIN\020" +
-      "\nB$\n\026wormhole.lobby.networkB\nLobbyProto"
+      "\n\013lobby.proto\022\010wormhole\032\014player.proto\"7\n" +
+      "\020LobbyMessageType\022#\n\004type\030\001 \002(\0162\025.wormho" +
+      "le.MessageType\"/\n\rPersonSetInfo\022\036\n\004info\030" +
+      "\001 \003(\0132\020.wormhole.Player\"8\n\021PossibleColor" +
+      "List\022#\n\006colors\030\001 \003(\0132\023.wormhole.ColorDat" +
+      "a\"\032\n\tColorData\022\r\n\005color\030\001 \002(\005*\330\001\n\013Messag" +
+      "eType\022\016\n\nNEW_PERSON\020\000\022\017\n\013LOST_PERSON\020\001\022\023" +
+      "\n\017PERSON_SET_INFO\020\002\022\t\n\005START\020\003\022\021\n\rSTART_" +
+      "CONFIRM\020\004\022\017\n\013CHANGE_INFO\020\005\022\016\n\nDISCONNECT" +
+      "\020\006\022\023\n\017COLOR_AVAILABLE\020\007\022\017\n\013COLOR_TAKEN\020\010",
+      "\022\022\n\016RETURN_TO_MAIN\020\t\022\032\n\026CONFIRM_RETURN_T" +
+      "O_MAIN\020\nB$\n\026wormhole.lobby.networkB\nLobb" +
+      "yProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2464,20 +2011,13 @@ public final class LobbyProto {
               new java.lang.String[] { "Color", },
               wormhole.lobby.network.LobbyProto.ColorData.class,
               wormhole.lobby.network.LobbyProto.ColorData.Builder.class);
-          internal_static_wormhole_PersonInfo_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_wormhole_PersonInfo_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_wormhole_PersonInfo_descriptor,
-              new java.lang.String[] { "Name", "Color", },
-              wormhole.lobby.network.LobbyProto.PersonInfo.class,
-              wormhole.lobby.network.LobbyProto.PersonInfo.Builder.class);
           return null;
         }
       };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.wormhole.network.PlayerProto.getDescriptor(),
         }, assigner);
   }
   

@@ -27,6 +27,7 @@ import javax.swing.JTextField
 import javax.swing.JScrollPane
 import java.net.InetAddress
 import java.net.UnknownHostException
+import com.wormhole.network.PlayerProto
 /**
  * Client for game lobbies.
  */
@@ -37,10 +38,10 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	def in = data.in
 	def out = data.out
 	var colors:List[(JRadioButton, Int)] = Nil
-	val model = new DefaultListModel[LobbyProto.PersonInfo]
+	val model = new DefaultListModel[PlayerProto.Player]
 	val playerDisplay = new JList(model)
 	val frame = new JFrame("Wormhole Lobby")
-	var ownInfo:LobbyProto.PersonInfo = null
+	var ownInfo:PlayerProto.Player = null
 	var continue = true
 	
 	val startButton = new JButton("Start")
@@ -67,7 +68,7 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 		val nameChangeButton = new JButton(new AbstractAction("Set Name"){
 			def actionPerformed(evt:ActionEvent){
 				if(nameText.getText().length()>0){
-					ownInfo = LobbyProto.PersonInfo.newBuilder(ownInfo).setName(nameText.getText()).build()
+					ownInfo = PlayerProto.Player.newBuilder(ownInfo).setName(nameText.getText()).build()
 					val mType = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
 					out.write(mType, ownInfo)
 					nameText.setText("")
@@ -114,14 +115,14 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 		}).toList
 	}
 	def setupOwnInfo(){
-		ownInfo = LobbyProto.PersonInfo.parseDelimitedFrom(in)
+		ownInfo = PlayerProto.Player.parseDelimitedFrom(in)
 		readPersonSetInfo()
 		colors find {_._2==ownInfo.getColor()} foreach {_._1.setSelected(true)}
 	}
 	def getNameFromUser(){
 		val name = JOptionPane.showInputDialog(null, "Enter name:", "Wormhole Client", JOptionPane.PLAIN_MESSAGE)
 		if(name != null&& !name.isEmpty()){
-			ownInfo = LobbyProto.PersonInfo.newBuilder(ownInfo).setName(name).build()
+			ownInfo = PlayerProto.Player.newBuilder(ownInfo).setName(name).build()
 			val mType = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
 			out.write(mType, ownInfo)
 		}
@@ -145,18 +146,18 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 			val lmt = LobbyProto.LobbyMessageType.parseDelimitedFrom(in).getType()
 			lmt match{
 				case NEW_PERSON =>
-					val person = LobbyProto.PersonInfo.parseDelimitedFrom(in)
+					val person = PlayerProto.Player.parseDelimitedFrom(in)
 					model addElement person
 					colors.find {_._2 == person.getColor()} foreach {_._1.setEnabled(false)}
 				case LOST_PERSON =>
-					val person = LobbyProto.PersonInfo.parseDelimitedFrom(in)
+					val person = PlayerProto.Player.parseDelimitedFrom(in)
 					colors.find {_._2 == person.getColor()} foreach {_._1.setEnabled(true)}
 					model removeElement person
 				case PERSON_SET_INFO =>
 					readPersonSetInfo()
 				case CHANGE_INFO =>
-					val from = LobbyProto.PersonInfo.parseDelimitedFrom(in)
-					val to = LobbyProto.PersonInfo.parseDelimitedFrom(in)
+					val from = PlayerProto.Player.parseDelimitedFrom(in)
+					val to = PlayerProto.Player.parseDelimitedFrom(in)
 					val idx = model.indexOf(from)
 					model.set(idx, to)
 					if(from.getColor()!=to.getColor()){
@@ -193,7 +194,7 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	 */
 	def readPersonSetInfo(){
 		model.removeAllElements()
-		val buffer:ListBuffer[LobbyProto.PersonInfo] = new ListBuffer[LobbyProto.PersonInfo]()
+		val buffer:ListBuffer[PlayerProto.Player] = new ListBuffer[PlayerProto.Player]()
 		buffer ++= (LobbyProto.PersonSetInfo.parseDelimitedFrom(in).getInfoList())
 		colors foreach {_._1.setEnabled(true)}
 		buffer foreach {
@@ -222,7 +223,7 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 			colors find {_._1==button} foreach {
 				tup =>
 					val color = tup._2
-					ownInfo = LobbyProto.PersonInfo.newBuilder(ownInfo).setColor(color).build()
+					ownInfo = PlayerProto.Player.newBuilder(ownInfo).setColor(color).build()
 					val mType = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
 					out.write(mType, ownInfo)
 			}

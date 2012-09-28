@@ -9,6 +9,7 @@ import akka.util.duration._
 import wormhole.actor._
 import wormhole.graphics.PlanetSprite
 import wormhole.ThreadsafeMessageWriter
+import com.wormhole.network.PlayerProto
 package object network {
 	
 	/**
@@ -41,8 +42,9 @@ package object network {
 		val playerList = convert.players
 		playerList foreach {
 			player =>
-				val builder = GameProto.Player.newBuilder()
+				val builder = PlayerProto.Player.newBuilder()
 				builder.setId(player.id)
+				builder.setName(player.name)
 				builder.setColor(player.color.getRGB())
 				mapBuild.addPlayer(builder.build())
 		}
@@ -72,7 +74,7 @@ package object network {
 		val h = convert.getHeight()
 		val players:List[Player] = convert.getPlayerList() map {
 			playInf =>
-				new Player(playInf.getId(), new Color(playInf.getColor()))
+				new Player(playInf.getName(), playInf.getId(), new Color(playInf.getColor()))
 		} toList
 		val gameMap = new WormholeMap(w,h,players)
 		convert.getSpaceList() foreach {

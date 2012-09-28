@@ -35,6 +35,7 @@ class WormholeMainServer(port:Int) extends Runnable{
 	}
 	
 	def handleNewConnection(socketInfo:SocketInfoData){
+		println("newconn")
 		val ch = new WormholeClientHandler(socketInfo)
 		new Thread(ch, "ClientHandler").start()
 		ref ! ch
@@ -47,6 +48,7 @@ class WormholeMainServer(port:Int) extends Runnable{
 	}
 	
 	def newLobby(lobbyName:String):WormholeServerLobby = {
+		println("newlobby")
 		fetch((ref ? ('NewLobby, lobbyName)).mapTo[WormholeServerLobby])
 	}
 	def lobbyDropped(lobbyId:Int) = {
@@ -70,7 +72,7 @@ class WormholeMainServerImpl(val mserver:WormholeMainServer) extends Actor{
 		case newConn:WormholeClientHandler =>
 			connections ::= newConn
 		case ('Disconnect, wch:WormholeClientHandler) =>
-			connections -= wch
+			connections = connections filterNot{_ == wch}
 		case ('NewLobby, lobbyName:String) => 
 			lobbyId += 1
 			val lobby = new WormholeServerLobby(lobbyName, lobbyId, mserver)
