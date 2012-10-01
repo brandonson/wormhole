@@ -268,7 +268,6 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 						accVal =>
 							val (accId, accCount) = accVal
 							val (id, count) = check
-							println(accCount + " vs "  + count)
 							if(count > accCount) check else accVal
 					} getOrElse (check))
 			}.map {_._1}
