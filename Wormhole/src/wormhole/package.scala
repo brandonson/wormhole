@@ -1,6 +1,9 @@
 import akka.actor.ActorSystem
+import com.wormhole.network.PlayerProto
+import java.awt.Color
 package object wormhole {
 	
+	type PlayerId = Int
 	/**
 	 * The port wormhole uses.
 	 */
@@ -14,4 +17,6 @@ package object wormhole {
 	 * running a server.
 	 */
 	var clientConnection:ThreadsafeMessageWriter = null
+	
+	implicit def protoToPlayer(conv:PlayerProto.Player) = new Player(conv.getName(), conv.getId(), new Color(conv.getColor()))
 }

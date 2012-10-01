@@ -45,7 +45,7 @@ object InputManager extends KeyEventPostProcessor with MouseInputListener{
 			}
 			down ::= keyEvt.getKeyCode()
 		}else if (keyEvt.getID()==KeyEvent.KEY_RELEASED){
-			down -= keyEvt.getKeyCode()
+			down = down filterNot {_==keyEvt.getKeyCode()}
 		}
 		true
 	}

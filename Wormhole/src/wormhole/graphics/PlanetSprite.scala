@@ -1,6 +1,6 @@
 package wormhole.graphics
 import wormhole.game.BaseObject
-import wormhole.game.Player
+import wormhole.Player
 import java.awt.Graphics2D
 import java.awt.Color
 import scala.collection.mutable.ListBuffer

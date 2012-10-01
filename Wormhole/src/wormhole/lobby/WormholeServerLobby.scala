@@ -14,7 +14,7 @@ import java.awt.Color
 import wormhole.game.WormholeGameServer
 import scala.collection.JavaConversions._
 import wormhole.game.MapUtils
-import wormhole.game.Player
+import wormhole.Player
 import wormhole.WormholeServer
 import com.wormhole.network.PlayerProto
 object WormholeServerLobby{

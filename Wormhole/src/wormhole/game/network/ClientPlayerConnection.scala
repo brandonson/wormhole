@@ -5,7 +5,7 @@ import wormhole.game.WormholeMap
 import GameProto.MessageType._
 import scala.collection.JavaConversions._
 import java.io.IOException
-import wormhole.game.Player
+import wormhole.Player
 import java.awt.Color
 import wormhole.ThreadsafeMessageWriter
 import wormhole.SocketInfoData

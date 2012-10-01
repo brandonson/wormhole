@@ -8,6 +8,7 @@ import wormhole.WormholeSystem
 import akka.actor.Props
 import akka.pattern.ask
 import wormhole.game.network.GameProto
+import wormhole.PlayerId
 
 /**
  * Represents a group of units moving to a base.  

@@ -7,6 +7,7 @@ import javax.swing.JLabel
 import java.awt.Color
 import java.awt.Font
 import com.wormhole.network.PlayerProto
+import wormhole.Player
 
 object PersonInfoRenderer{
 	val DISPLAY_FONT = new Font("Arial", Font.PLAIN, 15)
@@ -15,11 +16,11 @@ object PersonInfoRenderer{
 /**
  * Renderer for users in a lobby.
  */
-class PersonInfoRenderer extends JLabel with ListCellRenderer[PlayerProto.Player]{
+class PersonInfoRenderer extends JLabel with ListCellRenderer[Player]{
 	
-	def getListCellRendererComponent(list:JList[_<:PlayerProto.Player], obj:PlayerProto.Player, idx:Int, focus:Boolean, sel:Boolean) = {
-		setText(obj.getName())
-		setForeground(new Color(obj.getColor()))
+	def getListCellRendererComponent(list:JList[_<:Player], obj:Player, idx:Int, focus:Boolean, sel:Boolean) = {
+		setText(obj.name)
+		setForeground(obj.color)
 		setFont(PersonInfoRenderer.DISPLAY_FONT)
 		this
 	}

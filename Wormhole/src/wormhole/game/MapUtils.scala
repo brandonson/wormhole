@@ -2,6 +2,7 @@ package wormhole.game
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import wormhole.graphics.PlanetSprite
+import wormhole.Player
 
 /**
  * Utility functions for generating maps.

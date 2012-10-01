@@ -9,6 +9,8 @@ import wormhole.WormholeSystem
 import com.google.protobuf.Message
 import wormhole.game.network.GameProto
 import scala.collection.mutable.ListBuffer
+import wormhole.Player
+import wormhole.PlayerId
 /**
  * Stores data for a wormhole map.  This includes information on the objects in the map,
  * dimensions of the map, and the players for the map.

@@ -1,4 +1,7 @@
 package wormhole.game
+
+import wormhole.PlayerId
+
 /**
  * Trait for listeners to map changes and updates.
  */

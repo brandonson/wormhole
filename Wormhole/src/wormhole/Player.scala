@@ -1,4 +1,4 @@
-package wormhole.game
+package wormhole
 
 import java.awt.Color
 /**

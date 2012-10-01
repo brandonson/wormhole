@@ -1,6 +1,7 @@
 package wormhole.game.network
 
-import wormhole.game.Player
+import wormhole.Player
+import wormhole.PlayerId
 import java.net.Socket
 import GameProto.MessageType._
 import wormhole.game.BaseObjectListener
@@ -10,7 +11,6 @@ import scala.collection.JavaConversions._
 import wormhole.game.WormholeMap
 import wormhole.ThreadsafeMessageWriter
 import wormhole.actor._
-import wormhole.game.PlayerId
 import wormhole.SocketInfoData
 import akka.actor.Actor
 import wormhole.WormholeSystem

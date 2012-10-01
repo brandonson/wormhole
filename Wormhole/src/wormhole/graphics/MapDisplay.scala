@@ -3,7 +3,7 @@ package wormhole.graphics
 import java.awt.image.BufferStrategy
 import wormhole.game.WormholeMap
 import javax.swing.JFrame
-import wormhole.game.Player
+import wormhole.Player
 import wormhole.actor._
 import java.awt.Graphics2D
 import java.awt.Color

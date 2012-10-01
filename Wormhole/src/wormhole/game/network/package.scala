@@ -10,6 +10,9 @@ import wormhole.actor._
 import wormhole.graphics.PlanetSprite
 import wormhole.ThreadsafeMessageWriter
 import com.wormhole.network.PlayerProto
+import wormhole.Player
+import wormhole.PlayerId
+
 package object network {
 	
 	/**

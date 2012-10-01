@@ -28,6 +28,7 @@ import javax.swing.JScrollPane
 import java.net.InetAddress
 import java.net.UnknownHostException
 import com.wormhole.network.PlayerProto
+import wormhole.Player
 /**
  * Client for game lobbies.
  */
@@ -38,7 +39,7 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	def in = data.in
 	def out = data.out
 	var colors:List[(JRadioButton, Int)] = Nil
-	val model = new DefaultListModel[PlayerProto.Player]
+	val model = new DefaultListModel[Player]
 	val playerDisplay = new JList(model)
 	val frame = new JFrame("Wormhole Lobby")
 	var ownInfo:PlayerProto.Player = null

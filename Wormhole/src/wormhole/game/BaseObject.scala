@@ -11,6 +11,8 @@ import wormhole.ThreadsafeMessageWriter
 import wormhole.WormholeSystem
 import java.awt.Graphics2D
 import java.awt.Color
+import wormhole.Player
+import wormhole.PlayerId
 /**
  * Defines basic generation methods and constants for all BaseObjects.  As customizability and different types of objects
  * increase, these may disappear.

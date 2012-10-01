@@ -1,5 +1,6 @@
 package wormhole.game
 
+import wormhole.PlayerId
 /**
  * Listener trait for events occuring to BaseObjects.
  */

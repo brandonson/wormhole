@@ -9,6 +9,7 @@ import wormhole.SocketInfoData
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 import java.util.TimerTask
+import wormhole.Player
 
 /**
  * Game server class.  Stores the map and list of connections.
