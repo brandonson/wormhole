@@ -268,12 +268,16 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 						accVal =>
 							val (accId, accCount) = accVal
 							val (id, count) = check
+							println(accCount + " vs "  + count)
 							if(count > accCount) check else accVal
 					} getOrElse (check))
 			}.map {_._1}
 			//if there's no players with units left, there will be no newOwner determined
 			//so keep the old one
-			owner = Some(newOwner getOrElse owner.get)
+			if(newOwner isDefined){
+				owner = newOwner
+				listeners foreach {_.ownerChanged(newOwner.get, main)}
+			}
 		}
 		listeners foreach {_.allUnitsChanged(this.main)}
 	}

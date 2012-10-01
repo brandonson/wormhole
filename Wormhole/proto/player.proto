@@ -1,0 +1,11 @@
+package wormhole;
+
+option java_package = "com.wormhole.network";
+
+option java_outer_classname = "PlayerProto";
+
+message Player{
+	required string name = 1;
+	required int32 id = 2;
+	required int32 color = 3;
+}
