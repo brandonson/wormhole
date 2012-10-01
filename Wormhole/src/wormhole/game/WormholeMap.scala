@@ -11,14 +11,15 @@ import wormhole.game.network.GameProto
 import scala.collection.mutable.ListBuffer
 import wormhole.Player
 import wormhole.PlayerId
+import wormhole.IdProvider
 /**
  * Stores data for a wormhole map.  This includes information on the objects in the map,
  * dimensions of the map, and the players for the map.
  */
 class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
 	
-	val ref:ActorRef = WormholeSystem.actorOf(Props(new WormholeMapImpl(this)))
-	
+	private[this] val ref:ActorRef = WormholeSystem.actorOf(Props(new WormholeMapImpl(this)))
+	val idProvider:IdProvider = new IdProvider();
 	/**
 	 * Gets the player for the given player id.
 	 */
@@ -33,6 +34,7 @@ class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
 	def updateAll(){
 		ref ! 'Update
 	}
+	def isCompletelyFinished() =ref.isTerminated
 	/**
 	 * Gets the object at the given position.  Returns `None` if no object is at the given position,
 	 * otherwise returns an instance of Some containing the object.
@@ -41,11 +43,11 @@ class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
 		fetch ((ref ? ('At, x,y)).mapTo[Option[BaseObject]])
 	}
 	
-	def newGroupIdFuture() = (ref ? 'GroupId).mapTo[Int]
+	def newGroupIdFuture() = idProvider.newIdFuture
 	/**
 	 * Generates a new group id.
 	 */
-	def newGroupId() = fetch(newGroupIdFuture())
+	def newGroupId() = idProvider.newId
 	def objectsFuture = (ref ? 'Objects).mapTo[List[BaseObject]]
 	def objects = fetch (objectsFuture)
 	def unitGroupsFuture = (ref ? 'Units).mapTo[List[UnitGroup]]
@@ -92,9 +94,6 @@ private class WormholeMapImpl(main:WormholeMap) extends Actor{
 			listeners += listen
 		case ('RemoveListener, listen:WormholeMapListener) =>
 			listeners -= listen
-		case 'GroupId =>
-			sender ! ugID
-			ugID += 1
 		case group:UnitGroup =>
 			unitGroups += group
 			listeners foreach {_.newUnitGroup(main, group)}

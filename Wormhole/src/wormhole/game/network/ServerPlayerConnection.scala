@@ -45,9 +45,12 @@ class ServerPlayerConnection(val player:Player, val map:WormholeMap, val socketD
 		}catch{
 			case _:IOException =>
 		}
-		//unregister as a listener.
-		//only if not due to game end (termination of map actor)
-		if(!map.ref.isTerminated){
+		/* unregister as a listener.
+		 * only if not due to game end - 
+		 * map actor stops on game completion
+		 * and this would block
+		 */
+		if(!map.isCompletelyFinished){
 			map.removeMapListener(this)
 			map.objects foreach {_.removeListener(this)}
 		}
