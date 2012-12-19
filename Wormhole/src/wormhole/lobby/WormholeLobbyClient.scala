@@ -38,7 +38,7 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 	
 	def in = data.in
 	def out = data.out
-	var colors:List[(JRadioButton, Int)] = Nil
+	var colors:List[(JRadioButton, Color)] = Nil
 	val model = new DefaultListModel[Player]
 	val playerDisplay = new JList(model)
 	val frame = new JFrame("Wormhole Lobby")
@@ -109,10 +109,11 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 		colors = (colorSet.getColorsList() map {
 			colorInf =>
 				val button = new JRadioButton()
-				button.setBackground(new Color(colorInf.getColor()))
+				val color = new Color(colorInf.getColor())
+				button.setBackground(color)
 				button.addActionListener(this)
 				group.add(button)
-				(button, colorInf.getColor())
+				(button, color)
 		}).toList
 	}
 	def setupOwnInfo(){
@@ -157,13 +158,14 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 				case PERSON_SET_INFO =>
 					readPersonSetInfo()
 				case CHANGE_INFO =>
-					val from = PlayerProto.Player.parseDelimitedFrom(in)
-					val to = PlayerProto.Player.parseDelimitedFrom(in)
+					val from:Player = PlayerProto.Player.parseDelimitedFrom(in)
+					val to:Player = PlayerProto.Player.parseDelimitedFrom(in)
 					val idx = model.indexOf(from)
+					print(model.get(0))
 					model.set(idx, to)
-					if(from.getColor()!=to.getColor()){
-						colors find {_._2 == from.getColor()} foreach {_._1.setEnabled(true)}
-						colors find {_._2 == to.getColor()} foreach {_._1.setEnabled(false)}
+					if(from.color!=to.color){
+						colors find {_._2 == from.color} foreach {_._1.setEnabled(true)}
+						colors find {_._2 == to.color} foreach {_._1.setEnabled(false)}
 					}
 				case START =>
 					disableActions()
@@ -224,7 +226,7 @@ class WormholeLobbyClient(val data:SocketInfoData) extends Runnable with ActionL
 			colors find {_._1==button} foreach {
 				tup =>
 					val color = tup._2
-					ownInfo = PlayerProto.Player.newBuilder(ownInfo).setColor(color).build()
+					ownInfo = PlayerProto.Player.newBuilder(ownInfo).setColor(color.getRGB()).build()
 					val mType = LobbyProto.LobbyMessageType.newBuilder().setType(CHANGE_INFO).build()
 					out.write(mType, ownInfo)
 			}

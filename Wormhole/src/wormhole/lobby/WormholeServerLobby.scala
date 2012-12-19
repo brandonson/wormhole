@@ -98,6 +98,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 					availableColors ::= orig._3.getColor()
 					availableColors = availableColors filterNot {_==newInfo.getColor()}
 					connections foreach {_._1.infoChanged(orig._3, newInfo)}
+					print(orig._3)
 			}
 		case ('Lost, conn:ServerLobbyConnection) =>
 			val data = connections.find {_._1 == conn} map {_._3}
