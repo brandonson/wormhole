@@ -13,6 +13,7 @@ import java.awt.Graphics2D
 import java.awt.Color
 import wormhole.Player
 import wormhole.PlayerId
+import akka.actor.ActorLogging
 /**
  * Defines basic generation methods and constants for all BaseObjects.  As customizability and different types of objects
  * increase, these may disappear.
@@ -55,10 +56,11 @@ class BaseObject(startData:BaseObjectData, val map:WormholeMap, startSprite:(Bas
 	 * includes handling battle resolution and sending units to other bases.
 	 */
  	val ref:ActorRef = WormholeSystem.actorOf(Props(
- 			if(clientConnection != null) 
+ 			if(clientConnection != null){ 
  				new ClientBaseObjectImpl(startData, startSprite(this), this, clientConnection) 
- 			else 
- 				new BaseObjectImpl(startData,startSprite(this), this)))
+ 			}else{ 
+ 				new BaseObjectImpl(startData,startSprite(this), this)
+ 			}))
  	/**
  	 * Retrieves the basic data for this object
  	 */
@@ -138,9 +140,10 @@ class BaseObject(startData:BaseObjectData, val map:WormholeMap, startSprite:(Bas
  * This causes players with massively larger groups of units to lose only MinKill, as the enemy has only a
  * small percentage of their units, while the larger group would likely have enough to destroy all the opposing units in
  * one battle.
+ * 
  * Author: Brandon
  */
-private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val main:BaseObject) extends Actor{
+private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val main:BaseObject) extends Actor with ActorLogging{
 	/**
 	 * Constant for battle algorithm.  Increasing will result in smaller percentages of ships being destroyed, 
 	 * therefore causing slower battles.
@@ -150,9 +153,11 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 	 * Minimum number of ships destroyed by a player
 	 */
 	val MinKill = 10
+	
 	var units:Map[PlayerId, Int] = Map()
 	var owner:Option[PlayerId] = None
 	var listeners:List[BaseObjectListener] = Nil
+	
 	def receive = {
 		case 'Data =>
 			sender ! data
@@ -165,6 +170,7 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 					val owned = units.getOrElse(own, 0)
 					val send = if(owned%2==0) owned/2 else owned/2+1
 					if(send>0){
+						log.debug("Sending " + send + "units from " + data.location)
 						//create a unit group for the units
 						units += ((own, owned-send))
 						val group = new UnitGroup(main.map.newGroupId(), own,send, BaseObject.genBasicUnitSprite(main.map) _, main.map, data.location, sendTo.data.location)
@@ -175,6 +181,7 @@ private class BaseObjectImpl(val data:BaseObjectData, var sprite:Sprite, val mai
 					}
 			}
 		case (unitCount:Int, owner:PlayerId) =>
+			log.debug(unitCount + "units owned by " + owner + " arrived at " + data.location)
 			this.unitArrival(unitCount, owner)
 		case units:Map[PlayerId, Int] =>
 			this.units = units

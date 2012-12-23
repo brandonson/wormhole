@@ -4,6 +4,7 @@ import akka.actor.Actor
 import akka.actor.Props
 import wormhole.actor._
 import akka.pattern.ask
+import akka.actor.ActorLogging
 
 class IdProvider {
 
@@ -13,11 +14,12 @@ class IdProvider {
 	def newId = fetch(newIdFuture)
 }
 
-private class IdProviderImpl extends Actor{
+private class IdProviderImpl extends Actor with ActorLogging{
 	var id = 0;
 	
 	def receive = {
 		case 'NewId =>
+			log.debug("Granting new id: " + id)
 			sender ! id
 			id += 1
 	}

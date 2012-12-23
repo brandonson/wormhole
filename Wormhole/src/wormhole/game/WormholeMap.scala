@@ -12,6 +12,7 @@ import scala.collection.mutable.ListBuffer
 import wormhole.Player
 import wormhole.PlayerId
 import wormhole.IdProvider
+import akka.actor.ActorLogging
 /**
  * Stores data for a wormhole map.  This includes information on the objects in the map,
  * dimensions of the map, and the players for the map.
@@ -72,7 +73,7 @@ class WormholeMap(val width:Int, val height:Int, val players:List[Player]){
  * Actor backend for WormholeMap.
  * Author: Brandon
  */
-private class WormholeMapImpl(main:WormholeMap) extends Actor{
+private class WormholeMapImpl(main:WormholeMap) extends Actor with ActorLogging{
 	/**
 	 * Number of UnitGroup updates per base update.  UnitGroup updates move
 	 * groups across the map, while base updates produce units.
@@ -95,6 +96,7 @@ private class WormholeMapImpl(main:WormholeMap) extends Actor{
 		case ('RemoveListener, listen:WormholeMapListener) =>
 			listeners -= listen
 		case group:UnitGroup =>
+		  	log.debug("New unit group, adding and informing listeners")
 			unitGroups += group
 			listeners foreach {_.newUnitGroup(main, group)}
 		case ('RemoveGroup, group:Int) =>
@@ -102,20 +104,26 @@ private class WormholeMapImpl(main:WormholeMap) extends Actor{
 		case ('GroupForId, id:Int) =>
 			sender ! (unitGroups find {_.id==id})
 		case 'Update =>
+			log.debug("Updating map")
 			//increase update count
 			count += 1
 			if(count==MovesPerBaseUpdate){
+				log.debug("Updating bases on map")
 				//if we are at an update for bases, do it
 				objects foreach {_.update()}
 				count = 0
 			}
 			unitGroups foreach {_.update}
 			listeners foreach {_.updateComplete(main)}
-			winner foreach {win => 
+			winner foreach {
+			  win =>
+			    log.debug("Winner found")
 				listeners foreach {_.playerVictory(main, win)}
 				context.stop(self)
 			}
+			log.info("Update complete")
 		case ('At,x:Int,y:Int) =>
+			log.debug("Looking for object at (" + x + "," + y + ")")
 			//zip to their data
 			val zipped = objects zip (objects map {_.dataFuture})
 			//find an object with the give location
@@ -124,6 +132,7 @@ private class WormholeMapImpl(main:WormholeMap) extends Actor{
 					val loc = fetch(tup._2).location
 					loc.x==x && loc.y == y
 			}
+			log.info("Object: " + res)
 			sender ! (res map {_._1})
 		case 'Objects =>
 			sender ! (objects toList)

@@ -12,18 +12,24 @@ import wormhole.ThreadsafeMessageWriter
 import com.wormhole.network.PlayerProto
 import wormhole.Player
 import wormhole.PlayerId
+import org.slf4j.LoggerFactory
 
 package object network {
 	
+	private val log = LoggerFactory.getLogger("wormhole.game.network.package")
+  
 	/**
 	 * Converts a wormhole map into a protocol version to be sent to a client.  Does not include UnitGroups, as
 	 * maps are only sent at the beginning of a game, when no units are on the map.
 	 */
 	def mapToProtocol(convert:WormholeMap):GameProto.Map = {
+		log.debug("Converting map to protocol data")
 		val mapBuild = GameProto.Map.newBuilder()
 		//convert width and height
 		mapBuild.setWidth(convert.width)
 		mapBuild.setHeight(convert.height)
+		log.info("Width and height converted")
+		log.debug("Converting objects")
 		//convert BaseObjects
 		convert.objects foreach {
 			obj =>
@@ -40,7 +46,10 @@ package object network {
 				owner foreach {own => objBuild.setOwnerId(own)}
 				objBuild.addAllUnitInfo(unitMapToProtocol(obj.units))
 				mapBuild.addSpace(objBuild.build())
+				log.info("Object at " + data.location + " converted")
 		}
+		log.info("Objects fully converted")
+		log.debug("Converting players")
 		//converts players
 		val playerList = convert.players
 		playerList foreach {
@@ -50,7 +59,10 @@ package object network {
 				builder.setName(player.name)
 				builder.setColor(player.color.getRGB())
 				mapBuild.addPlayer(builder.build())
+				log.info("Player " + player.name + " converted")
 		}
+		log.debug("Player conversion complete")
+		log.debug("Map conversion to protocol data complete")
 		mapBuild.build()
 	}
 
@@ -58,28 +70,38 @@ package object network {
 	 * Converts the units from a BaseObject into a message to be sent to a client.
 	 */
 	def unitMapToProtocol(units:Map[PlayerId, Int]):ListBuffer[GameProto.UnitInfo] = {
-		val lb = new ListBuffer[GameProto.UnitInfo]() 
-		lb ++= units.map {
+		log.info("Converting object units")
+		val unitList = new ListBuffer[GameProto.UnitInfo]() 
+		unitList ++= units.map {
 			tup =>
 				val build = GameProto.UnitInfo.newBuilder()
 				build.setOwner(tup._1)
 				build.setCount(tup._2)
 				build.build()
 		}
-		lb
+		log.info("Object units have been converted")
+		unitList
 	}
 	
 	/**
 	 * Converts a message representing a map back into a map.
 	 */
 	def protocolToMap(convert:GameProto.Map, conn:ThreadsafeMessageWriter = null):WormholeMap = {
+		log.debug("Converting protocol data to WormholeMap")
 		val w = convert.getWidth()
 		val h = convert.getHeight()
+		log.info("Width and height converted")
+		log.debug("Converting players")
 		val players:List[Player] = convert.getPlayerList() map {
 			playInf =>
 				new Player(playInf.getName(), playInf.getId(), new Color(playInf.getColor()))
 		} toList
+		
+		log.debug("Players converted")
+		
 		val gameMap = new WormholeMap(w,h,players)
+		log.info("Created map")
+		log.debug("Converting objects")
 		convert.getSpaceList() foreach {
 			space =>
 				//create object
@@ -95,7 +117,10 @@ package object network {
 				val unitMap = unitInfoListProtoToBaseList(space.getUnitInfoList(), players)
 				planet.setAllUnits(unitMap)
 				gameMap.addObject(planet)
+				log.info("Object at " + Location(x,y) + " converted")
 		}
+		log.debug("Objects converted")
+		log.debug("Protocol data converted to WormholeMap")
 		gameMap
 	}
 	
@@ -104,6 +129,7 @@ package object network {
 	 * by BaseObject.
 	 */
 	def unitInfoListProtoToBaseList(list:Iterable[GameProto.UnitInfo], playerList:List[Player]):Map[PlayerId,Int] = {
+		log.info("Converted protocol unit list")
 		var map = Map[PlayerId, Int]()
 		list foreach{
 			inf =>
@@ -113,6 +139,7 @@ package object network {
 						map += ((own.id, inf.getCount()))
 				}
 		}
+		log.info("Unit list to base object unit data conversion complete")
 		map
 	}
 }

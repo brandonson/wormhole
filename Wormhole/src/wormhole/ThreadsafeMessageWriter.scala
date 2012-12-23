@@ -10,6 +10,7 @@ import akka.actor.Props
 import akka.actor.Actor
 import wormhole.game.network.GameProto
 import java.util.Arrays
+import akka.actor.ActorLogging
 
 /**
  * Class implementing thread-safe writes to an OutputStream.  This class allows atomic writing of a list of protobuf messages, such
@@ -45,20 +46,21 @@ class ThreadsafeMessageWriter(output:OutputStream){
 /**
  * Backend actor class, performing actual operations on the output stream.
  */
-private class ThreadsafeMessageWriterImpl(val output:OutputStream) extends Actor{
+private class ThreadsafeMessageWriterImpl(val output:OutputStream) extends Actor with ActorLogging{
 	
 	def receive = {
 		case messages:List[Message] =>
+			log.debug("Writing " + messages.length + " messages to ThreadsafeMessageWriter")
 			try{
 				//write all messages
 				messages foreach {_.writeDelimitedTo(output)}
 			}catch{
-				case _:IOException =>
-					//TODO log exception in ThreadsafeMessageWriter
-					//we crashed, just stop
+				case e:IOException =>
+					log.warning("ThreadsafeMessageWriter failed.  Message: " + e.getMessage())
 					context.stop(self)
 			}
 		case 'Close =>
+			log.info("Closing ThreadsafeMessageWriter")
 			//close output and shut down this actor
 			output.close()
 			context.stop(self)

@@ -9,6 +9,7 @@ import akka.actor.Props
 import akka.pattern.ask
 import wormhole.game.network.GameProto
 import wormhole.PlayerId
+import akka.actor.ActorLogging
 
 /**
  * Represents a group of units moving to a base.  
@@ -45,9 +46,15 @@ class UnitGroup(val id:Int, val owner:PlayerId, val count:Int, spriteGen:(UnitGr
 
 }
 
-class UnitGroupImpl(val fromLocation:Location, val toLocation:Location, val main:UnitGroup) extends Actor{
+class UnitGroupImpl(val fromLocation:Location, val toLocation:Location, val main:UnitGroup) extends Actor with ActorLogging{
 	
-	var lData:LineData = if(wormhole.clientConnection != null) new BasicData(fromLocation) else new LineComputation(fromLocation, toLocation)
+	var lData:LineData = if(wormhole.clientConnection != null){
+	  //We're a client, use only basic data
+	  new BasicData(fromLocation)
+	} else {
+	  //We're a server, we have to compute the data
+	  new LineComputation(fromLocation, toLocation)
+	}
 	
 	trait LineData{
 		def curX:Int
@@ -62,8 +69,14 @@ class UnitGroupImpl(val fromLocation:Location, val toLocation:Location, val main
 		def curY = loc.y
 		def update(){}
 		def forLocation(loc:Location) = new BasicData(loc)
+		/**
+		 * Always returns false.  Clients do not know whether a UnitGroup has reached it's destination.
+		 * They assume it has not, and servers tell clients to remove a group and add units to a BaseObject
+		 * as two separate operations.
+		 */
 		def complete = false
 	}
+	
 	class LineComputation(from:Location, to:Location) extends LineData{
 		val start = Location(from.x*GRID_SIDE+GRID_SIDE/2, from.y*GRID_SIDE+GRID_SIDE/2)
 		val end = Location(to.x*GRID_SIDE+GRID_SIDE/2, to.y*GRID_SIDE+GRID_SIDE/2)
@@ -72,13 +85,16 @@ class UnitGroupImpl(val fromLocation:Location, val toLocation:Location, val main
 		val stepX = if (start.x<end.x) 1 else -1
 		val stepY = if (start.y<end.y) 1 else -1
 		var err = distX-distY
+		
 		var currentX = start.x
 		var currentY = start.y
+		
 		def curX = currentX
 		def curY = currentY
 		
 		def complete = curX==end.x&&curY==end.y
 		def update(){
+			log.debug("Updating LineComputation")
 			if (!complete){
 				val err2 = err*2
 				if(err2 > -distY){
@@ -98,9 +114,12 @@ class UnitGroupImpl(val fromLocation:Location, val toLocation:Location, val main
 		case 'Location =>
 			sender ! Location(lData.curX, lData.curY)
 		case 'Update =>
+			log.debug("Updating UnitGroup")
 			lData.update()
 			if(lData.complete){
+				log.debug("UnitGroup reached destination, performing completion operation")
 				main.map.objectAt(toLocation.x, toLocation.y) foreach {_.unitArrival(main.count, main.owner)}
+				log.debug(main.count + " units arrived at " + toLocation)
 				main.map.removeGroup(main.id)
 			}
 		case 'Complete =>
