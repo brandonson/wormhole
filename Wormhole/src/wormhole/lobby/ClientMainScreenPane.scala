@@ -7,12 +7,15 @@ import java.awt.event.ActionEvent
 import javax.swing.event.ListSelectionListener
 import javax.swing.event.ListSelectionEvent
 import java.awt.Dimension
+import org.slf4j.LoggerFactory
 
 /**
  * Display for clients at the main screen.
  */
 class ClientMainScreenPane(val conn:WormholeMainClient) extends JPanel{
 
+	val log = LoggerFactory.getLogger("ClientMainScreen")
+  
 	/**
 	 * The list of lobbies on the server
 	 */
@@ -41,6 +44,7 @@ class ClientMainScreenPane(val conn:WormholeMainClient) extends JPanel{
 	val buttonPanel = new JPanel()
 	val joinButton = new JButton(new AbstractAction("Join"){
 		def actionPerformed(e:ActionEvent){
+			log.info("Joining lobby")
 			val selected = lobbyList.getSelectedValue()
 			conn.joinLobby(selected)
 		}
@@ -49,6 +53,7 @@ class ClientMainScreenPane(val conn:WormholeMainClient) extends JPanel{
 		def actionPerformed(e:ActionEvent){
 			val text = roomName.getText()
 			if(!text.isEmpty()){
+				log info "Creating lobby"
 				conn.createLobby(text)
 			}
 		}

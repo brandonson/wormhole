@@ -17,6 +17,7 @@ import wormhole.game.MapUtils
 import wormhole.Player
 import wormhole.WormholeServer
 import com.wormhole.network.PlayerProto
+import akka.actor.ActorLogging
 object WormholeServerLobby{
 	val possibleColors = List(new Color(255,0,0), new Color(0,255,0), new Color(0,0,255), new Color(255,255,0), new Color(0,255,255), new Color(255,0,255),
 			new Color(150,60,215), new Color(255,150,0), new Color(240,200, 225), new Color(120,145,15))
@@ -49,7 +50,7 @@ class WormholeServerLobby(val name:String, val id:Int, val mainServer:WormholeMa
 	}
 }
 
-private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Actor{
+private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Actor with ActorLogging{
 	
 	import WormholeServerLobby._
 	import WormholeServer._
@@ -72,6 +73,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 	def receive = {
 		case ('NewConnection, data:SocketInfoData) =>
 			if(active){
+				log info "Adding new connection"
 				val result = newColor map {
 					color =>
 					val id = nextId
@@ -79,6 +81,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 					val conn = new ServerLobbyConnection(data, lobby, info)
 					val thread = new Thread(conn, "SLC-" + connections.size)
 					thread.start()
+					log debug "Started connection handler"
 					connections foreach {_._1.newPerson(info)}
 					connections ::= (conn,thread,info)
 				}
@@ -90,6 +93,7 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 		case 'PersonSet =>
 			sender ! (connections map {_._3})
 		case ('InfoChange, conn:ServerLobbyConnection, newInfo:PlayerProto.Player) =>
+			log info "Info changed for a connection"
 			val original = connections find {_._1==conn}
 			original foreach {
 				orig =>
@@ -98,21 +102,25 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 					availableColors ::= orig._3.getColor()
 					availableColors = availableColors filterNot {_==newInfo.getColor()}
 					connections foreach {_._1.infoChanged(orig._3, newInfo)}
-					print(orig._3)
+					log debug "Person " + orig._3.getName() + " changed to " + newInfo.getName()
 			}
 		case ('Lost, conn:ServerLobbyConnection) =>
+		  	log info "Connection lost"
 			val data = connections.find {_._1 == conn} map {_._3}
 			connections = connections.filterNot(_._1 == conn)
 			data foreach {person => 
 				connections foreach {_._1.lostPerson(person)}
 				availableColors ::= person.getColor()
 			}
+			log debug "Informed other connections of disconnect"
 			if(connections.length==0){
 				active = false
 				lobby.mainServer.lobbyDropped(lobby.id)
 				context.stop(self)
+				log info "Stopping because no connections are active"
 			}
 		case 'Start =>
+		  	log info "Starting game"
 			val players = (connections.map {_._3}).zipWithIndex map {
 				tup =>
 					val (pInf, idx) = tup
@@ -123,11 +131,14 @@ private class WormholeServerLobbyImpl(val lobby:WormholeServerLobby) extends Act
 			val server = new WormholeGameServer(map, zipped)
 			val conns = connections
 			connections foreach {_._1.start(server)}
+			log debug "Told connections to start"
 			availableColors = connections.map {_._3.getColor()} ++ availableColors
 			connections = Nil
 			joinConnectionsAndStart(conns map {_._2}, server)
+			log debug "Game has started"
 			lobby.mainServer.lobbyDropped(lobby.id)
 			context.stop(self)
+			log debug "Lobby removed from server, stopping operation"
 	}
 	
 	def joinConnectionsAndStart(list:List[Thread], server:WormholeGameServer){
