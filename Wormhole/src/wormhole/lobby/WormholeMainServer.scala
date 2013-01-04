@@ -29,16 +29,20 @@ class WormholeMainServer(port:Int) extends Runnable{
 		log info "Starting main server"
 		val server = new ServerSocket(port)
 		while(!Thread.interrupted()&&continue){
-			try{
-				log debug "Accepted incoming exception"
-				handleNewConnection(new SocketInfoData(server.accept()))
-			}catch{
-				case exc:InterruptedIOException =>
-				  log.warn("Interrupted during execution: server stopped", exc)
-				case ioe:IOException =>
-				  	log.warn("Exception while waiting to accept socket", ioe)
-					continue = false
-			}
+			acceptConnection(server);
+		}
+	}
+	
+	def acceptConnection(server:ServerSocket){
+		try{
+			log debug "Accepted incoming connection"
+			handleNewConnection(new SocketInfoData(server.accept()))
+		}catch{
+			case exc:InterruptedIOException =>
+				log.warn("Interrupted during execution: server stopped", exc)
+			case ioe:IOException =>
+				log.warn("Exception while waiting to accept socket", ioe)
+				continue = false
 		}
 	}
 	
@@ -70,9 +74,11 @@ class WormholeMainServer(port:Int) extends Runnable{
 }
 
 class WormholeMainServerImpl(val mserver:WormholeMainServer) extends Actor with ActorLogging{
+	
 	var connections:List[WormholeClientHandler] = Nil
 	var lobbies:List[WormholeServerLobby] = Nil
 	var lobbyId = 0
+	
 	def receive = {
 		case 'DoDisconnect =>
 		  	log info "Disconnecting all clients"
